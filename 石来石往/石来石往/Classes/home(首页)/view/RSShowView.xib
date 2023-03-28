@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RSShowView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rht-Tb-EAQ">
+                    <rect key="frame" x="22" y="201" width="330" height="295"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YqR-DP-QLj">
+                            <rect key="frame" x="8" y="43" width="314" height="203"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <outlet property="dataSource" destination="Rht-Tb-EAQ" id="58n-u7-3Ii"/>
+                                <outlet property="delegate" destination="Rht-Tb-EAQ" id="UKi-d5-1qu"/>
+                            </connections>
+                        </tableView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7cb-FY-l4N">
+                            <rect key="frame" x="13" y="40" width="249" height="1"/>
+                            <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="0Pf-cY-EoX"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gnp-Y9-wg3">
+                            <rect key="frame" x="255" y="254" width="62" height="33"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="33" id="RdV-R8-dMu"/>
+                                <constraint firstAttribute="width" constant="62" id="c3s-TS-ZiZ"/>
+                            </constraints>
+                            <state key="normal" image="sure.png">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="btnSure:" destination="iN0-l3-epB" eventType="touchUpInside" id="5DR-lm-Q98"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="企业类型" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKZ-IQ-D0T">
+                            <rect key="frame" x="13" y="15" width="68" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="68" id="ihn-G7-fXP"/>
+                                <constraint firstAttribute="height" constant="21" id="j3r-EL-l8f"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="YqR-DP-QLj" secondAttribute="trailing" constant="8" id="4QM-yJ-krB"/>
+                        <constraint firstItem="YqR-DP-QLj" firstAttribute="top" secondItem="7cb-FY-l4N" secondAttribute="bottom" constant="3" id="5zF-aE-6zq"/>
+                        <constraint firstAttribute="trailing" secondItem="Gnp-Y9-wg3" secondAttribute="trailing" constant="13" id="9ph-rO-Mar"/>
+                        <constraint firstItem="rKZ-IQ-D0T" firstAttribute="top" secondItem="Rht-Tb-EAQ" secondAttribute="top" constant="14" id="MWd-ld-Zvj"/>
+                        <constraint firstItem="7cb-FY-l4N" firstAttribute="top" secondItem="rKZ-IQ-D0T" secondAttribute="bottom" constant="4" id="OLx-0J-UqF"/>
+                        <constraint firstItem="7cb-FY-l4N" firstAttribute="leading" secondItem="Rht-Tb-EAQ" secondAttribute="leading" constant="13" id="Q9G-58-hbh"/>
+                        <constraint firstItem="Gnp-Y9-wg3" firstAttribute="top" secondItem="YqR-DP-QLj" secondAttribute="bottom" constant="8" id="TEp-DJ-saC"/>
+                        <constraint firstItem="rKZ-IQ-D0T" firstAttribute="leading" secondItem="Rht-Tb-EAQ" secondAttribute="leading" constant="13" id="TGT-19-qqb"/>
+                        <constraint firstAttribute="height" constant="295" id="fFI-GR-JWG"/>
+                        <constraint firstItem="YqR-DP-QLj" firstAttribute="leading" secondItem="Rht-Tb-EAQ" secondAttribute="leading" constant="8" id="m3E-M3-q2F"/>
+                        <constraint firstAttribute="bottom" secondItem="Gnp-Y9-wg3" secondAttribute="bottom" constant="8" id="oXJ-FN-0b6"/>
+                        <constraint firstAttribute="trailing" secondItem="7cb-FY-l4N" secondAttribute="trailing" constant="13" id="wYa-dS-Ftk"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.76470588240000004" green="0.76470588240000004" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Rht-Tb-EAQ" secondAttribute="trailing" constant="23" id="b9J-2H-f8f"/>
+                <constraint firstItem="Rht-Tb-EAQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="22" id="prn-zD-xDp"/>
+                <constraint firstAttribute="bottom" secondItem="Rht-Tb-EAQ" secondAttribute="bottom" constant="171" id="uHO-ZV-KlZ"/>
+            </constraints>
+            <connections>
+                <outlet property="lblTitle" destination="rKZ-IQ-D0T" id="8sY-rq-yL4"/>
+                <outlet property="tableview" destination="YqR-DP-QLj" id="bhG-nK-MZ5"/>
+                <outletCollection property="gestureRecognizers" destination="eqb-El-FEk" appends="YES" id="bo7-Q8-gaX"/>
+            </connections>
+            <point key="canvasLocation" x="383" y="326"/>
+        </view>
+        <tapGestureRecognizer id="eqb-El-FEk">
+            <connections>
+                <action selector="hidden:" destination="iN0-l3-epB" id="tDF-cf-bu3"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="sure.png" width="60" height="34"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
+</document>

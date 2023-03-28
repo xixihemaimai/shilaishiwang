@@ -1,0 +1,985 @@
+//
+//  PrefixHeader.pch
+//  石来石往
+//
+//  Created by mac on 17/5/10.
+//  Copyright © 2017年 mac. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+
+#define PrefixHeader_pch
+
+
+/**屏幕的宽度*/
+#define SCW [UIScreen mainScreen].bounds.size.width
+/**屏幕的高度*/
+#define SCH [UIScreen mainScreen].bounds.size.height
+
+
+#define RSWeakself __weak typeof(self) weakSelf = self;
+
+/**UIColor的分类*/
+//#import <UMCommon/MobClick.h>
+#import <AVFoundation/AVFoundation.h>
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <MJExtension.h>
+#import <AFNetworking.h>
+#import <SDAutoLayout.h>
+#import "UIColor+HexColor.h"
+#import "RSMainTabBarViewController.h"
+#import <SVProgressHUD.h>
+#import <TTTAttributedLabel.h>
+#import <MJRefresh.h>
+#import "UIScrollView+DREmptyDataSet.h"
+#import <TZImagePickerController/TZImagePickerController.h>
+#import <YNPageViewController.h>
+#import <FMDatabase.h>
+#import <UIImageView+WebCache.h>
+#import <SDWebImage/UIButton+WebCache.h>
+#import <XLPhotoBrowser.h>
+#import <HUPhotoBrowser.h>
+#import <Photos/Photos.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <AVKit/AVKit.h>
+#import <Masonry.h>
+#import <POP.h>
+#import <MLLabel/MLLinkLabel.h>
+#import <MLLabel/MLTextAttachment.h>
+#import <MLLabel/MLExpressionManager.h>
+#import <NSAttributedString+MLExpression.h>
+#import <UUButton.h>
+#import <SJVideoPlayer.h>
+#import <IQKeyboardManager.h>
+#import <MapKit/MapKit.h>
+#import <MMScan/MMScanViewController.h>
+
+#ifdef DEBUG
+#define CLog(...) NSLog(__VA_ARGS__)
+#else
+#define CLog(...)
+#endif
+
+//没有网络的情况下
+//文字大小适配
+#define Textadaptation(a) (NSInteger)a * (SCW / 375.0)
+/**导航栏的背景颜色*/
+#define NACOLOR [UIColor colorWithHexColorStr:@"#1c98e6"];
+
+// 判断是否是ipad
+#define JH_isPad ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+// 判断iPhone4系列
+#define iPhone4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+// 判断iPhone5系列
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+// 判断iPhone6系列
+#define iPhone6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+//判断iphone6+系列
+#define iPhone6p ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+// 判断iPhoneX iPhoneXs  iphone11Pro
+#define iphonex ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+// 判断iPHoneXr | 11
+#define iPhoneXR ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(828, 1792), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+// 判断iPhoneXs | 11Pro | iphonex
+#define iPhoneXS ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+// 判断iPhoneXs Max | 11ProMax
+#define iPhoneXSMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2688), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+//判断iPhone12_Mini 和 iPhone13 mini
+#define iPhone12_Mini ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1080, 2340), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+//判断iPhone12 | 12Pro 和 iPhone13 iPhone13 pro
+#define iPhone12 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1170, 2532), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+//判断iPhone12 Pro Max 和 iPhone13 pro max
+#define iPhone12_ProMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1284, 2778), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+
+//14 pro
+#define iPhone14_pro ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1179, 2556), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+//14pro max
+#define iPhone14_proMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1290, 2796), [[UIScreen mainScreen] currentMode].size) && !JH_isPad : NO)
+
+//x系列
+#define JH_isIPhone_IPhoneX_All (iphonex || iPhoneXR || iPhoneXS || iPhoneXSMax || iPhone12_Mini || iPhone12 || iPhone12_ProMax || iPhone14_pro || iPhone14_proMax)
+
+#define Height_NavBar ((iPhoneXR ? 92 : (iphonex || iPhoneXS || iPhoneXSMax || iPhone12_Mini) ? 88 : (iPhone12 || iPhone12_ProMax) ? 91 : (iPhone14_pro || iPhone14_proMax) ? 103 : (iPhone12_Mini) ? 94 : 64))
+
+//#define iPhoneX_All (iphonex || iPhoneXR || iPhoneXS || iPhoneXSMax || iPhone12_Mini || iPhone12 || iPhone12_ProMax)
+
+//#define Height_NavBar ((iPhoneXR == YES || iPhoneXS == YES || iPhoneXSMax == YES || iPhone12_Mini == YES) ? 88.0 : (iphonex == YES) ? 92 : (iPhone12 == YES || iPhone12_ProMax == YES) ? 91 : 64.0)
+
+#define Height_TabBar ((JH_isIPhone_IPhoneX_All == YES) ? 83.0 : 49.0)
+
+#define Height_bottomSafeArea (JH_isIPhone_IPhoneX_All == YES ? 34.0 : 0.0)
+
+/// 等比例适配 以当前设计图为模板
+//667.0f----375.0f
+#define SCREEN_WIDTH_BILI (SCREEN_WIDTH/375.0f)
+#define Width_Real(a) a*SCREEN_WIDTH_BILI
+//iPhoneX_All ? 667/667.0 :
+#define SCREEN_HEIGHT_BILI (SCREEN_HEIGHT/667.0f)
+#define Height_Real(a) a*SCREEN_HEIGHT_BILI
+
+#define intChangString(i)  [NSString stringWithFormat:@"%ld",i]
+
+
+//FIXME:这边是选择市场的参数
+//#define ERPID @"1"
+
+
+#import "UIViewController+RSController.h"
+
+
+
+#import "RSAllViewController.h"
+#import "XLAFNetworkingBlock.h"
+#import "NSString+RSExtend.h"
+#import "RSNavigationButton.h"
+#import "RSHomeButtom.h"
+#import "RSLoginValidity.h"
+#import "RSERROExceptTool.h"
+#import "WSDatePickerView.h"
+#import "UIView+Frame.h"
+#import "RSMyNavigationViewController.h"
+#import "RSNSStringColorTool.h"
+#import "RSRightNavigationButton.h"
+#import "RSInitUserInfoTool.h"
+//#import "MMScanViewController.h"
+#import "RSCustomTextField.h"
+#import "RSSFLabel.h"
+#import "AppDelegate.h"
+#import "UILabel+ChangeLineSpaceAndWordSpace.h"
+#import "GPUImage.h"
+#import "UIColor+CZAddition.h"
+//#import "UIImage+ImgSize.h"
+#import "JHSysAlertUtil.h"
+#import "RSJumpPlayVideoTool.h"
+#import "RSSelectNeedImageTool.h"
+#import "UIView+Geometry.h"
+#import "Utility.h"
+#import "MLLabelUtil.h"
+#import "MomentKit.h"
+#import "UIColor+Wonderful.h"
+#import "SXMarquee.h"
+#import "UIView+LXShadowPath.h"
+#import "UITextView+ZWPlaceHolder.h"
+#import "RSLoginViewController.h"
+#import "RSSearchContentView.h"
+//FIXME:个人版
+#import "UIColor+MADColor.h"
+#import "MADMacroDefines.h"
+//#import "Masonry.h"
+#import "UIView+ZZExtension.h"
+#import "UIColor+ZZExtension.h"
+#import "UILabel+ZZExtension.h"
+#import "UIButton+ZZExtension.h"
+#import "UIImage+info.h"
+#import "LQXSwitch.h"
+#import "RSPersonalBaseViewController.h"
+#import "RSPwmsUserModel.h"
+#import "RSPwmsUserListModel.h"
+#import "WMPageController.h"
+
+#import "RSUserModel.h"
+//创建数据表
+#import "RSPersonlPublishDB.h"
+//微信登录
+#import "WXApiManager.h"
+
+#define WAREHOUSERSQL @"Warehouselist.sqlite"
+#define MATERIALSQL @"Materiallist.sqlite"
+#define TYPESQL @"Typelist.sqlite"
+#define COLORSQL @"Colorlist.sqlite"
+#define FACTORY @"Factory.sqlite"
+
+
+//淘石专区
+#import "RSTaoBaoTool.h"
+#import "UIBarButtonItem+Item.h"
+
+
+
+
+//总环境
+//#define URL_HEADER @"http://market.stonhub.com"
+//总域名(图片)(没有用了)
+//#define URL_HEADER_IMG @"http://www.stonhub.com"
+// 总域名(正式环境)(没有用到了)
+//#define URL_HEADER_S @"https://appmarket.stoneonline.com"
+//#define URL_HEADER @"http://appmarket.stoneonline.com"
+//请求验证码(不需登录)(1)
+//#define URL_GET_TEXT_VERIFY_UNLOGIN @"" URL_HEADER"/apis/messages/nlgetmsgkeybyphone"
+//获取服务器的时间
+//#define URL_GET_SERVER_DATE @""URL_HEADER"/apis/users/getsystime"
+//验证验证码（不需要登录）(1)
+//#define URL_VERIFY_TEXT_VERIFY_UNLOGIN @""URL_HEADER"/apis/messages/nlcheckmsgkey"
+
+//检验手机号有没有被注册
+//#define URL_CHECK_MOBIL_PHONE @""URL_HEADER"/apis/users/existsmobilephone"
+
+//创建新的用户
+//#define URL_REGISTE_OFFICE @""URL_HEADER"/apis/users/createadmin"
+
+//登录接口
+//#define URL_LOGIN @""URL_HEADER"/apis/users/login"
+
+// 根据usercode获取用户信息
+//#define URL_GET_SINGLE_USER @""URL_HEADER"/apis/users/getuserInfo"
+
+//请求验证码
+//#define URL_GET_TEXT_VERIFY @""URL_HEADER"/apis/messages/getmsgkeybyphone"
+
+//验证验证码
+//#define URL_VERIFY_TEXT_VERIFY @""URL_HEADER"/apis/messages/checkmsgkey"
+
+// 找回密码
+//#define URL_FIND_BACK_PASSWORD @""URL_HEADER"/apis/GetConfig/ForgetPassWord"
+
+//修改密码接口
+//#define URL_CHANGE_PASSWORD @""URL_HEADER"/apis/GetConfig/AmendPassWord"
+
+
+//显示首页新新新的首页（没有用到了）
+//#define URL_NEW_NEW_NEW_HOMEPAGE_DATA @""URL_HEADER"/apis/IndexMarket/GetOutInDatas"
+
+
+//获取货主二级登录
+//#define URL_SECOND_LOGIN @""URL_HEADER"/apis/verification/TwoLvlPass"
+
+//获取海西资讯信息接口
+//#define URL_HAIXI_INFORMATION @""URL_HEADER"/apis/new/GetHXNews"
+
+//获取海西货主库存数据
+//#define URL_GET_HAIXI_PERSONAL_DATA @""URL_HEADER"/apis/stocks/MainStock"
+
+//荒料搜索结果
+//#define URL_BLOCK_SEARCH_RESULT @""URL_HEADER"/apis/stocks/BMStockDtlList"
+
+
+
+//保存司机信息
+//#define URL_COMMIT_DRIVER_MESSAGE @""URL_HEADER"/apis/Library/SaveDriverInfo"
+
+//获取当前登录货主的常用司机列表
+//#define URL_GET_HAIXI_USER_DRIVER_MESSAGE @""URL_HEADER"/apis/Library/GetData"
+
+// 删除司机信息
+//#define URL_DELETE_DRIVER_MESSAGE @""URL_HEADER"/apis/Library/del"
+
+//修改司机信息
+//#define URL_REVISE_DRIVER_MESSAGE @""URL_HEADER"/apis/Library/AmendDriverInfo"
+
+//大板搜索结果
+//#define URL_PLATE_SEARCH_RESULT @""URL_HEADER"/apis/stocks/SLStockDtlList"
+
+//获取未评的石材的等级和已评的石材接口(等级评定界面没有用了)
+//#define URL_GET_STONE_LEVEL_DATA @""URL_HEADER"/apis/Grade/GetDataList"
+//给石材进行等级评定(等级评定界面没有用了)
+//#define URL_SET_STONE_LEVEL @""URL_HEADER"/apis/Grade/SetGrade"
+
+
+//删除单条收藏
+//#define URL_DELETE_SINGLE_COLLETION @""URL_HEADER"/SItem/cancelattention"
+//版本更新接口
+//#define URL_URL_UPGRADE @""URL_HEADER"/apis/par/getversions"
+
+//荒料出货
+//#define URL_BLOCK_OUTSTORE_COMMIT @""URL_HEADER"/apis/Library/SaveData_Block"
+//大板出货
+//#define URL_PLATE_OUTSTORE_COMMIT @""URL_HEADER"/apis/Library/SaveData_SL"
+
+
+//海西货主欠款
+//#define URL_ERPFEE @""URL_HEADER"/apis/Stocks/GetDeaBalance"
+
+
+
+//修改企业信息(没有用到了)
+//#define URL_REVAMP_COMPANY @""URL_HEADER"/Consignor/hzEdit"
+
+//石材图片展示
+//#define URL_STONEIMAGE_SHOW @""URL_HEADER"/Consignor/productAdd"
+
+//排名进入的H5页面
+//#define URL_RANK @""URL_HEADER"/StoneType/stoneshow?id="
+//我的圈
+//#define URL_MYCIRCLE @""URL_HEADER"/Consignor/showinfo?id="
+
+//报表中心(没有用到)
+//#define URL_REPORT @""URL_HEADER"/ReportCenter/"
+
+
+//首页荒料搜索
+//#define URL_HUANGLIANG_SEARCH @""URL_HEADER"/SItem/?b=huangliao"
+//首页大板搜索
+//#define URL_DABAN_SEARCH @""URL_HEADER"/SItem/?b=daban"
+
+//海西货主缴费接口（在结算中心用到了，现在结算中心界面没有用）
+//#define URL_PAY_HAIXI_LIST @""URL_HEADER"/apis/users/creatememberorderHx"
+
+//微信与手机号绑定登录
+//#define URL_WECHAT_QQ_LOGIN @""URL_HEADER"/apis/users/registerbywcqq"
+//微信号是否已经注册
+//#define URL_IS_WECHAT_REGISTED @""URL_HEADER"/apis/users/existwcuidandlogin"
+
+
+// 获取海西货主出库历史记录
+//#define URL_OUTSTORE_HISTORY @""URL_HEADER"/apis/bound/outboundRecord"
+
+
+//获取当前版本号
+//#define URL_CURRENTVERSION @""URL_HEADER"/apis/par/getversions"
+
+
+#pragma mark 更改为JAVA的接口的地方---正式
+//总域名
+//#define URL_HEADER_TEXT_IOS @"http://218.85.137.14:8099/"
+//#define URL_HEADER_TEXT_IOS @"http://121.204.136.234:8099/"
+//最新用的正式数据
+#define URL_HEADER_TEXT_IOS @"http://www.slsw.link:8099/"
+//石来石往SSL:https://www.slsw.link/
+//#define URL_HEADER_TEXT_IOS @"http://27.150.183.178:8089/Yigo1.6/Yigo.jsp"
+#pragma mark 更改为JAVA的接口---测试
+//总域名
+//最新用的测试数据
+//#define URL_HEADER_TEXT_IOS @"http://183.251.102.156:8888/"
+//ERP接口:http://183.251.102.156:48000/
+//#define URL_HEADER_TEXT_IOS @"http://www.slsw.link:8888/"
+//#define URL_HEADER_TEXT_IOS @"http://117.29.162.206:8888/"
+//#define URL_HEADER_TEXT_IOS @"http://192.168.1.128:8080/"
+//#define URL_HEADER_TEXT_IOS @"http://192.168.1.48:8888/"
+
+
+
+//选材中心---石材
+#define URL_SelectionCenter_Stone_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sc/exhibitionStone/query.do"
+//选材中心---企业
+#define URL_SelectionCenter_Company_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sc/enterprise/query.do"
+//选材中心---指定名称石材
+#define URL_SelectionCenter_StoneName_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sc/exhibitionStone/queryByStoneName.do"
+//获取单条企业信息（/app/sc/enterprise/get.do）
+#define URL_ENTERPRISE_GET_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sc/enterprise/get.do"
+//取企业主要商圈（/app/sc/enterprise/friends/query.do）
+#define URL_ENTERPRISE_FRIENDS_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sc/enterprise/friends/query.do"
+//企业新品/主营石材列表（/app/sc/enterprise/stone/query.do）
+#define URL_ENTERPRISE_STONE_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sc/enterprise/stone/query.do"
+//获取案例列表（/sc/case/query.do）
+#define URL_CASE_QUERY_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sc/case/query.do"
+//获取所有案例类别（/sc/case/type/query.do）
+#define URL_CASE_TYPE_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sc/case/type/query.do"
+//发送致电短信
+#define URL_SEND_CALL_PHONESMS @""URL_HEADER_TEXT_IOS"slsw/app/common/sendCallPhoneSms.do"
+
+
+//市场反馈上传图片接口
+#define URL_MARKET_UPDATE_PICTURE_IOS @""URL_HEADER_TEXT_IOS"slsw/app/attachment/upload.do"
+//市场反馈保存 /app/sv/feedBack/save.do
+#define URL_MARKET_FEEDBACK_SAVE_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sv/feedBack/save.do"
+//我的意见反馈列表（/app/sv/feedBack/query.do）
+#define URL_MARKET_FEEDBACK_QUERY_IOS @""URL_HEADER_TEXT_IOS"slsw/app/sv/feedBack/query.do"
+
+//注销验证（/app/cancellation/check.do
+#define URL_CANCELLATION_IOS @""URL_HEADER_TEXT_IOS"slsw/app/cancellation/check.do"
+//确认注销用户（/app/cancellation/confirm.do）
+#define URL_CANCELLATION_CONFIRMM_IOS @""URL_HEADER_TEXT_IOS"slsw/app/cancellation/confirm.do"
+
+
+
+//9 添加收藏（app/sc/collection/add.do）
+#define URL_COLLECTION_ADD @""URL_HEADER_TEXT_IOS"slsw/app/sc/collection/add.do"
+//10取消收藏（app/sc/collection/cancel.do）
+#define URL_COLLECTION_CANCEL @""URL_HEADER_TEXT_IOS"slsw/app/sc/collection/cancel.do"
+//11企业收藏列表（app/sc/collection/i/all.do）
+#define URL_SC_COLLECITON_I_ALL @""URL_HEADER_TEXT_IOS"slsw/app/sc/collection/i/all.do"
+
+
+
+/**用来获取登录的合法性*/
+#define URL_LOGIN_VALIDITY @""URL_HEADER_TEXT_IOS"slsw/checklogin.ck"
+
+/**获取当前的版本号*/
+#define URL_CURRENTVERSION_IOS @""URL_HEADER_TEXT_IOS"slsw/getVersions.do"
+
+/**获取服务器时间*/
+#define URL_GET_SERVER_DATE_IOS @""URL_HEADER_TEXT_IOS"slsw/getSysTime.do"
+
+
+/**搜索广告轮播图片*/
+#define URL_ADURL @""URL_HEADER_TEXT_IOS"slsw/sliderimgs.do"
+
+//图片URL
+#define URL_HEADER_IMAGEURL_IOS @""URL_HEADER_TEXT_IOS"slsw/"
+
+//我的圈里面的图片的拼接
+#define URL_HEADER_IMAGEURL_PING_IOS @""URL_HEADER_TEXT_IOS
+
+
+
+//获取首页朋友圈信息
+#define URL_HEADER_FRIEND_ZONE_IOS @""URL_HEADER_TEXT_IOS"slsw/showfriends.do"
+
+
+//获取海西石种排名
+#define URL_HEADER_STONE_RANKING @""URL_HEADER_TEXT_IOS"slsw/mtloutrank.do"
+
+//获取用户收藏列表
+#define URL_HEADER_TEXT_COLLECTION_IOS @""URL_HEADER_TEXT_IOS"slsw/collectionsearch.do"
+
+//添加 / 取消 收藏(正式)
+#define URL_HEADER_TEXT_STONECO_IOS @""URL_HEADER_TEXT_IOS"slsw/stonecollection.do"
+
+//搜索页面提示接口
+#define URL_HEADER_ATTION_SEARCH_IOS @""URL_HEADER_TEXT_IOS"slsw/bmfuzzysearch.do"
+//搜索首个接口
+#define URL_HEADER_DETAILSEARCH_IOS @""URL_HEADER_TEXT_IOS"slsw/mutiSearch.do"
+
+//搜索详情接口
+#define URL_HEADER_HUANGANDDADETAILSEARCH_IOS @""URL_HEADER_TEXT_IOS"slsw/groupsearch.do"
+
+//现货查询市场总库存列表（groupsearchCount.do）
+#define URL_GROUPSEARCHCOUNT_IOS @""URL_HEADER_TEXT_IOS"slsw/groupsearchCount.do"
+
+//过渡页搜索
+#define URL_HEADER_TRANSITION_IOS @""URL_HEADER_TEXT_IOS"slsw/mutiTypeSearch.do"
+
+
+
+
+
+//搜索收藏界面
+#define URL_HEADER_SEARCH_IOS @""URL_HEADER_TEXT_IOS"slsw/detailsearch.do"
+
+
+//上传朋友圈的图片（单图） (logo)
+#define URL_HEADER_SINGEPICTURE @""URL_HEADER_TEXT_IOS"slsw/upLogImage.do"
+//上传朋友圈的图片 （单图）（背景）
+#define URL_HEADER_SINGEPICTURE_BACKIMAGE @""URL_HEADER_TEXT_IOS"slsw/backImage.do"
+
+//发朋友圈
+
+//上传朋友圈的图片（多图）//电话 content
+#define URL_HEADER_DOUBLEPICTURE @""URL_HEADER_TEXT_IOS"slsw/sendArticle.do"
+
+//#define URL_HEADER_DOUBLEPICTURE @"http://192.168.1.115:8080/slsw/sendArticle.do"
+
+
+//查看登录合法性
+#define URL_HEADER_LOGIN_VALIDITY_IOS @""URL_HEADER_TEXT_IOS"slsw/checklogin.ck"
+
+
+//请求验证码(不需登录)
+#define URL_GET_TEXT_VERIFY_UNLOGIN_IOS @"" URL_HEADER_TEXT_IOS"slsw/sendMSG.do"
+
+//新的请求验证码2. sms/send
+#define URL_GET_TEXT_SMS_VERIFY_SEND_IOS @""URL_HEADER_TEXT_IOS"slsw/sms/send.do"
+
+//获取图形验证码
+#define URL_GET_TEXT_SMS_VERIFY_CODE_IOS @""URL_HEADER_TEXT_IOS"slsw/sms/verify/code.do"
+
+//验证验证码（不需要登录）
+#define URL_VERIFY_TEXT_VERIFY_UNLOGIN_IOS @""URL_HEADER_TEXT_IOS"slsw/solePhoneCode.do"
+//验证手机号
+#define URL_VERIFY_MOBILEPHONE_IOS @""URL_HEADER_TEXT_IOS"slsw/solePhoneNum.do"
+
+//创建新的用户
+#define URL_REGISTE_OFFICE_IOS @""URL_HEADER_TEXT_IOS"slsw/regUser.do"
+
+//登录接口
+#define URL_LOGIN_IOS @""URL_HEADER_TEXT_IOS"slsw/userQuery.do"
+//登录二级密码（也就是获取用户信息）
+#define URL_GET_SINGLE_USER_IOS @""URL_HEADER_TEXT_IOS"slsw/userQueryAgain.do"
+
+//修改密码和找回密码
+#define URL_CHANGE_PASSWORD_IOS @""URL_HEADER_TEXT_IOS"slsw/replacePWd.do"
+
+//实时库存信息搜索
+#define URL_INVENTORY_INFORMATION_IOS @""URL_HEADER_TEXT_IOS"slsw/erpstocksearch.do"
+
+//实时库存信息详情搜索
+#define URL_DETAIL_INVENTORY_INFORMATION_IOS @""URL_HEADER_TEXT_IOS"slsw/erpstockdtlsearch.do"
+
+//出库提交
+#define URL_BLOCK_OUTSTORE_COMMIT_IOS @""URL_HEADER_TEXT_IOS"slsw/saveoutnotice.do"
+
+//微信登录
+#define URL_WECHAT_QQ_LOGIN_IOS @""URL_HEADER_TEXT_IOS"slsw/findUserByWcUid.do"
+//微信注册接口
+#define URL_IS_WECHAT_REGISTED_IOS @""URL_HEADER_TEXT_IOS"slsw/registerByWcid.do"
+//微信验证手机号有没有绑定
+#define URL_WXVERIFY_IOS @""URL_HEADER_TEXT_IOS"slsw/findUserByPhone.do"
+
+//我的圈上部的请求
+//#define URL_HEADER_MY_QUAN_IOS @""URL_HEADER_TEXT_IOS"slsw/myFriendIndexUp.do"
+
+
+#define URL_HEADER_MY_QUAN_IOS @""URL_HEADER_TEXT_IOS"slsw/hzpage.do"
+
+//我的圈下部的请求
+#define URL_FOOT_MY_QUAN_IOS @""URL_HEADER_TEXT_IOS"slsw/myFriendIndexDown.do"
+//石种的预览
+#define URL_STONE_LIULANG_IOS @""URL_HEADER_TEXT_IOS"slsw/myProductView.do"
+//石种的单图上传图片接口
+#define URL_STONE_SINGLE_PICTURE_IOS @""URL_HEADER_TEXT_IOS"slsw/uploadProductImg.do"
+//石种图片的删除
+#define URL_STONE_SINGLE_DELETE_PICTURE_IOS @""URL_HEADER_TEXT_IOS"slsw/delProductImg.do"
+//货主库存
+#define URL_STOCK_IOS @""URL_HEADER_TEXT_IOS"slsw/hzstock.do"
+
+
+//获取海西资讯 URL_HAIXI_INFORMATION
+#define URL_HAIXI_INFORMATION_IOS @""URL_HEADER_TEXT_IOS"slsw/getNewsList.do"
+//获取海西货主数据
+#define URL_GET_HAIXI_PERSONAL_DATA_IOS @""URL_HEADER_TEXT_IOS"slsw/hzhomepage.do"
+
+
+//荒料搜索结果java和大板搜索
+#define URL_BLOCK_SEARCH_RESULT_IOS @""URL_HEADER_TEXT_IOS"slsw/erpstockdtlsearch.do"
+
+
+
+//获取广告图和大板荒料数量获取接口
+#define URL_ADANDDAHUANGLIAONUM_IOS @""URL_HEADER_TEXT_IOS"slsw/advertistings.do"
+//查询货主石种库存的接口
+#define URL_CHECSE_STONE_IOS @""URL_HEADER_TEXT_IOS"slsw/inventoryInfo.do"
+
+//出库的接口
+#define URL_OUTSTORE_COMMIT_IOS @""URL_HEADER_TEXT_IOS"slsw/saveoutnotice.do"
+
+
+//修改个人的信息
+#define URL_REVAMAP_IOS @""URL_HEADER_TEXT_IOS"slsw/replaceMsg.do"
+
+
+//出库记录
+#define URL_OUTSTORE_HISTORY_IOS @""URL_HEADER_TEXT_IOS"slsw/getOutBound.do"
+//出库记录的详细页面
+#define URL_OUTSTORE_HISTORY_DETAIL_IOS @""URL_HEADER_TEXT_IOS"slsw/getOutBoundDet.do"
+
+//海西欠款URL hzbalance.do
+#define URL_ERPFEE_IOS @""URL_HEADER_TEXT_IOS"slsw/hzbalance.do"
+
+//点赞，评论，关注同一个接口
+#define URL_DIANZAO_PL_GZ_IOS @""URL_HEADER_TEXT_IOS"slsw/friendOperation.do"
+
+
+//进行朋友圈的详细界面
+#define URL_FRIENDDETAIL_IOS @""URL_HEADER_TEXT_IOS"slsw/commentFriend.do"
+
+
+
+//评论页面局部刷新获取评论数
+#define URL_GETCOMMENTNUM_LIKENUM_IOS @""URL_HEADER_TEXT_IOS"slsw/getPartComment.do"
+
+//评论页面赞的页面的
+#define URL_FRIENDDETAILZA_IOS @""URL_HEADER_TEXT_IOS"slsw/likeList.do"
+
+
+//权限界面的子账号列表
+#define URL_CHILDACCOUNT_IOS @""URL_HEADER_TEXT_IOS"slsw/showChildAccount.do"
+
+//权限详情界面的判断电话是什么类型
+#define URL_CHILDACCOUNT_PHONESTYLE @""URL_HEADER_TEXT_IOS"slsw/sendChildMSG.do"
+
+
+
+//权限界面的子账号权限分配
+#define URL_CHILDACCOUNT_ALLOCATE_IOS @""URL_HEADER_TEXT_IOS"slsw/"
+
+//更新权限接口：updateChildAccess.do
+#define URL_UPDATECHILDACCESS_IOS @""URL_HEADER_TEXT_IOS"slsw/updateChildAccess.do"
+//删除子账户接口：delChildAccess.do
+#define URL_DELCHILDACCESS_IOS @""URL_HEADER_TEXT_IOS"slsw/delChildAccess.do"
+
+//添加提货人
+#define URL_DELIVERYPERSON_IOS @""URL_HEADER_TEXT_IOS"slsw/addcsn.do"
+
+//删除提货人
+#define URL_DELDELIVERYPERSON_IOS @""URL_HEADER_TEXT_IOS"slsw/delcsn.do"
+//提货人列表
+#define URL_DELIVERPERSON_LIST_IOS @""URL_HEADER_TEXT_IOS"slsw/findcsn.do"
+
+
+//修改出货记录里面提货人
+#define URL_MODIFYCHILDACCESS_IOS @""URL_HEADER_TEXT_IOS"slsw/updateUsrCsnMes.do"
+
+
+
+
+//删除商圈发布的消息
+#define URL_DEL_FRIEND_IOS @""URL_HEADER_TEXT_IOS"slsw/delFriendsCercle.do"
+
+//关注和粉丝列表
+#define URL_ATTENETIONANDFANS_IOS @""URL_HEADER_TEXT_IOS"slsw/fansList.do"
+
+
+//获取所有消息数字角标
+#define URL_MESSAGECOUNT_IOS @""URL_HEADER_TEXT_IOS"slsw/findMsgSize.do"
+
+
+//获取每个应用数字角标
+#define URL_DIFF_MESSAGECOUNT_IOS @""URL_HEADER_TEXT_IOS"slsw/findMsgListSize.do"
+
+//查看指定消息详情
+#define URL_MESSAGECOUNT_DEFIENT_IOS @""URL_HEADER_TEXT_IOS"slsw/findMsgSimpleList.do"
+
+//消除指定应用角标
+#define URL_DELETE_MESSAGECOUNT_IOS @""URL_HEADER_TEXT_IOS"slsw/updateMsgRead.do"
+
+//消息中心
+#define URL_MESSAGECENTER_IOS @""URL_HEADER_TEXT_IOS"slsw/findLikeAndAttention.do"
+
+//粉丝和关注的数量的接口
+#define URL_ATTITIONANDFASNUMBER_IOS @""URL_HEADER_TEXT_IOS"slsw/fansAndGzSize.do"
+
+//删除消息中心里面列表的关注
+#define URL_MESSAGECENTERATTTIONANDFANSDELECT_IOS @""URL_HEADER_TEXT_IOS"slsw/attOperation.do"
+
+
+//savelogs.do  参数 Data={这里面是要记录的日志信息}  比如Data ={"log":"xxx出现异常"}
+
+#define URL_ERRORNEWTORK_IOS @""URL_HEADER_TEXT_IOS"slsw/savelogs.do"
+
+//获取货主查询语句
+#define URL_HZSEARCH_IOS @""URL_HEADER_TEXT_IOS"slsw/getHzUserList.do"
+
+
+//获取有没有最新的信息
+#define URL_NEWDATAINMESSAGE_IOS @""URL_HEADER_TEXT_IOS"slsw/findSqRedSize.do"
+
+
+
+//大板库存汇总
+#define URL_GETBLOCKSLBALANCE_IOS @""URL_HEADER_TEXT_IOS"slsw/getBlockSLBalance.do"
+//大板入库汇总
+#define URL_GETSLINSUM_IOS @""URL_HEADER_TEXT_IOS"slsw/getSLInSum.do"
+//大板出库汇总
+#define URL_GETSLOUTSUM_IOS @""URL_HEADER_TEXT_IOS"slsw/getSLOutSum.do"
+//荒料库存汇总
+#define URL_GETMTLBMBALANCE_IOS @""URL_HEADER_TEXT_IOS"slsw/getMtlBMBalance.do"
+//荒料出库汇总
+#define URL_GETBMOUT_IOS @""URL_HEADER_TEXT_IOS"slsw/getBMOut.do"
+//荒料入库汇总
+#define URL_GETBMIN_IOS  @""URL_HEADER_TEXT_IOS"slsw/getBMIn.do"
+//费用明细
+#define URL_FEIYONGMINGXING_IOS @""URL_HEADER_TEXT_IOS"slsw/getFeeDtl.do"
+//新的现货搜索 /owner/stone/query.do
+#define URL_OWNER_STONE_IOS @""URL_HEADER_TEXT_IOS"slsw/owner/stone/query.do"
+
+
+
+
+//货主是否有新昵称审核中
+#define URL_STATUSALERT_IOS @""URL_HEADER_TEXT_IOS"slsw/statusAlert.do"
+
+//getServiceiableOutBoundList.do可发起出库列表
+#define URL_SERVICEIABLEOUTBOUNDLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/getServiceiableOutBoundList.do"
+
+//发起评价starService.do
+#define URL_STARSERVICE_IOS @""URL_HEADER_TEXT_IOS"slsw/starService.do"
+// 发起服务addService.do
+#define URL_STARTADDSERVICE_IOS @""URL_HEADER_TEXT_IOS"slsw/addService.do"
+
+//修改服务updateServiceForUser.do
+#define URL_UPDATESERVICEFORUSER_IOS @""URL_HEADER_TEXT_IOS"slsw/updateServiceForUser.do"
+
+
+//我的服务服务查询serviceSearch.do
+#define URL_SERVICESEARCH_IOS @""URL_HEADER_TEXT_IOS"slsw/serviceSearch.do"
+//服务人员服务列表
+#define URL_PERSONLSEARCHSERVICEFORWAITER_IOS @""URL_HEADER_TEXT_IOS"slsw/searchServiceForWaiter.do"
+
+//查看服务人员showServiceEval.do
+#define URL_SHOWSERVICEEVAL_IOS @""URL_HEADER_TEXT_IOS"slsw/showServiceEval.do"
+//市场服务图片操作（/serviceImgsOpt.do）
+#define URL_SERVICEIMGSOPT_IOS @""URL_HEADER_TEXT_IOS"slsw/serviceImgsOpt.do"
+//获取打印内容getPrintOutBound.do
+#define URL_GETPRINTOUTBOUND_IOS @""URL_HEADER_TEXT_IOS"slsw/getPrintOutBound.do"
+//库二维码校验isQrCodeExists.do
+#define URL_ISQRCODEEXISTS_IOS @""URL_HEADER_TEXT_IOS"slsw/isQrCodeExists.do"
+
+//服务事项列表查询 findServiceItem.do
+#define URL_FINDSERVICEITEM_IOS @""URL_HEADER_TEXT_IOS"slsw/findServiceItem.do"
+//所有服务人员获取，并显示服务人员空闲状态 getFreeServiceUser.do
+#define URL_GETFREESERVICCEUSER_IOS @""URL_HEADER_TEXT_IOS"slsw/getFreeServiceUser.do"
+
+//分配服务 shareService.html
+#define URL_SHARESERVICE_IOS @""URL_HEADER_TEXT_IOS"slsw/shareService.do"
+
+
+//添加分享（/sharepages.do）报表中心码表的分享
+#define URL_SHAREPAGES_IOS @""URL_HEADER_TEXT_IOS"slsw/sharepages.do"
+
+//getErpApprovalInfo.do 审核状态表
+#define URL_GETERPAPPROVALINFO_IOS @""URL_HEADER_TEXT_IOS"slsw/getErpApprovalInfo.do"
+
+
+//feedBackSubmit.do 意见反馈
+#define URL_FEEDBACKSUBMIT_IOS @""URL_HEADER_TEXT_IOS"slsw/feedBackSubmit.do"
+
+//searchfriends.do 搜索商圈
+#define URL_SEARCHFRIENDS_IOS  @""URL_HEADER_TEXT_IOS"slsw/searchfriends.do"
+
+//石种搜索首页市场库存接口marketStock.do
+#define URL_MARKETSTOCK_IOS @""URL_HEADER_TEXT_IOS"slsw/marketStock.do"
+//主营石材接口（userStock.do）
+#define URL_USERSTOCK_IOS @""URL_HEADER_TEXT_IOS"slsw/userStock.do"
+
+
+//addProjectCaseDemo.do  工程案例初始化 1.1
+#define URL_ADDPROJECTCASE_IOS @""URL_HEADER_TEXT_IOS"slsw/addProjectCaseDemo.do"
+
+
+//replenishProjectCase.do 工程案例草稿补全1.2
+#define URL_REPLENISPROJECTCASE_IOS @""URL_HEADER_TEXT_IOS"slsw/replenishProjectCase.do"
+
+//addSingleProjectCaseImg.do 添加工程案例的图片1.3
+#define URL_ADDSINGLEPROJECTCASEIMG_IOS @""URL_HEADER_TEXT_IOS"slsw/addSingleProjectCaseImg.do"
+
+
+//addCaseStone.do 1.4 添加工程案例的案例用料
+#define URL_ADDCASESTONE_IOS @""URL_HEADER_TEXT_IOS"slsw/addCaseStone.do"
+
+
+// deleteSingleProjectCaseImg.do 1.5 工程案例单张图片删除
+#define URL_DELETESINGLEPROJECTCASEIMG_IOS @""URL_HEADER_TEXT_IOS"slsw/deleteSingleProjectCaseImg.do"
+
+
+// changeProjectCaseStatus.do 1.6 删除或者恢复工程案例
+#define URL_CHANGEPROJECTCASESTATUS_IOS @""URL_HEADER_TEXT_IOS"slsw/changeProjectCaseStatus.do"
+
+
+//getProjectCaseList.do 1.7 获取工程案例展示列表
+#define URL_GETPROJECTCASELIST_IOS @""URL_HEADER_TEXT_IOS"slsw/getProjectCaseList.do"
+
+// getProjectCaseDetial.do 1.8 获取工程案例详情
+#define URL_GETPROJECTCASEDETAIL_IOS  @""URL_HEADER_TEXT_IOS"slsw/getProjectCaseDetial.do"
+
+// updateProjectCaseImg.do 1.9工程案例图片修改
+#define URL_UPDATEPROJECTCASEIMA_IOS @""URL_HEADER_TEXT_IOS"slsw/updateProjectCaseImg.do"
+
+//启动页广告接口（/getStartAdvertisement.do）
+#define URL_GETSTARTADVERTISEMENT_IOS @""URL_HEADER_TEXT_IOS"slsw/getStartAdvertisement.do"
+
+//展会选传接口（/getStoneExhibition.do）
+#define URL_GETSTONEEXHIBITION_IOS @""URL_HEADER_TEXT_IOS"slsw/getStoneExhibition.do"
+
+
+//热门石种/hotStone.do
+#define URL_HOTSTOME_IOS @""URL_HEADER_TEXT_IOS"slsw/hotStone.do"
+//品牌企业（/brandEnterpriseList.do）
+#define URL_BRANDENTERPRISELIST_IOS @""URL_HEADER_TEXT_IOS"slsw/brandEnterpriseList.do"
+
+//猜你想找列表（/likeStone.do）
+#define URL_LIKESTONE_IOS @""URL_HEADER_TEXT_IOS"slsw/likeStone.do"
+//查询联系列表接口（/getContactsList.do）
+#define URL_GETCONTACTSLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/getContactsList.do"
+
+//新增联系人接口（/addContacts.do）
+#define URL_ADDCONTACTS_IOS @""URL_HEADER_TEXT_IOS"slsw/addContacts.do"
+
+//联系表操作接口（/contactsAct.do）
+#define URL_CONTACTSACT_IOS @""URL_HEADER_TEXT_IOS"slsw/contactsAct.do"
+
+//FIXME:个人版
+//申请个人版（/pwms/applyPersonalWms.do）
+#define URL_APPLYPERSONALWMS_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/applyPersonalWms.do"
+
+//个人版申请列表（/pwms/applyList.do）
+#define URL_APPLYLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/applyList.do"
+
+//个人版账户通过审核（/pwms/applyAudit.do）
+#define URL_APPLYAUDIT_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/applyAudit.do"
+
+//切换个人版账户（/pwms/switchAccount.do)
+#define URL_SWITCHACCOUNT_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/switchAccount.do"
+
+//解析码单接口（/pwms/ocrParse.do）扫描图片之后
+#define URL_OCRPARSE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/ocrParse.do"
+
+
+
+//获取角色列表（/pwms/roleList.do）
+#define URL_ROLELIST_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/roleList.do"
+//添加角色（/pwms/addRole.do）
+#define URL_ADDROLE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/addRole.do"
+//修改角色（/pwms/updateRole.do）
+#define URL_UPDATEROLE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/updateRole.do"
+//删除角色（/pwms/deleteRole.do）
+#define URL_DELETEROLE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/deleteRole.do"
+//获取角色权限（/pwms/roleAccess.do）
+#define URL_ROLEACCESS_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/roleAccess.do"
+
+
+//添加用户手机号验证（/pwms/phoneCheck.do）
+#define URL_PHONECHECK_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/phoneCheck.do"
+//添加用户（/pwms/addPwmsUser.do)
+#define URL_ADDPWMSUSER_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/addPwmsUser.do"
+//用户管理列表（/pwms/userList.do)
+#define URL_USERLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/userList.do"
+//用户删除接口/pwms/deleteUser.do
+#define URL_DELETEUSER_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/deleteUser.do"
+//用户验证验证码（/pwms/checkText.do）
+#define URL_CHECKTEXT_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/checkText.do"
+//用户发送验证码（/pwms/sendText.do）
+#define URL_SENDTEXT_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/sendText.do"
+//用户更改接口（/pwms/updateUser.do）
+#define URL_UPDATEUSER_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/updateUser.do"
+
+//个人版字典（数据库）
+//字典添加接口（/pwms/dicAdd.do）
+#define URL_DICADD_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/dicAdd.do"
+//字典更新删除接口（/pwms/dicUpdate.do）
+#define URL_DICUPDATE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/dicUpdate.do"
+//字典加载接口（/pwms/dicLoad.do）
+#define URL_DICLOAD_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/dicLoad.do"
+//申请个人版（/pwms/applyPersonalWms.do）
+#define URL_APPLYPERSONAL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/applyPersonalWms.do"
+//首页数据获取（/pwms/indexData.do）    1
+#define URL_INDEXDATA_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/indexData.do"
+//个人版申请列表（/pwms/applyList.do）
+#define URL_APPLYLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/applyList.do"
+//申请信息修改/重新提交（/pwms/updateApply.do）
+#define URL_UPDATEAPPLYA_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/updateApply.do"
+
+//荒料
+//新增单据保存（/pwms/saveBill.do）
+#define URL_SAVEBILL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/saveBill.do"
+//加载单据（/pwms/loadBill.do）
+#define URL_LOADBILL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/loadBill.do"
+//修改单据保存（/pwms/updateBill.do）
+#define URL_UPDATEBILL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/updateBill.do"
+//取消确认单据（/pwms/unConfirmBill.do）
+#define URL_UNCONFIRMBILL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/unConfirmBill.do"
+//确认单据（/pwms/confirmBill.do）
+#define URL_CONFIRMBILL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/confirmBill.do"
+//删除单据（/pwms/deleteBill.do）
+#define URL_DELETEBILL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/deleteBill.do"
+//单据列表（序时簿）（/pwms/billList.do）
+#define URL_BILLLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/billList.do"
+//荒料库存余额表（/pwms/blBalance.do）
+#define URL_BLBALANCE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/blBalance.do"
+//荒料库存流水账（/pwms/blFlowAccount.do）
+#define URL_BLFLOWACCOUNT_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/blFlowAccount.do"
+//荒料出库/入库明细表（/pwms/blStorageDetail.do）
+#define URL_BLSTORAGEDETAIL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/blStorageDetail.do"
+
+
+
+//库存查询接口（/pwms/slBalance.do）
+#define URL_SLBALANACE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/slBalance.do"
+//大板库存流水账（/pwms/slFlowAccount.do）
+#define URL_SLFLOWACCOUNT_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/slFlowAccount.do"
+//大板出库/入库 明细表（/pwms/slStorageDetail.do）
+#define URL_SLSTORAGEDETAIL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/slStorageDetail.do"
+
+
+//模板添加申请（/pwms/addModel.do）    1
+#define URL_ADDMODEL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/addModel.do"
+//修改模板（/pwms/updateModel.do）    2
+#define URL_UPDATEMODEL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/updateModel.do"
+//删除模板（/pwms/deleteModel.do）    3
+#define URL_DELETEMODEL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/deleteModel.do"
+//模板列表（/pwms/modelList.do）    4
+#define URL_MODELLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/modelList.do"
+//个人版用户分享接口（/pwms/addPwmsUsrShare.do）
+#define URL_ADDPWMSUSRSHARE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/addPwmsUsrShare.do"
+
+//加工跟单列表接口（/pwms/getProcessBlockList.do）
+#define URL_GETPROCESSBLOCKLIST_IOS  @""URL_HEADER_TEXT_IOS"slsw/pwms/getProcessBlockList.do"
+//加工跟单详情接口（/pwms/getProcessDetail.do）
+#define URL_GETPROCESSDETAIL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/getProcessDetail.do"
+//加工跟单添加明细（/pwms/addProcessDetail.do）
+#define URL_ADDPROCESSDETAIL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/addProcessDetail.do"
+//加工跟单修改明细（updateProcessDetail.do)
+#define URL_UPDATEPROCESSDETAIL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/updateProcessDetail.do"
+
+//加工跟单删除明细（/pwms/deleteProcessDetail.do）
+#define URL_DELETEPROCESSDETAIL_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/deleteProcessDetail.do"
+
+
+//现货展示接口（/pwms/publicStock.do）
+#define URL_PUBLICSTOCK_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/publicStock.do"
+//现货展示图片列表获取（/pwms/loadPicture.do）
+#define URL_LOADPICTURE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/loadPicture.do"
+//现货展示图片操作（/pwms/stockPicture.do）
+#define URL_STOCKPICTURE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/stockPicture.do"
+//出材率报表接口（/pwms/outputRate.do）
+#define URL_OUTPUTRATE_IOS @""URL_HEADER_TEXT_IOS"slsw/pwms/outputRate.do"
+
+
+
+//淘宝专区
+//用户信息获取（/taoshi/getTsUserInfo.do）
+#define URL_TAOBAOUSERINFO_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/getTsUserInfo.do"
+//申请成为店铺（/taoshi/applyShopTsUser.do）
+#define URL_TAOBAOAPPLYSHOPUSER_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/applyShopTsUser.do"
+//修改店铺信息（/taoshi/updateShopTsUser.do）
+#define URL_TAOBAOSHOPUSER_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/updateShopTsUser.do"
+//修改店铺logo（/taoshi/setLogo.do）
+#define URL_TAOBAOLOGO_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/setLogo.do"
+//添加商品（库存）（/taoshi/addInventory.do）
+#define URL_TAOBAOADDINVENTORY_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/addInventory.do"
+//保存商品（库存）（/taoshi/updateInventory.do）
+#define URL_TAOBAOUPDATEINVENTORY_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/updateInventory.do"
+//获取单条商品信息（/taoshi/getInventory.do）
+#define URL_TAOBAOGETINVENTORY_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/getInventory.do"
+//修改商品状态（/taoshi/updateInventorySt.do）
+#define URL_TAOBAOUPDATEINVENTORYST_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/updateInventorySt.do"
+//删除商品（/taoshi/deleteInventory.do）
+#define URL_TAOBAODELETEINVENTORY_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/deleteInventory.do"
+//获取商品列表（/taoshi/getInventoryList.do）
+#define URL_TAOBAOGETINVENTORYLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/getInventoryList.do"
+//上传商品图片/视频（/taoshi/uploadInventoryFiles.do）
+#define URL_TAOBAOUPLOADINVENTORYFILES_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/uploadInventoryFiles.do"
+//删除商品图片/视频（/taoshi/deleteInventoryFiles.do）
+#define URL_TAOBAODELETEINVENTORYFILES_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/deleteInventoryFiles.do"
+//获取商品列表（包含排序,店铺信息）（/taoshi/inventoryList.do)
+#define URL_INVENTORYLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/inventoryList.do"
+//获取单条商品信息(查看页面)（/taoshi/inventory.do）
+#define URL_INVENTORY_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/inventory.do"
+//店铺信息获取（查看店铺）（/taoshi/getShopInfo.do)
+#define URL_GETTSUSERINFO_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/getShopInfo.do"
+//获取banner（/taoshi/getBanner.do)
+#define URL_GETBANNER_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/getBanner.do"
+//获取活动商品列表（/taoshi/getActivityList.do）
+#define URL_GETACTIVITYLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/getActivityList.do"
+//获取淘石头条（/taoshi/getLatest.do）
+#define URL_GETLATEST_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/getLatest.do"
+//猜你喜欢列表（/taoshi/getUserLike.do）
+#define URL_GETUSERLIKE_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/getUserLike.do"
+//收藏操作（/taoshi/collectionOpt.do）
+#define URL_COLLECTIONOPT_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/collectionOpt.do"
+//收藏列表（/taoshi/collectionList.do）
+#define URL_COLLECTIONLIST_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/collectionList.do"
+//投诉提交（/taoshi/feedback.do）
+#define URL_FEEDBACK_IOS @""URL_HEADER_TEXT_IOS"slsw/taoshi/feedback.do"
+//出库记录界面提交撤销出库申请 applyCancel.do
+#define URL_APPLYCANCEL_IOS @""URL_HEADER_TEXT_IOS"slsw/applyCancel.do"
+//分享预览接口（荒料库存余额） getBMBalanceDtl.do
+#define URL_BMBALANCEDTL_IOS @""URL_HEADER_TEXT_IOS"slsw/getBMBalanceDtl.do"
+//分享预览接口（荒料出库明细） getBMOutDtl.do
+#define URL_BMOUTDTL_IOS @""URL_HEADER_TEXT_IOS"slsw/getBMOutDtl.do"
+//分享预览接口（荒料入库明细） getBMInDtl.do
+#define URL_BMINDTL_IOS  @""URL_HEADER_TEXT_IOS"slsw/getBMInDtl.do"
+//分享预览接口（大板库存余额） getMtlSLBalance.do
+#define URL_MTLSLBALANCE_IOS @""URL_HEADER_TEXT_IOS"slsw/getMtlSLBalance.do"
+//分享预览接口（大板出库明细） getSLOut.do
+#define URL_SLOUT_IOS @""URL_HEADER_TEXT_IOS"slsw/getSLOut.do"
+//分享预览接口（大板入库明细） getSLIn.do
+#define URL_SLIN_IOS @""URL_HEADER_TEXT_IOS"slsw/getSLIn.do"
+//撤销记录
+#define URL_CANCELLOG_IOS @""URL_HEADER_TEXT_IOS"slsw/cancelLog.do"
+
+//货主切换 switchErpUser.do
+#define URL_SWITCHERPUSER_IOS @""URL_HEADER_TEXT_IOS"slsw/switchErpUser.do"
+
+// 出库调用验证库存接口 /checkoutnotice.do
+#define URL_CHECKOUTNOTICE_IOS @""URL_HEADER_TEXT_IOS"slsw/checkoutnotice.do"
+
+
+//微信的APPID
+#define WXAPPID @"wx6e4fe606bff9b70f"
+//微信的APP_SECECT
+#define WXSERECT @"cbc45338ce15bdaabea376b1ee768a58"
+
+
+
+#endif

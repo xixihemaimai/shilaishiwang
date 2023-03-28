@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Dzz-7T-T2Y">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo是新.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vfo-8c-B3m">
+                                <rect key="frame" x="112.5" y="180" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="TWP-2I-Jk0"/>
+                                    <constraint firstAttribute="width" constant="150" id="dN9-NK-ItV"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="让选材更简单，让世界知道你新.png" translatesAutoresizingMaskIntoConstraints="NO" id="6dt-uz-0Ob">
+                                <rect key="frame" x="16" y="573" width="343" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="mq3-jv-tiw"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="6dt-uz-0Ob" secondAttribute="trailing" constant="16" id="AtK-94-MGI"/>
+                            <constraint firstItem="6dt-uz-0Ob" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="16" id="CzI-BN-i1L"/>
+                            <constraint firstItem="Vfo-8c-B3m" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="GcB-yD-QES"/>
+                            <constraint firstItem="Dzz-7T-T2Y" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="KAS-Qk-bdq"/>
+                            <constraint firstItem="Dzz-7T-T2Y" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="NRU-Wz-8xs"/>
+                            <constraint firstItem="Vfo-8c-B3m" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="180" id="Pf8-Oa-UA6"/>
+                            <constraint firstAttribute="trailing" secondItem="Dzz-7T-T2Y" secondAttribute="trailing" id="hN7-wb-ydk"/>
+                            <constraint firstAttribute="bottom" secondItem="Dzz-7T-T2Y" secondAttribute="bottom" id="pnu-hE-FNY"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="6dt-uz-0Ob" secondAttribute="bottom" constant="74" id="x6z-PJ-eS1"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="logo是新.png" width="280" height="285"/>
+        <image name="让选材更简单，让世界知道你新.png" width="514" height="33"/>
+    </resources>
+</document>
