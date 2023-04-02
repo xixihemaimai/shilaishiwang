@@ -21,6 +21,9 @@ PODS:
   - HUPhotoBrowser (1.4.5):
     - SVProgressHUD
   - IQKeyboardManager (6.5.6)
+  - JCore (4.1.0)
+  - JPush (4.9.0):
+    - JCore (>= 2.0.0)
   - Masonry (1.1.0)
   - MJExtension (3.4.1)
   - MJRefresh (3.7.5)
@@ -107,6 +110,8 @@ DEPENDENCIES:
   - FMDB
   - HUPhotoBrowser
   - IQKeyboardManager
+  - JCore
+  - JPush
   - Masonry
   - MJExtension
   - MJRefresh
@@ -133,6 +138,8 @@ SPEC REPOS:
     - FMDB
     - HUPhotoBrowser
     - IQKeyboardManager
+    - JCore
+    - JPush
     - Masonry
     - MJExtension
     - MJRefresh
@@ -160,6 +167,8 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   HUPhotoBrowser: 87a8333c111a4e71ebf5400bf66d0eeb522c0098
   IQKeyboardManager: 2a6e97afdafc7becf0cb17a9a8d795e3a980717f
+  JCore: ea26a5dde38ebf6e4e85b772d4ecce8e0e95fb55
+  JPush: 3d67f9844abca401a2beff8381dac015e09253a7
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJExtension: 21c5f6f8c4d5d8844b7ae8fbae08fed0b501f961
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
@@ -181,6 +190,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 0245bec0e9204af7b28d010947dae12f6a3ea3a1
+PODFILE CHECKSUM: 1044dfaf36b1e1ccdec1b28d1840157ed7b7bdf3
 
 COCOAPODS: 1.11.3

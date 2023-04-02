@@ -60,8 +60,6 @@
 
 #import "RSMessageCenterController.h"
 
-#import "MiPushSDK.h"
-
 #import "RSDispatchedPersonnelViewController.h"
 
 #import "RSRightNavigationButton.h"
@@ -988,8 +986,15 @@
     RSWeakself
     [JHSysAlertUtil presentAlertViewWithTitle:@"确定要退出登录？" message:nil cancelTitle:@"确定" defaultTitle:@"取消" distinct:YES cancel:^{
 //        weakSelf.marketTableview.hidden = YES;
-        [MiPushSDK unsetAccount:[NSString stringWithFormat:@"%@",[UserManger getUserObject].userID]];
-        [MiPushSDK getAllAccountAsync];
+        
+        
+//        [MiPushSDK unsetAccount:[NSString stringWithFormat:@"%@",[UserManger getUserObject].userID]];
+//        [MiPushSDK getAllAccountAsync];
+        
+        
+        [JPUSHService deleteAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        } seq:0];
+        
         
         //确定对登录的数据进行清除
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];

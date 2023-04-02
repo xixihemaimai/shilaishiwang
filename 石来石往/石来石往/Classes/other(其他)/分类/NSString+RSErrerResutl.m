@@ -11,7 +11,6 @@
 #import "RSLoginViewController.h"
 #import "RSHomeViewController.h"
 #import "AppDelegate.h"
-#import "MiPushSDK.h"
 
 
 
@@ -30,7 +29,9 @@
 //        NSData * data = [user objectForKey:@"oneUserModel"];
 //        RSUserModel * userModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         RSUserModel * userModel = [UserManger getUserObject];
-        [MiPushSDK unsetAccount:[NSString stringWithFormat:@"%@",userModel.userID]];
+//        [MiPushSDK unsetAccount:[NSString stringWithFormat:@"%@",userModel.userID]];
+        [JPUSHService deleteAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        } seq:0];
         NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
         [formatter setDateFormat:@"yyyy-MM-dd"];
         NSString *dateTime=[formatter stringFromDate:[NSDate date]];
@@ -186,7 +187,9 @@
 //        NSData * data = [user objectForKey:@"oneUserModel"];
 //        RSUserModel * userModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         RSUserModel * userModel = [UserManger getUserObject];
-        [MiPushSDK unsetAccount:[NSString stringWithFormat:@"%@",userModel.userID]];
+//        [MiPushSDK unsetAccount:[NSString stringWithFormat:@"%@",userModel.userID]];
+        [JPUSHService deleteAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        } seq:0];
         NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
         [formatter setDateFormat:@"yyyy-MM-dd"];
         NSString *dateTime=[formatter stringFromDate:[NSDate date]];

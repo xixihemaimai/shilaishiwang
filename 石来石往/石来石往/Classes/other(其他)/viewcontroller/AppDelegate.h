@@ -7,8 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-//小米推送
-#import "MiPushSDK.h"
 
 
 

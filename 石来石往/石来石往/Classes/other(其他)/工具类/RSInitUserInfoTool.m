@@ -8,7 +8,6 @@
 
 #import "RSInitUserInfoTool.h"
 #import "RSUserModel.h"
-#import "MiPushSDK.h"
 
 @implementation RSInitUserInfoTool
 
@@ -242,10 +241,11 @@
                 
                 
                 //将usermodel类型变为NSData类型
-                [MiPushSDK setAccount:[NSString stringWithFormat:@"%@",userModel.userID]];
-                [MiPushSDK getAllAccountAsync];
+//                [MiPushSDK setAccount:[NSString stringWithFormat:@"%@",userModel.userID]];
+//                [MiPushSDK getAllAccountAsync];
                 
-                
+                [JPUSHService setAlias:[NSString stringWithFormat:@"%@",userModel.userID] completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+                } seq:0];
                 
 //                NSData * data = [NSKeyedArchiver archivedDataWithRootObject:userModel];
 //                [user setObject:data forKey:@"oneUserModel"];

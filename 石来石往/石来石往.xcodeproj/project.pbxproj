@@ -656,7 +656,6 @@
 		04802B0C27293D390093132B /* RSSCContentCaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04802B0B27293D390093132B /* RSSCContentCaseCell.m */; };
 		04802B0F2729408A0093132B /* RSSCCaseHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04802B0E2729408A0093132B /* RSSCCaseHeaderView.m */; };
 		04802B12272955790093132B /* RSHaixiMerchatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04802B11272955790093132B /* RSHaixiMerchatsCell.m */; };
-		0480CB9726DDDEB10049A429 /* libMiPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0480CB9626DDDE900049A429 /* libMiPushSDK.a */; };
 		0480CBA726E06EC70049A429 /* RSServiceRequestManagerTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0480CBA626E06EC70049A429 /* RSServiceRequestManagerTool.m */; };
 		04858702272A4BA0009C347A /* RSSCOwnerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04858701272A4BA0009C347A /* RSSCOwnerDetailViewController.m */; };
 		04858705272A4CD8009C347A /* RSSCOwnerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04858704272A4CD8009C347A /* RSSCOwnerCell.m */; };
@@ -1012,15 +1011,15 @@
 		40BFFDFF28ACBFE7000BD289 /* RSCLSelectionCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40BFFDFE28ACBFE7000BD289 /* RSCLSelectionCenterView.m */; };
 		40BFFE0228ACD85B000BD289 /* RSCLSelectCenterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40BFFE0128ACD85A000BD289 /* RSCLSelectCenterCell.m */; };
 		40C3D0DE28C0F6F5005B94C0 /* RSImageListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C3D0DD28C0F6F5005B94C0 /* RSImageListModel.m */; };
-		5C46C63729D27A8200B6AEF0 /* libMiPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C46C63329D27A8200B6AEF0 /* libMiPushSDK.a */; };
-		5C46C63829D27A8200B6AEF0 /* libMiPushApnsAckSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C46C63429D27A8200B6AEF0 /* libMiPushApnsAckSDK.a */; };
 		5C9D386929D03562000B17BA /* logo是新@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C9D386629D03562000B17BA /* logo是新@3x.png */; };
 		5C9D386A29D03562000B17BA /* logo是新.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C9D386729D03562000B17BA /* logo是新.png */; };
 		5C9D386B29D03562000B17BA /* logo是新@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C9D386829D03562000B17BA /* logo是新@2x.png */; };
 		5C9D386F29D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C9D386C29D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@2x.png */; };
 		5C9D387029D035A4000B17BA /* 让选材更简单，让世界知道你新.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C9D386D29D035A4000B17BA /* 让选材更简单，让世界知道你新.png */; };
 		5C9D387129D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C9D386E29D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@3x.png */; };
-		5C9D388329D03D44000B17BA /* 背景测试.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C9D388029D03D44000B17BA /* 背景测试.png */; };
+		5CCB888229D40E84002B67E9 /* 欢迎页背景.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CCB887F29D40E83002B67E9 /* 欢迎页背景.png */; };
+		5CCB888329D40E84002B67E9 /* 欢迎页背景@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CCB888029D40E83002B67E9 /* 欢迎页背景@3x.png */; };
+		5CCB888429D40E84002B67E9 /* 欢迎页背景@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CCB888129D40E84002B67E9 /* 欢迎页背景@2x.png */; };
 		8CD729D11E21ABDD85D9099B /* libPods-石来石往.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC61785C27FE8DFB6101EC48 /* libPods-石来石往.a */; };
 /* End PBXBuildFile section */
 
@@ -3038,18 +3037,16 @@
 		40BFFE0128ACD85A000BD289 /* RSCLSelectCenterCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSCLSelectCenterCell.m; sourceTree = "<group>"; };
 		40C3D0DC28C0F6F5005B94C0 /* RSImageListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSImageListModel.h; sourceTree = "<group>"; };
 		40C3D0DD28C0F6F5005B94C0 /* RSImageListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSImageListModel.m; sourceTree = "<group>"; };
-		5C46C63329D27A8200B6AEF0 /* libMiPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMiPushSDK.a; sourceTree = "<group>"; };
-		5C46C63429D27A8200B6AEF0 /* libMiPushApnsAckSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMiPushApnsAckSDK.a; sourceTree = "<group>"; };
-		5C46C63529D27A8200B6AEF0 /* MiPushApnsAckSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiPushApnsAckSDK.h; sourceTree = "<group>"; };
-		5C46C63629D27A8200B6AEF0 /* MiPushSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiPushSDK.h; sourceTree = "<group>"; };
 		5C9D386629D03562000B17BA /* logo是新@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo是新@3x.png"; sourceTree = "<group>"; };
 		5C9D386729D03562000B17BA /* logo是新.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo是新.png"; sourceTree = "<group>"; };
 		5C9D386829D03562000B17BA /* logo是新@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo是新@2x.png"; sourceTree = "<group>"; };
 		5C9D386C29D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "让选材更简单，让世界知道你让选材更简单，让世界知道你新@2x.png"; sourceTree = "<group>"; };
 		5C9D386D29D035A4000B17BA /* 让选材更简单，让世界知道你新.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "让选材更简单，让世界知道你新.png"; sourceTree = "<group>"; };
 		5C9D386E29D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "让选材更简单，让世界知道你让选材更简单，让世界知道你新@3x.png"; sourceTree = "<group>"; };
-		5C9D388029D03D44000B17BA /* 背景测试.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "背景测试.png"; sourceTree = "<group>"; };
 		5CAE5C8C8069DEE669BAFA64 /* Pods-石来石往.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-石来石往.debug.xcconfig"; path = "Pods/Target Support Files/Pods-石来石往/Pods-石来石往.debug.xcconfig"; sourceTree = "<group>"; };
+		5CCB887F29D40E83002B67E9 /* 欢迎页背景.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "欢迎页背景.png"; sourceTree = "<group>"; };
+		5CCB888029D40E83002B67E9 /* 欢迎页背景@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "欢迎页背景@3x.png"; sourceTree = "<group>"; };
+		5CCB888129D40E84002B67E9 /* 欢迎页背景@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "欢迎页背景@2x.png"; sourceTree = "<group>"; };
 		AC61785C27FE8DFB6101EC48 /* libPods-石来石往.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-石来石往.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -3058,7 +3055,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0480CB9726DDDEB10049A429 /* libMiPushSDK.a in Frameworks */,
 				04C508FF1FC66C7A006238EB /* UserNotifications.framework in Frameworks */,
 				04230DB81F8DCE8100178BA8 /* Security.framework in Frameworks */,
 				04E1EE8C1F7B3FE6005D6559 /* libsqlite3.0.tbd in Frameworks */,
@@ -3070,13 +3066,11 @@
 				04F48E501EFB686900AAA8EB /* UIKit.framework in Frameworks */,
 				0403C0FE1EFA20BF009AE0BF /* CoreMotion.framework in Frameworks */,
 				0403C0FC1EFA20B5009AE0BF /* CFNetwork.framework in Frameworks */,
-				5C46C63829D27A8200B6AEF0 /* libMiPushApnsAckSDK.a in Frameworks */,
 				0403C0FA1EFA20A9009AE0BF /* CoreGraphics.framework in Frameworks */,
 				0403C0F81EFA209F009AE0BF /* CoreText.framework in Frameworks */,
 				04ACD90B25F0812000413457 /* WebKit.framework in Frameworks */,
 				0403C0F61EFA2094009AE0BF /* QuartzCore.framework in Frameworks */,
 				0403C0F41EFA208B009AE0BF /* CoreTelephony.framework in Frameworks */,
-				5C46C63729D27A8200B6AEF0 /* libMiPushSDK.a in Frameworks */,
 				0403C0F21EFA2081009AE0BF /* SystemConfiguration.framework in Frameworks */,
 				0403C0EE1EFA206C009AE0BF /* libc++.tbd in Frameworks */,
 				8CD729D11E21ABDD85D9099B /* libPods-石来石往.a in Frameworks */,
@@ -3927,7 +3921,9 @@
 		043DDE011EFE52AE00B0AEA7 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				5C9D388029D03D44000B17BA /* 背景测试.png */,
+				5CCB887F29D40E83002B67E9 /* 欢迎页背景.png */,
+				5CCB888129D40E84002B67E9 /* 欢迎页背景@2x.png */,
+				5CCB888029D40E83002B67E9 /* 欢迎页背景@3x.png */,
 				5C9D386D29D035A4000B17BA /* 让选材更简单，让世界知道你新.png */,
 				5C9D386C29D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@2x.png */,
 				5C9D386E29D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@3x.png */,
@@ -5726,7 +5722,6 @@
 		04F3F7551EC2F32900734108 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				5C46C63229D27A8200B6AEF0 /* libMiPushSDK */,
 				40B6F41828B09CA90078B514 /* QiCodeReader */,
 				0487009A24026E9100D776AD /* EBDropdownList */,
 				04CDF5B322E94E2C00B57921 /* taobaoVideo */,
@@ -6256,17 +6251,6 @@
 			path = QiCodeReader;
 			sourceTree = "<group>";
 		};
-		5C46C63229D27A8200B6AEF0 /* libMiPushSDK */ = {
-			isa = PBXGroup;
-			children = (
-				5C46C63329D27A8200B6AEF0 /* libMiPushSDK.a */,
-				5C46C63429D27A8200B6AEF0 /* libMiPushApnsAckSDK.a */,
-				5C46C63529D27A8200B6AEF0 /* MiPushApnsAckSDK.h */,
-				5C46C63629D27A8200B6AEF0 /* MiPushSDK.h */,
-			);
-			path = libMiPushSDK;
-			sourceTree = "<group>";
-		};
 		6813079CEE85A5B3AAEC4782 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -6427,6 +6411,8 @@
 				047A2C49200CB53D00BE2924 /* WSDatePickerView.xib in Resources */,
 				04F3F7221EC2EA1200734108 /* Assets.xcassets in Resources */,
 				04420EC222730602005F27E5 /* arrow_down_icon@2.png in Resources */,
+				5CCB888329D40E84002B67E9 /* 欢迎页背景@3x.png in Resources */,
+				5CCB888229D40E84002B67E9 /* 欢迎页背景.png in Resources */,
 				045379AA221E8E5F00769DEB /* list_icon_drfault@2x.png in Resources */,
 				0470BF511FA18EEA009E7641 /* img_map_plate@2x.png in Resources */,
 				5C9D386A29D03562000B17BA /* logo是新.png in Resources */,
@@ -6436,6 +6422,7 @@
 				0487009F24026E9100D776AD /* dropdownFlag@3x.png in Resources */,
 				04F3F7201EC2EA1200734108 /* Main.storyboard in Resources */,
 				04420EBF22730602005F27E5 /* arrow_down_icon@3x.png in Resources */,
+				5CCB888429D40E84002B67E9 /* 欢迎页背景@2x.png in Resources */,
 				5C9D386F29D035A4000B17BA /* 让选材更简单，让世界知道你让选材更简单，让世界知道你新@2x.png in Resources */,
 				042566661F4E701100C5D7AB /* add.png in Resources */,
 				5C9D386B29D03562000B17BA /* logo是新@2x.png in Resources */,
@@ -6445,7 +6432,6 @@
 				5C9D387029D035A4000B17BA /* 让选材更简单，让世界知道你新.png in Resources */,
 				048700A024026E9100D776AD /* dropdownFlag@2x.png in Resources */,
 				042566671F4E701100C5D7AB /* ZYQAssetPicker.Bundle in Resources */,
-				5C9D388329D03D44000B17BA /* 背景测试.png in Resources */,
 				045379A9221E8E5F00769DEB /* list_icon_drfault@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7671,7 +7657,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.5.2;
+				CURRENT_PROJECT_VERSION = 1.5.3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = 5CVKEU8NXR;
@@ -7709,10 +7695,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib/ailpay",
-					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib/libMiPushSDK",
 				);
 				MARKETING_VERSION = 3.6.5;
-				MiSDKRun = debug;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -7793,10 +7777,12 @@
 				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = "石来石往/石来石往Release.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.5.2;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1.5.3;
 				DEPLOYMENT_POSTPROCESSING = YES;
-				DEVELOPMENT_TEAM = 5CVKEU8NXR;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5CVKEU8NXR;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7830,10 +7816,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib/ailpay",
-					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib/libMiPushSDK",
 				);
 				MARKETING_VERSION = 3.6.5;
-				MiSDKRun = online;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -7897,6 +7881,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = 2022newShilaiShiWang;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

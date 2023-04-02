@@ -509,9 +509,6 @@ static NSString * PERHEADVIEW = @"perheadview";
                     //[weakSelf.namePhone setTitle:weakSelf.userModel.userPhone forState:UIControlStateNormal];
                     //将usermodel类型变为NSData类型
                     
-                    //[MiPushSDK unsetAccount:[NSString stringWithFormat:@"%@",weakSelf.userModel.userID]];
-                    //[MiPushSDK setAccount:[NSString stringWithFormat:@"%@",userModel.userID]];
-                    //[MiPushSDK getAllAccountAsync];
                     
                     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:userModel];
                     [user setObject:data forKey:@"oneUserModel"];

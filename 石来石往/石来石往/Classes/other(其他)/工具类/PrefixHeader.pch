@@ -54,6 +54,7 @@
 #import <IQKeyboardManager.h>
 #import <MapKit/MapKit.h>
 #import <MMScan/MMScanViewController.h>
+#import <JPush/JPUSHService.h>
 
 #ifdef DEBUG
 #define CLog(...) NSLog(__VA_ARGS__)

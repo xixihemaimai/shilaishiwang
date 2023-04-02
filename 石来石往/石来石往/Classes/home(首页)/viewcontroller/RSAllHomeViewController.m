@@ -25,8 +25,6 @@
 #import "RSNSNotificationMessageViewController.h"
 //筛选
 #import "RSSecondScreenButton.h"
-//小米推送
-//#import "MiPushSDK.h"
 //全部消息
 //#import "RSAllMessageUIButton.h"
 //货主搜索
@@ -339,12 +337,7 @@
         [self setupContentView];
         // __weak typeof(self) weakSelf = self;
         //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //小米推送
         //  if (self.userModel.userID != nil) {
-        //                 //重新设置别名
-        //                // [MiPushSDK setAlias:self.userModel.userID];
-        //                // [MiPushSDK subscribe:self.userModel.userID];
-        //    [MiPushSDK setAccount:[NSString stringWithFormat:@"%@",self.userModel.userID]];
         //  [weakSelf reloadmessageCount];
         // }
         // 1.添加所有子控制器
