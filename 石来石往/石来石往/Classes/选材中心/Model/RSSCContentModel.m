@@ -39,8 +39,7 @@
 
 
 + (NSDictionary *)mj_objectClassInArray {
-    
-// 表明你products数组存放的将是FKGoodsModelInOrder类的模型
+    // 表明你products数组存放的将是imageList类的模型
     return @{
              @"imageList" : @"RSImageListModel",
              };

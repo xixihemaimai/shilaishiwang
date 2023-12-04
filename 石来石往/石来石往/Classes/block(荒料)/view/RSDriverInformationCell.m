@@ -39,26 +39,28 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = [UIColor colorWithHexColorStr:@"#f8f8f8"];
         
-        UIView *contentview = [[UIView alloc]init];
-        contentview.backgroundColor = [UIColor colorWithHexColorStr:@"#f8f8f8"];
-        [self addSubview:contentview];
         
-        contentview.sd_layout
-        .leftSpaceToView(self,0)
-        .rightSpaceToView(self,0)
-        .topSpaceToView(self,0)
-        .bottomSpaceToView(self,0);
+//        UIView *contentview = [[UIView alloc]init];
+//        contentview.backgroundColor = [UIColor colorWithHexColorStr:@"#f8f8f8"];
+//        [self addSubview:contentview];
+        
+//        contentview.sd_layout
+//        .leftSpaceToView(self,0)
+//        .rightSpaceToView(self,0)
+//        .topSpaceToView(self,0)
+//        .bottomSpaceToView(self,0);
         
         
         UIView *headerview = [[UIView alloc]init];
         headerview.backgroundColor = [UIColor whiteColor];
-        [contentview addSubview:headerview];
+        [self.contentView addSubview:headerview];
         
         headerview.sd_layout
-        .leftSpaceToView(contentview,0)
-        .topSpaceToView(contentview,0)
-        .rightSpaceToView(contentview,0)
+        .leftSpaceToView(self.contentView,0)
+        .topSpaceToView(self.contentView,0)
+        .rightSpaceToView(self.contentView,0)
         .heightIs(80);
         
         UILabel *nameLabel = [[UILabel alloc]init];
@@ -127,13 +129,13 @@
         
         UIView *  editview = [[UIView alloc]init];
         editview.backgroundColor = [UIColor whiteColor];
-        [contentview addSubview:editview];
+        [self.contentView addSubview:editview];
         _editview = editview;
         
         
         editview.sd_layout
-        .leftSpaceToView(contentview,0)
-        .rightSpaceToView(contentview,0)
+        .leftSpaceToView(self.contentView,0)
+        .rightSpaceToView(self.contentView,0)
         .topSpaceToView(headerview,0)
         .heightIs(33.5);
         

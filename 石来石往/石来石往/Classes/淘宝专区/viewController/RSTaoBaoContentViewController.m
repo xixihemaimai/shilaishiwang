@@ -305,7 +305,7 @@ static NSString * TAOBAOCONTENTCELLID = @"TAOBAOCONTENTCELLID";
     XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
     [network getDataWithUrlString:URL_GETACTIVITYLIST_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
         if (success) {
-            NSLog(@"===============================%@",json);
+//            NSLog(@"===============================%@",json);
             BOOL isresult = [json[@"success"]boolValue];
             if (isresult) {
                 //NSMutableArray * array = [NSMutableArray array];

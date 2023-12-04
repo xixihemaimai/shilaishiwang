@@ -122,6 +122,10 @@
 #define intChangString(i)  [NSString stringWithFormat:@"%ld",i]
 
 
+#define safe_Height [UIApplication sharedApplication].delegate.window.safeAreaInsets.top
+
+#define safe_Bottom [UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom
+
 //FIXME:这边是选择市场的参数
 //#define ERPID @"1"
 
