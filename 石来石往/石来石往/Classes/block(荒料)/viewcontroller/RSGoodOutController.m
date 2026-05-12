@@ -64,6 +64,8 @@
 @property (nonatomic,copy)NSString * uuid;
 
 
+@property (nonatomic,strong)UIView * bottomview;
+
 @end
 
 @implementation RSGoodOutController
@@ -141,7 +143,7 @@ static NSString *goodCellID = @"goodcell";
 //    self.tableview.delegate = self;
 //    self.tableview.dataSource = self;
     [self.view addSubview:self.tableview];
-    self.tableview.frame = CGRectMake(0, 0, SCW, SCH - Height_NavBar - Height_bottomSafeArea - 45);
+    self.tableview.frame = CGRectZero;
 //    self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableview registerClass:[RSGoodHeaderSectionView class] forHeaderFooterViewReuseIdentifier:goodHeaderID];
     [self.tableview registerClass:[RSGoodsCell class] forCellReuseIdentifier:goodCellID];
@@ -156,6 +158,47 @@ static NSString *goodCellID = @"goodcell";
     self.navigationItem.leftBarButtonItem = item;
 }
 
+
+
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
+    CGFloat topSafe = self.view.safeAreaInsets.top;
+    
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 45;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    // ========== 修正 tableview 布局 ==========
+
+    
+    self.tableview.frame = CGRectMake(0,
+                                      0,
+                                      SCW,
+                                      self.view.frame.size.height - totalBottom);
+    
+    
+    
+    
+    
+    // ========== 修正底部栏布局 ==========
+    self.bottomview.frame = CGRectMake(0,
+                                       self.view.frame.size.height - totalBottom,
+                                       SCW,
+                                       totalBottom);
+
+}
+
+
 #pragma mark -- 添加底部视图
 - (void)addBottomContentview{
 //    CGFloat Y = 0.0;
@@ -164,18 +207,27 @@ static NSString *goodCellID = @"goodcell";
 //    }else{
 //        Y = 0;
 //    }
-    UIButton * shipmentBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, SCH - Height_NavBar - Height_bottomSafeArea - 45, SCW, 45)];
+    
+    UIView *bottomview = [[UIView alloc] init];
+    bottomview.frame = CGRectZero;
+    bottomview.backgroundColor = [UIColor colorWithHexColorStr:@"#f7f7f7"];
+    [self.view addSubview:bottomview];
+    self.bottomview = bottomview;
+    
+    
+    
+    UIButton * shipmentBtn = [[UIButton alloc]init];
     [shipmentBtn setBackgroundColor:[UIColor colorWithHexColorStr:@"#ff5f04"]];
     [shipmentBtn setTitle:@"立即出货" forState:UIControlStateNormal];
     [shipmentBtn addTarget:self action:@selector(rightOffShipmen:) forControlEvents:UIControlEventTouchUpInside];
     shipmentBtn.titleLabel.font = [UIFont systemFontOfSize:18];
-    [self.view addSubview:shipmentBtn];
+    [bottomview addSubview:shipmentBtn];
     
-    //    shipmentBtn.sd_layout
-    //    .leftSpaceToView(self.view,0)
-    //    .rightSpaceToView(self.view,0)
-    //    .bottomSpaceToView(self.view,0)
-    //    .heightIs(45);
+    shipmentBtn.sd_layout
+    .leftSpaceToView(bottomview,0)
+    .rightSpaceToView(bottomview,0)
+    .topSpaceToView(bottomview,0)
+    .heightIs(45);
 }
 
 

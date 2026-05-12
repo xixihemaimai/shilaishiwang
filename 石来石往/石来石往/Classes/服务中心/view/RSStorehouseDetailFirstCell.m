@@ -25,6 +25,16 @@
         _companyName = companyName;
         
         //电话号码
+        UILabel * phoneLabel = [[UILabel alloc]init];
+        phoneLabel.text = @"电话号码:";
+        phoneLabel.font = [UIFont systemFontOfSize:15];
+        phoneLabel.textColor = [UIColor colorWithHexColorStr:@"#666666"];
+        phoneLabel.textAlignment = NSTextAlignmentLeft;
+        [self.contentView addSubview:phoneLabel];
+        
+        
+        
+        //电话号码
         UIButton * companyPhoneBtn = [[UIButton alloc]init];
        // companyPhoneName.text = @"海西石材交易中心";
         //companyPhoneName.font = [UIFont systemFontOfSize:15];
@@ -44,8 +54,15 @@
         .topSpaceToView(self.contentView, 5)
         .heightIs(15);
         
-        companyPhoneBtn.sd_layout
+        
+        phoneLabel.sd_layout
         .leftEqualToView(companyName)
+        .topSpaceToView(companyName, 5)
+        .bottomSpaceToView(self.contentView, 0)
+        .widthIs(70);
+        
+        companyPhoneBtn.sd_layout
+        .leftSpaceToView(phoneLabel, 0)
         .rightEqualToView(companyName)
         .topSpaceToView(companyName, 5)
         .bottomSpaceToView(self.contentView, 0);

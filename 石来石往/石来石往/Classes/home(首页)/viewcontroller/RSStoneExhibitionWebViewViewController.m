@@ -33,13 +33,24 @@
 //    [super viewWillAppear:animated];
 //    self.navigationController.navigationBar.hidden = NO;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    // 关键1：提前锁死横屏权限，不让系统走竖屏流程
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        appDelegate.allowRotation = YES;
+        [self setNewOrientation:NO]; // 触发横屏
+        
+        // 关键2：隐藏WebView直到横屏就绪（避免竖屏被看到）
+//        self.htmlView.hidden = YES;
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//            self.htmlView.hidden = NO; // 横屏稳定后显示
+//        });
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate * appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    appDelegate.allowRotation = true;
-    [self setNewOrientation:NO];
+//    AppDelegate * appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    appDelegate.allowRotation = true;
+//    [self setNewOrientation:NO];
     
     
 
@@ -123,8 +134,51 @@
     AppDelegate * appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     appDelegate.allowRotation = false;//关闭横屏仅允许竖屏
     [self setNewOrientation:YES];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
 }
+
+// 强制初始方向为横屏
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationLandscapeRight;
+}
+
+
+- (void)setNewOrientation:(BOOL)fullscreen{
+    // 获取当前活跃的窗口场景（兼容iOS 13+）
+        UIWindowScene *windowScene = nil;
+        for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
+            if ([scene isKindOfClass:[UIWindowScene class]] &&
+                scene.activationState == UISceneActivationStateForegroundActive) {
+                windowScene = (UIWindowScene *)scene;
+                break;
+            }
+        }
+        if (!windowScene) return;
+        
+        // 直接设置目标方向，不做重置（避免中间状态）
+        if (fullscreen) {
+            // 切换到竖屏
+            if (@available(iOS 16.0, *)) {
+                UIWindowSceneGeometryPreferencesIOS *preferences =
+                    [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:UIInterfaceOrientationMaskPortrait];
+                [windowScene requestGeometryUpdateWithPreferences:preferences errorHandler:nil];
+            } else {
+                [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
+                [UIViewController attemptRotationToDeviceOrientation];
+            }
+        } else {
+            // 切换到横屏（直接设置，不经过竖屏）
+            if (@available(iOS 16.0, *)) {
+                UIWindowSceneGeometryPreferencesIOS *preferences =
+                    [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:UIInterfaceOrientationMaskLandscapeRight];
+                [windowScene requestGeometryUpdateWithPreferences:preferences errorHandler:nil];
+            } else {
+                [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationLandscapeRight) forKey:@"orientation"];
+                [UIViewController attemptRotationToDeviceOrientation];
+            }
+        }
+}
+
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message{
     if ([message.name isEqualToString:@"tixing"]) {
@@ -167,22 +221,22 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
-- (void)setNewOrientation:(BOOL)fullscreen{
-    if (fullscreen) {
-        NSNumber *resetOrientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationUnknown];
-        [[UIDevice currentDevice] setValue:resetOrientationTarget forKey:@"orientation"];
-        NSNumber *orientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
-        [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
-    }else{
-        NSNumber *resetOrientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationUnknown];
-        [[UIDevice currentDevice] setValue:resetOrientationTarget forKey:@"orientation"];
-        NSNumber *orientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
-        [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
-    }
-}
+//- (void)setNewOrientation:(BOOL)fullscreen{
+//    if (fullscreen) {
+//        NSNumber *resetOrientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationUnknown];
+//        [[UIDevice currentDevice] setValue:resetOrientationTarget forKey:@"orientation"];
+//        NSNumber *orientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+//        [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
+//    }else{
+//        NSNumber *resetOrientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationUnknown];
+//        [[UIDevice currentDevice] setValue:resetOrientationTarget forKey:@"orientation"];
+//        NSNumber *orientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
+//        [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
+//    }
+//}
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;  //支持横向
+    return UIInterfaceOrientationMaskLandscapeRight;  //支持横向
 }
 
 //设置为允许旋转

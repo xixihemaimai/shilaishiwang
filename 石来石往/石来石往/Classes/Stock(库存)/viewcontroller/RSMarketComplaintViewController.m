@@ -13,7 +13,7 @@
 @interface RSMarketComplaintViewController ()<UITextViewDelegate,TZImagePickerControllerDelegate>
 {
     //联系方式
-    UILabel * _phoneLabel;
+//    UILabel * _phoneLabel;
     //提交
     UIButton * _sendBtn;
     
@@ -28,7 +28,7 @@
 @property (nonatomic,strong)UITextView * complaintTextView;
 
 //联系方式
-@property (nonatomic,strong)UITextView * phoneTextView;
+//@property (nonatomic,strong)UITextView * phoneTextView;
 
 
 @property (nonatomic,strong)UIScrollView * hoistoryScrollView;
@@ -43,6 +43,11 @@
 
 
 
+//业务市场服务反馈界面
+@property (nonatomic,strong)UIView * complaintStyleView;
+
+
+
 
 @end
 
@@ -54,6 +59,14 @@
     }
     return _imageArray;
 }
+
+- (NSMutableArray *)complaintStyleArray{
+    if(!_complaintStyleArray){
+        _complaintStyleArray = [NSMutableArray array];
+    }
+    return _complaintStyleArray;
+}
+
 
 
 
@@ -73,7 +86,7 @@
     UIButton * hoistoryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [hoistoryBtn setTitle:@"     历史反馈记录" forState:UIControlStateNormal];
     [hoistoryBtn setTitleColor:[UIColor colorWithHexColorStr:@"#333333"] forState:UIControlStateNormal];
-    hoistoryBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    hoistoryBtn.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
     hoistoryBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [_hoistoryScrollView addSubview:hoistoryBtn];
     [hoistoryBtn addTarget:self action:@selector(hoistoryAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -94,6 +107,107 @@
     
     midView.sd_layout.leftSpaceToView(_hoistoryScrollView, 0).rightSpaceToView(_hoistoryScrollView, 0).topSpaceToView(hoistoryBtn, 0).heightIs(8);
     
+    
+    UIView * complaintStyleView = [[UIView alloc]init];
+    [_hoistoryScrollView addSubview:complaintStyleView];
+    _complaintStyleView = complaintStyleView;
+    complaintStyleView.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(midView, 12.5).rightSpaceToView(_hoistoryScrollView, 16).heightIs(125);
+    
+    //投诉方式---3个按键可以多选
+    UILabel * complaintStyle = [[UILabel alloc]init];
+    complaintStyle.text = @"投诉类别";
+    complaintStyle.textColor = [UIColor colorWithHexColorStr:@"#333333"];
+    complaintStyle.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    [complaintStyleView addSubview:complaintStyle];
+    complaintStyle.sd_layout.leftSpaceToView(complaintStyleView, 0).topSpaceToView(complaintStyleView, 0).heightIs(23).widthIs(70);
+    
+    
+    
+    //[@"待处理",@"处理中",@"已完成"];
+    UIButton * pendingBtn = [[UIButton alloc]init];
+    [pendingBtn setTitle:@"大板加工" forState:UIControlStateNormal];
+    [pendingBtn setTitleColor:[UIColor colorWithHexColorStr:@"#333333"] forState:UIControlStateNormal];
+    pendingBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
+ 
+    pendingBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    
+    
+    CGFloat iconSize = 25; // 你想要的图片大小，改这里！！！
+    UIImage *normalImage = [self imageWithImage:[UIImage imageNamed:@"checkbox_unchecked"] scaledToSize:CGSizeMake(iconSize, iconSize)];
+    UIImage *selectedImage = [self imageWithImage:[UIImage imageNamed:@"checkbox-选中"] scaledToSize:CGSizeMake(iconSize, iconSize)];
+    
+    [pendingBtn setImage:normalImage forState:UIControlStateNormal];
+    [pendingBtn setImage:selectedImage forState:UIControlStateSelected];
+    
+    [complaintStyleView addSubview:pendingBtn];
+    pendingBtn.tag = 1;
+    [pendingBtn addTarget:self action:@selector(configStatusButtonWithType:) forControlEvents:UIControlEventTouchUpInside];
+//
+    
+    
+    UIButton * processingBtn = [[UIButton alloc]init];
+    [processingBtn setTitle:@"吊装服务" forState:UIControlStateNormal];
+    [processingBtn setTitleColor:[UIColor colorWithHexColorStr:@"#333333"] forState:UIControlStateNormal];
+    processingBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
+    
+    
+
+    
+    [processingBtn setImage:normalImage forState:UIControlStateNormal];
+    [processingBtn setImage:selectedImage forState:UIControlStateSelected];
+    processingBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [complaintStyleView addSubview:processingBtn];
+    processingBtn.tag = 2;
+    [processingBtn addTarget:self action:@selector(configStatusButtonWithType:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton * completedBtn = [[UIButton alloc]init];
+    [completedBtn setTitle:@"维修服务" forState:UIControlStateNormal];
+    [completedBtn setTitleColor:[UIColor colorWithHexColorStr:@"#333333"] forState:UIControlStateNormal];
+    completedBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
+    [completedBtn setImage:normalImage forState:UIControlStateNormal];
+    [completedBtn setImage:selectedImage forState:UIControlStateSelected];
+    completedBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [complaintStyleView addSubview:completedBtn];
+    [completedBtn addTarget:self action:@selector(configStatusButtonWithType:) forControlEvents:UIControlEventTouchUpInside];
+    completedBtn.tag = 3;
+    
+    //卫生服务
+    UIButton * healthServiceBtn = [[UIButton alloc]init];
+    [healthServiceBtn setTitle:@"卫生服务" forState:UIControlStateNormal];
+    [healthServiceBtn setTitleColor:[UIColor colorWithHexColorStr:@"#333333"] forState:UIControlStateNormal];
+    healthServiceBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
+    [healthServiceBtn setImage:normalImage forState:UIControlStateNormal];
+    [healthServiceBtn setImage:selectedImage forState:UIControlStateSelected];
+    healthServiceBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [complaintStyleView addSubview:healthServiceBtn];
+    [healthServiceBtn addTarget:self action:@selector(configStatusButtonWithType:) forControlEvents:UIControlEventTouchUpInside];
+    healthServiceBtn.tag = 4;
+    //其他
+    UIButton * otherBtn = [[UIButton alloc]init];
+    [otherBtn setTitle:@"其他服务" forState:UIControlStateNormal];
+    [otherBtn setTitleColor:[UIColor colorWithHexColorStr:@"#333333"] forState:UIControlStateNormal];
+    otherBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [otherBtn setImage:normalImage forState:UIControlStateNormal];
+    [otherBtn setImage:selectedImage forState:UIControlStateSelected];
+    otherBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
+//    otherBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+//    otherBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [complaintStyleView addSubview:otherBtn];
+    [otherBtn addTarget:self action:@selector(configStatusButtonWithType:) forControlEvents:UIControlEventTouchUpInside];
+    otherBtn.tag = 0;
+    
+    
+    
+    pendingBtn.sd_layout.leftSpaceToView(complaintStyleView, 0).heightIs(36).topSpaceToView(complaintStyle, 10).widthIs((SCW - 32 - 20)/3);
+    
+    processingBtn.sd_layout.leftSpaceToView(pendingBtn, 10).heightIs(36).topSpaceToView(complaintStyle, 10).widthIs((SCW - 32 - 20)/3);
+    
+    completedBtn.sd_layout.leftSpaceToView(processingBtn, 10).heightIs(36).topSpaceToView(complaintStyle, 10).rightSpaceToView(complaintStyleView,0);
+    
+    
+    healthServiceBtn.sd_layout.leftSpaceToView(complaintStyleView, 0).topSpaceToView(pendingBtn, 10).heightIs(36).widthIs((SCW - 32 - 20)/3);
+    otherBtn.sd_layout.leftSpaceToView(healthServiceBtn, 10).topSpaceToView(processingBtn, 10).heightIs(36).widthIs((SCW - 32 - 20)/3);
+    
     UILabel * complaintTitle = [[UILabel alloc]init];
     complaintTitle.text = @"意见反馈";
     complaintTitle.textColor = [UIColor colorWithHexColorStr:@"#333333"];
@@ -107,7 +221,17 @@
     [_hoistoryScrollView addSubview:frameImage];
     
      
-    complaintTitle.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(midView, 12.5).heightIs(23).widthIs(70);
+    
+//    if (self.isShowAllowView){
+        _complaintStyleView.hidden = false;
+        complaintTitle.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(_complaintStyleView, 12.5).heightIs(23).widthIs(70);
+//    }
+//    else{
+//        _complaintStyleView.hidden = true;
+//        complaintTitle.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(midView, 12.5).heightIs(23).widthIs(70);
+//    }
+    
+    
     
     frameImage.sd_layout.leftSpaceToView(complaintTitle, 6).widthIs(8).heightEqualToWidth().centerYEqualToView(complaintTitle);
     
@@ -183,36 +307,38 @@
     
     addPictureBtn.sd_layout
     .centerYEqualToView(addPictureView)
-    .leftSpaceToView(addPictureView, 12)
-    .widthIs(62.5)
-    .heightIs(62.5);
+    .leftSpaceToView(addPictureView, 10)
+    .widthIs(60)
+    .heightIs(60);
     
     
-    UILabel * phoneLabel = [[UILabel alloc]init];
-    phoneLabel.text = @"联系方式";
-    phoneLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
-    phoneLabel.textColor = [UIColor colorWithHexColorStr:@"#333333"];
-    [_hoistoryScrollView addSubview:phoneLabel];
-    
-    phoneLabel.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(addPictureView, 15).heightIs(23).widthIs(80);
-    _phoneLabel = phoneLabel;
-     
-    _phoneTextView = [[UITextView alloc]init];
-    _phoneTextView.keyboardType = UIKeyboardTypePhonePad;
-    _phoneTextView.delegate = self;
-    _phoneTextView.zw_placeHolder = @"手机号码,方便我们与您联系";
-    _phoneTextView.textContainerInset = UIEdgeInsetsMake(13, 11.5, 13, 0);
-    _phoneTextView.font = [UIFont systemFontOfSize:14];
-    _phoneTextView.zw_placeHolderColor = [UIColor colorWithHexColorStr:@"#999999"];
-    _phoneTextView.textColor = [UIColor colorWithHexColorStr:@"#333333"];
-    [_hoistoryScrollView addSubview:_phoneTextView];
-    
-    _phoneTextView.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(phoneLabel,15).heightIs(45).rightSpaceToView(_hoistoryScrollView,16);
-    
-    _phoneTextView.layer.borderWidth = 1;
-    _phoneTextView.layer.borderColor = [UIColor colorWithHexColorStr:@"#DCDFE6"].CGColor;
-    _phoneTextView.layer.cornerRadius = 4;
-    
+//    UILabel * phoneLabel = [[UILabel alloc]init];
+//    phoneLabel.text = @"联系方式";
+//    phoneLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+//    phoneLabel.textColor = [UIColor colorWithHexColorStr:@"#333333"];
+//    [_hoistoryScrollView addSubview:phoneLabel];
+//    
+//    phoneLabel.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(addPictureView, 15).heightIs(23).widthIs(80);
+//    _phoneLabel = phoneLabel;
+//     
+//    _phoneTextView = [[UITextView alloc]init];
+//    _phoneTextView.keyboardType = UIKeyboardTypePhonePad;
+//    _phoneTextView.delegate = self;
+//    _phoneTextView.zw_placeHolder = @"手机号码,方便我们与您联系";
+//    _phoneTextView.textContainerInset = UIEdgeInsetsMake(13, 11.5, 13, 0);
+//    _phoneTextView.font = [UIFont systemFontOfSize:14];
+//    _phoneTextView.zw_placeHolderColor = [UIColor colorWithHexColorStr:@"#999999"];
+//    _phoneTextView.textColor = [UIColor colorWithHexColorStr:@"#333333"];
+//    [_hoistoryScrollView addSubview:_phoneTextView];
+//    
+//    _phoneTextView.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(phoneLabel,15).heightIs(45).rightSpaceToView(_hoistoryScrollView,16);
+//    
+//    _phoneTextView.layer.borderWidth = 1;
+//    _phoneTextView.layer.borderColor = [UIColor colorWithHexColorStr:@"#DCDFE6"].CGColor;
+//    _phoneTextView.layer.cornerRadius = 4;
+//    
+//    _phoneTextView.hidden = true;
+//    _phoneLabel.hidden = true;
     
     UIButton * sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [sendBtn setTitle:@"提交" forState:UIControlStateNormal];
@@ -221,7 +347,7 @@
     [sendBtn setBackgroundColor:[UIColor colorWithHexColorStr:@"#3385FF"]];
     [_hoistoryScrollView addSubview:sendBtn];
     
-    sendBtn.sd_layout.leftSpaceToView(_hoistoryScrollView, 35).rightSpaceToView(_hoistoryScrollView, 35).heightIs(45).topSpaceToView(_phoneTextView, 52.5);
+    sendBtn.sd_layout.leftSpaceToView(_hoistoryScrollView, 35).rightSpaceToView(_hoistoryScrollView, 35).heightIs(45).topSpaceToView(addPictureView, 52.5);
     _sendBtn = sendBtn;
     
     sendBtn.layer.cornerRadius = 20;
@@ -235,39 +361,103 @@
     
     [self nineGrid];
     
+    //展示的部分，不能修改
     if (self.isShow){
         
         hoistoryBtn.hidden = true;
-//        sendBtn.isHidden = true;
         sendBtn.hidden = true;
-        _phoneTextView.editable = false;
+        rightImage.hidden = true;
+//        _phoneTextView.editable = false;
         _complaintTextView.editable = false;
-        [_hoistoryScrollView setupAutoContentSizeWithBottomView:_phoneTextView bottomMargin:30];
-        _hoistoryScrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(_phoneTextView.frame) + 100);
+//        [_hoistoryScrollView setupAutoContentSizeWithBottomView:_phoneTextView bottomMargin:30];
+//        _hoistoryScrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(_phoneTextView.frame) + 100);
+        
+        
+        [_hoistoryScrollView setupAutoContentSizeWithBottomView:addPictureView bottomMargin:30];
+        _hoistoryScrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(addPictureView.frame) + 100);
    
         midView.sd_layout.leftSpaceToView(_hoistoryScrollView, 0).rightSpaceToView(_hoistoryScrollView, 0).topSpaceToView(_hoistoryScrollView, 0).heightIs(8);
         
         _complaintTextView.text = self.content;
-        _phoneTextView.text = self.contactNumber;
+//        _phoneTextView.text = self.contactNumber;
         
+        
+        NSArray *complaintStyleArray = self.complaintStyleArray;
+        
+        for (int i = 0; i < complaintStyleArray.count; i++) {
+            NSString * tag = complaintStyleArray[i];
+            if ([tag  isEqual: @"0"]){
+                otherBtn.selected = true;
+            }else if ([tag  isEqual: @"1"]){
+                pendingBtn.selected = true;
+            }else if ([tag  isEqual: @"2"]){
+                processingBtn.selected = true;
+            }else if ([tag  isEqual: @"3"]){
+                completedBtn.selected = true;
+            }else if ([tag  isEqual: @"4"]){
+                healthServiceBtn.selected = true;
+            }
+        }
+        
+        for (UIButton *btn in self.complaintStyleView.subviews) {
+            if ([btn isKindOfClass:[UIButton class]]){
+                btn.userInteractionEnabled = false;
+            }
+        }
         
     }else{
         
         hoistoryBtn.hidden = false;
         sendBtn.hidden = false;
+        rightImage.hidden = false;
         _complaintTextView.editable = true;
-        _phoneTextView.editable = true;
+//        _phoneTextView.editable = true;
         midView.sd_layout.leftSpaceToView(_hoistoryScrollView, 0).rightSpaceToView(_hoistoryScrollView, 0).topSpaceToView(hoistoryBtn, 0).heightIs(8);
         [_hoistoryScrollView setupAutoContentSizeWithBottomView:_sendBtn bottomMargin:30];
         _hoistoryScrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(sendBtn.frame) + 100);
         
+        
+        //这边要改下
+//        if(self.isShowAllowView){
+            
+            //要把历史记录隐藏
+            //要把电话号码隐藏
+//            _phoneLabel.hidden = true;
+//            _phoneTextView.hidden = true;
+            
+            _sendBtn.sd_layout.leftSpaceToView(_hoistoryScrollView, 35).rightSpaceToView(_hoistoryScrollView, 35).heightIs(45).topSpaceToView(addPictureView, 52.5);
+//        }
+        
+        
+        
     }
-    
-    
-    
-    
-    
 }
+
+- (void)configStatusButtonWithType:(UIButton *)btn{
+    btn.selected = !btn.selected;
+    if (btn.selected){
+        btn.layer.borderColor = [UIColor colorWithHexColorStr:@"#3385FF"].CGColor;
+        if (![self.complaintStyleArray containsObject:@(btn.tag)]){
+            [self.complaintStyleArray addObject:@(btn.tag)];
+        }
+    }else{
+        btn.layer.borderColor = [UIColor colorWithHexColorStr:@"#333333"].CGColor;
+        [self.complaintStyleArray removeObject:@(btn.tag)];
+    }
+}
+
+
+- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+
+
+
 
 - (void)sendAction:(UIButton *)sendBtn{
 
@@ -276,31 +466,40 @@
         return;
     }
     
-    if (_phoneTextView.text.length <= 0){
-        [SVProgressHUD showErrorWithStatus:@"请填写联系方式"];
-        return;
-    }
-    
-//    if (_phoneTextView.text )
-    
-    if (![self isTrueMobile:_phoneTextView.text]){
-        [SVProgressHUD showErrorWithStatus:@"电话号码错误"];
-        return;
-    }
-    
+   
+   
+//    if (_phoneTextView.text.length <= 0){
+//        [SVProgressHUD showErrorWithStatus:@"请填写联系方式"];
+//        return;
+//    }
+//    if (![self isTrueMobile:_phoneTextView.text]){
+//        [SVProgressHUD showErrorWithStatus:@"电话号码错误"];
+//        return;
+//    }
     
     
+    
+    RSWeakself;
     [JHSysAlertUtil presentAlertViewWithTitle:@"是否确定提交投诉" message:nil cancelTitle:@"取消" defaultTitle:@"确定" distinct:true cancel:^{
             
         } confirm:^{
+            
             NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
             NSString * verifykey = [user objectForKey:@"VERIFYKEY"];
             NSMutableDictionary *phoneDict = [NSMutableDictionary dictionary];
             [phoneDict setValue:_complaintTextView.text forKey:@"content"];
-            [phoneDict setValue:_phoneTextView.text forKey:@"contactNumber"];
-            
+//            if (weakSelf.isShowAllowView){
+                
+                //进行拼接
+                NSString *complaintStyleType = [weakSelf.complaintStyleArray componentsJoinedByString:@","];
+                //投诉类型
+                [phoneDict setValue:complaintStyleType forKey:@"type"];
+        
+//            }else{
+//                [phoneDict setValue:_phoneTextView.text forKey:@"contactNumber"];
+//            }
             NSMutableArray * tempArray = [NSMutableArray array];
-            for (int i = 0; i < self.imageArray.count; i++) {
+            for (int i = 0; i < weakSelf.imageArray.count; i++) {
                 RSMarketUploadImageModel * marketUploadImageModel = _imageArray[i];
                 NSMutableDictionary * dict = [NSMutableDictionary dictionary];
                 [dict setValue:marketUploadImageModel.fileName forKey:@"fileName"];
@@ -319,32 +518,43 @@
             NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             AppDelegate * applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
             NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifykey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
-            RSWeakself;
+           
             XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
             [network getDataWithUrlString:URL_MARKET_FEEDBACK_SAVE_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
                 if (success) {
+//                    NSLog(@"======================%@",json);
                     BOOL isresult = [json[@"success"]boolValue];
                     if (isresult) {
-//                        [self.navigationController popViewControllerAnimated:true];
-                        
-                        RSHistoryFeedbacklistViewController * historyFeedBackListVc = [[RSHistoryFeedbacklistViewController alloc]init];
-                        [weakSelf.navigationController pushViewController:historyFeedBackListVc animated:true];
-                        NSMutableArray<UIViewController *> * array1 = [NSMutableArray array];
-                        array1 = weakSelf.navigationController.viewControllers.mutableCopy;
-                        for (int i = 0; i < array1.count; i++) {
-                            UIViewController * viewController = array1[i];
-                            if ([viewController isKindOfClass:[RSMarketComplaintViewController class]]){
-                                [array1 removeObject:viewController];
-                                break;
+                        [SVProgressHUD showSuccessWithStatus:@"提交成功,感谢您的反馈"];
+                        if(weakSelf.isShowAllowView){
+                            [weakSelf.navigationController popViewControllerAnimated:true];
+                        }else{
+                            RSHistoryFeedbacklistViewController * historyFeedBackListVc = [[RSHistoryFeedbacklistViewController alloc]init];
+                            [weakSelf.navigationController pushViewController:historyFeedBackListVc animated:true];
+                            NSMutableArray<UIViewController *> * array1 = [NSMutableArray array];
+                            array1 = weakSelf.navigationController.viewControllers.mutableCopy;
+                            for (int i = 0; i < array1.count; i++) {
+                                UIViewController * viewController = array1[i];
+                                if ([viewController isKindOfClass:[RSMarketComplaintViewController class]]){
+                                    [array1 removeObject:viewController];
+                                    break;
+                                }
                             }
+                            weakSelf.navigationController.viewControllers = array1;
                         }
-                        weakSelf.navigationController.viewControllers = array1;
-                        
                     }else{
-                        [SVProgressHUD showErrorWithStatus:@"保存失败"];
+//                        if(weakSelf.isShowAllowView){
+                            [SVProgressHUD showErrorWithStatus:@"提交失败"];
+//                        }else{
+//                            [SVProgressHUD showErrorWithStatus:@"保存失败"];
+//                        }
                     }
                 }else{
-                    [SVProgressHUD showErrorWithStatus:@"保存失败"];
+//                    if (weakSelf.isShowAllowView){
+                        [SVProgressHUD showErrorWithStatus:@"提交失败"];
+//                    }else{
+//                        [SVProgressHUD showErrorWithStatus:@"保存失败"];
+//                    }
                 }
             }];
         }];
@@ -353,8 +563,9 @@
 
 
 - (void)hoistoryAction:(UIButton *)hoistoryBtn{
-    NSLog(@"点击了历史反馈记录");
+//    NSLog(@"点击了历史反馈记录");
     RSHistoryFeedbacklistViewController * historyFeedBackListVc = [[RSHistoryFeedbacklistViewController alloc]init];
+//    historyFeedBackListVc.isShowAllowView = self.isShowAllowView;
     [self.navigationController pushViewController:historyFeedBackListVc animated:true];
 }
 
@@ -362,7 +573,6 @@
 
 
 
-// 9宫格图片布局
 - (void)nineGrid
 {
     for (UIImageView *imgv in _addPictureView.subviews)
@@ -373,34 +583,34 @@
         }
     }
     
-    CGFloat width = 62.5;
-    CGFloat height = 62.5;
+    CGFloat width = 60;
+    CGFloat height = 60;
     NSInteger count = _imageArray.count;
-//    _imageArray.count > 3 ? (count = 3) : (count = _imageArray.count);
+    //    _imageArray.count > 3 ? (count = 3) : (count = _imageArray.count);
     
     if (count < 1) {
         
         
         _addPictureView.sd_layout
-        .leftSpaceToView(_hoistoryScrollView, 0)
-        .rightSpaceToView(_hoistoryScrollView, 0)
-        .topSpaceToView(_pictureLabel, 15)
-        .heightIs(80);
+            .leftSpaceToView(_hoistoryScrollView, 0)
+            .rightSpaceToView(_hoistoryScrollView, 0)
+            .topSpaceToView(_pictureLabel, 15)
+            .heightIs(80);
         
         
         _addPictureBtn.sd_layout
-        .centerYEqualToView(_addPictureView)
-        .leftSpaceToView(_addPictureView, 12)
-        .topSpaceToView(_addPictureView, 8.75)
-        .bottomSpaceToView(_addPictureView, 8.75)
-        .widthIs(62.5);
+            .centerYEqualToView(_addPictureView)
+            .leftSpaceToView(_addPictureView, 10)
+            .topSpaceToView(_addPictureView, 10)
+            .bottomSpaceToView(_addPictureView, 10)
+            .widthIs(60);
         
         
-//        _addPictureMenView.uploadBtn.enabled = NO;
-//        [_addPictureMenView.uploadBtn setBackgroundColor:[UIColor colorWithHexColorStr:@"#d6d6d6"]];
+        //        _addPictureMenView.uploadBtn.enabled = NO;
+        //        [_addPictureMenView.uploadBtn setBackgroundColor:[UIColor colorWithHexColorStr:@"#d6d6d6"]];
     }else{
-//        _addPictureMenView.uploadBtn.enabled = YES;
-//        [_addPictureMenView.uploadBtn setBackgroundColor:[UIColor colorWithHexColorStr:@"3385ff"]];
+        //        _addPictureMenView.uploadBtn.enabled = YES;
+        //        [_addPictureMenView.uploadBtn setBackgroundColor:[UIColor colorWithHexColorStr:@"3385ff"]];
         
         for (int i=0; i<count; i++)
         {
@@ -415,9 +625,9 @@
             
             NSString * url = [URL_HEADER_TEXT_IOS substringToIndex:URL_HEADER_TEXT_IOS.length - 1];
             [imgv sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",url,marketUploadImageModel.url]] placeholderImage:[UIImage imageNamed:@""]];
-//            RSPersonlNetworkPictureModel * personlNetworkPicturemodel = _imageArray[i];
-//            NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:personlNetworkPicturemodel.img]];
-//            imgv.image = [UIImage imageWithData:data];
+            //            RSPersonlNetworkPictureModel * personlNetworkPicturemodel = _imageArray[i];
+            //            NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:personlNetworkPicturemodel.img]];
+            //            imgv.image = [UIImage imageWithData:data];
             imgv.userInteractionEnabled = YES;
             [_addPictureView addSubview:imgv];
             //添加手势
@@ -426,20 +636,20 @@
             [imgv addGestureRecognizer:tap];
             tap.view.tag = 100000+i;
             //这边是已完成的状态
-//            if ([temp isEqualToString:@"5"]) {
-//                _addPictureBtn.hidden = YES;
-//                _addPictureBtn.enabled = NO;
-//            }else{
-                
-                _addPictureBtn.hidden = NO;
-                _addPictureBtn.enabled = YES;
-                UIButton *delete = [UIButton buttonWithType:UIButtonTypeCustom];
-                delete.frame = CGRectMake(width-16, 0, 16, 16);
-                [delete setImage:[UIImage imageNamed:@"photo_delete"] forState:UIControlStateNormal];
-                [delete addTarget:self action:@selector(deleteEvent:) forControlEvents:UIControlEventTouchUpInside];
-                delete.tag = 1000000000+i;
-                [imgv addSubview:delete];
-                
+            //            if ([temp isEqualToString:@"5"]) {
+            //                _addPictureBtn.hidden = YES;
+            //                _addPictureBtn.enabled = NO;
+            //            }else{
+            
+            _addPictureBtn.hidden = NO;
+            _addPictureBtn.enabled = YES;
+            UIButton *delete = [UIButton buttonWithType:UIButtonTypeCustom];
+            delete.frame = CGRectMake(width-16, 0, 16, 16);
+            [delete setImage:[UIImage imageNamed:@"photo_delete"] forState:UIControlStateNormal];
+            [delete addTarget:self action:@selector(deleteEvent:) forControlEvents:UIControlEventTouchUpInside];
+            delete.tag = 1000000000+i;
+            [imgv addSubview:delete];
+            
             
             if (self.isShow){
                 _addPictureBtn.hidden = true;
@@ -447,16 +657,16 @@
                 if (i == _imageArray.count - 1){
                     if (_imageArray.count % 4 == 0){
                         _addPictureView.sd_layout
-                        .leftSpaceToView(_hoistoryScrollView, 0)
-                        .rightSpaceToView(_hoistoryScrollView, 0)
-                        .topSpaceToView(_pictureLabel, 15)
-                        .heightIs((_imageArray.count / 4) * 80);
+                            .leftSpaceToView(_hoistoryScrollView, 0)
+                            .rightSpaceToView(_hoistoryScrollView, 0)
+                            .topSpaceToView(_pictureLabel, 15)
+                            .heightIs((_imageArray.count / 4) * 80);
                     }else{
                         _addPictureView.sd_layout
-                        .leftSpaceToView(_hoistoryScrollView, 0)
-                        .rightSpaceToView(_hoistoryScrollView, 0)
-                        .topSpaceToView(_pictureLabel, 15)
-                        .heightIs(((_imageArray.count / 4) + 1)* 80);
+                            .leftSpaceToView(_hoistoryScrollView, 0)
+                            .rightSpaceToView(_hoistoryScrollView, 0)
+                            .topSpaceToView(_pictureLabel, 15)
+                            .heightIs(((_imageArray.count / 4) + 1)* 80);
                     }
                 }
             }else{
@@ -464,36 +674,61 @@
                 delete.hidden = false;
                 if (i == _imageArray.count - 1){
                     if (_imageArray.count % 4 == 0) {
-
-                        _addPictureBtn.sd_layout.leftSpaceToView(_addPictureView, 12).topSpaceToView(imgv, 10).widthIs(62.5).heightEqualToWidth();
-
+                        
+                        _addPictureBtn.sd_layout.leftSpaceToView(_addPictureView, 10).topSpaceToView(imgv, 10    ).widthIs(60).heightEqualToWidth();
+                        
                     } else {
                         
-                        _addPictureBtn.sd_layout.leftSpaceToView(imgv, 10).topEqualToView(imgv).widthIs(62.5).heightEqualToWidth();
+                        _addPictureBtn.sd_layout.leftSpaceToView(imgv, 10).topEqualToView(imgv).widthIs(60).heightEqualToWidth();
+                        
+                        
+                        if (_imageArray.count >= 9){
+                            _addPictureBtn.hidden = true;
+                        }else{
+                            _addPictureBtn.hidden = false;
+                        }
                     }
-
-                    _addPictureView.sd_layout
-                    .leftSpaceToView(_hoistoryScrollView, 0)
-                    .rightSpaceToView(_hoistoryScrollView, 0)
-                    .topSpaceToView(_pictureLabel, 15)
-                    .heightIs(((_imageArray.count / 4) + 1) * 80);
-                       
+                    if (_imageArray.count >= 8){
+                        _addPictureView.sd_layout
+                            .leftSpaceToView(_hoistoryScrollView, 0)
+                            .rightSpaceToView(_hoistoryScrollView, 0)
+                            .topSpaceToView(_pictureLabel, 15)
+                            .heightIs((((_imageArray.count / 4) + 1)* 80) - 20);
+                    }else if (_imageArray.count >= 4){
+                        _addPictureView.sd_layout
+                            .leftSpaceToView(_hoistoryScrollView, 0)
+                            .rightSpaceToView(_hoistoryScrollView, 0)
+                            .topSpaceToView(_pictureLabel, 15)
+                            .heightIs((((_imageArray.count / 4) + 1)* 80) - 10);
+                    }else{
+                        _addPictureView.sd_layout
+                            .leftSpaceToView(_hoistoryScrollView, 0)
+                            .rightSpaceToView(_hoistoryScrollView, 0)
+                            .topSpaceToView(_pictureLabel, 15)
+                            .heightIs(((_imageArray.count / 4) + 1) * 80);
                     }
                 }
             }
-            
-           
-            
+        }
     }
-
+    
     //这边要设置
-    _phoneLabel.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(_addPictureView, 15).heightIs(23).widthIs(80);
     
-    _phoneTextView.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(_phoneLabel,15).heightIs(45).rightSpaceToView(_hoistoryScrollView,16);
+//    if (self.isShowAllowView){
+//        _phoneLabel.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(_addPictureView, 15).heightIs(0).widthIs(80);
+//        _phoneTextView.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(_phoneLabel,15).heightIs(0).rightSpaceToView(_hoistoryScrollView,16);
+        
+        _sendBtn.sd_layout.leftSpaceToView(_hoistoryScrollView, 35).rightSpaceToView(_hoistoryScrollView, 35).heightIs(45).topSpaceToView(_addPictureView, 52.5);
+        
+//    }
+//    else{
+//        _phoneLabel.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(_addPictureView, 15).heightIs(23).widthIs(80);
+//        _phoneTextView.sd_layout.leftSpaceToView(_hoistoryScrollView, 16).topSpaceToView(_phoneLabel,15).heightIs(45).rightSpaceToView(_hoistoryScrollView,16);
+//        _sendBtn.sd_layout.leftSpaceToView(_hoistoryScrollView, 35).rightSpaceToView(_hoistoryScrollView, 35).heightIs(45).topSpaceToView(_phoneTextView, 52.5);
+//    }
     
-    _sendBtn.sd_layout.leftSpaceToView(_hoistoryScrollView, 35).rightSpaceToView(_hoistoryScrollView, 35).heightIs(45).topSpaceToView(_phoneTextView, 52.5);
     
-    [_hoistoryScrollView setupAutoContentSizeWithBottomView:_sendBtn bottomMargin:30];
+    [_hoistoryScrollView setupAutoContentSizeWithBottomView:_sendBtn bottomMargin:0];
     
     
     _hoistoryScrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(_sendBtn.frame) + 100);
@@ -501,10 +736,11 @@
 }
 
 
+
+
+
 //选择图片
 - (void)addServicePicture:(UIButton *)addPictrueBtn{
-    NSLog(@"=23=2=3=2=3=2=3=2=3");
-    
     if (self.isShow){
         [SVProgressHUD showInfoWithStatus:@"该模式下不能上传图片"];
     }else{
@@ -565,15 +801,19 @@
 
 //显示大图
 - (void)showQuestionPicture:(UITapGestureRecognizer *)tap{
-    NSString * url = [URL_HEADER_TEXT_IOS substringToIndex:URL_HEADER_TEXT_IOS.length - 1];
-    NSMutableArray * images = [NSMutableArray array];
-    NSMutableArray * miniImages = [NSMutableArray array];
-    for (int i = 0; i < self.imageArray.count; i++) {
-        RSMarketUploadImageModel * marketUploadImageModel = self.imageArray[i];
-        [images addObject:[NSString stringWithFormat:@"%@%@",url,marketUploadImageModel.urlOrigin]];
-        [miniImages addObject:[NSString stringWithFormat:@"%@%@",url,marketUploadImageModel.url]];
+    if (self.isShow){
+        [SVProgressHUD showInfoWithStatus:@"该模式下不能查看图片"];
+    }else{
+        NSString * url = [URL_HEADER_TEXT_IOS substringToIndex:URL_HEADER_TEXT_IOS.length - 1];
+        NSMutableArray * images = [NSMutableArray array];
+        NSMutableArray * miniImages = [NSMutableArray array];
+        for (int i = 0; i < self.imageArray.count; i++) {
+            RSMarketUploadImageModel * marketUploadImageModel = self.imageArray[i];
+            [images addObject:[NSString stringWithFormat:@"%@%@",url,marketUploadImageModel.urlOrigin]];
+            [miniImages addObject:[NSString stringWithFormat:@"%@%@",url,marketUploadImageModel.url]];
+        }
+        [XLPhotoBrowser showPhotoBrowserWithImages:images andMiniImage:miniImages currentImageIndex:tap.view.tag - 100000];
     }
-    [XLPhotoBrowser showPhotoBrowserWithImages:images andMiniImage:miniImages currentImageIndex:tap.view.tag - 100000];
 }
 
 //删除

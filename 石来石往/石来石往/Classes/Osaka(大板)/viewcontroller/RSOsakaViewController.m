@@ -61,6 +61,9 @@
 @property (nonatomic,strong)RSOsakaModel *model;
 /**购物车里面的数值*/
 @property (nonatomic,assign)NSInteger count;
+
+
+@property (nonatomic, strong) UIView *bottomview;
 @end
 
 @implementation RSOsakaViewController
@@ -100,20 +103,20 @@
     //对购物车里面装有多少模型的进行初始化
     self.count = 0;
     self.searchType = @"blockNo";
-    self.automaticallyAdjustsScrollViewInsets = NO;
+   
     
+    // ========== 1. 先创建 tableview ==========
+       UITableView *tableview = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+       tableview.delegate = self;
+       tableview.dataSource = self;
+       tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+       self.tableview = tableview;
     
-    [self addCustomNavigationBarView];
-    
-//    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCW, SCH - Height_NavBar - 45) style:UITableViewStylePlain];
-//    tableview.delegate = self;
-//    tableview.dataSource = self;
-//    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.tableview = tableview;
     [self isAddjust];
+    [self addCustomNavigationBarView];
+   
     self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#f9f9f9"];
     [self.view addSubview:self.tableview];
-    self.tableview.frame = CGRectMake(0, 0, SCW, SCH - Height_NavBar - Height_bottomSafeArea - 45);
     [self.tableview registerClass:[RSOsakaCell class] forCellReuseIdentifier:osakaCellID];
     
 //    [self addContentview];
@@ -132,6 +135,44 @@
     .centerXEqualToView(self.view)
     .heightRatioToView(self.view,0.45)
     .widthRatioToView(self.view,0.7);
+}
+
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
+    CGFloat topSafe = self.view.safeAreaInsets.top;
+    
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 45;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    // ========== 修正 tableview 布局 ==========
+
+    
+    self.tableview.frame = CGRectMake(0,
+                                      0,
+                                      SCW,
+                                      self.view.frame.size.height - totalBottom);
+    
+    
+    
+    
+    
+    // ========== 修正底部栏布局 ==========
+    self.bottomview.frame = CGRectMake(0,
+                                       self.view.frame.size.height - totalBottom,
+                                       SCW,
+                                       totalBottom);
+
 }
 
 - (void)getData{
@@ -273,9 +314,13 @@
 }
 #pragma mark -- 添加底部视图
 - (void)addBottomContentview{
-    UIView * bottomview = [[UIView alloc]initWithFrame:CGRectMake(0, SCH - Height_NavBar - Height_bottomSafeArea - 45, SCW, 45)];
+    
+   
+    UIView *bottomview = [[UIView alloc] init];
+    bottomview.frame = CGRectZero;
     bottomview.backgroundColor = [UIColor colorWithHexColorStr:@"#f7f7f7"];
     [self.view addSubview:bottomview];
+    self.bottomview = bottomview; // 新增属性，需要在 .h 或 .m 扩展里声明
     UIButton * shopCarBtn = [[UIButton alloc]init];
     [shopCarBtn setImage:[UIImage imageNamed:@"货车"] forState:UIControlStateNormal];
     [bottomview addSubview:shopCarBtn];
@@ -290,6 +335,7 @@
     [nextStepBtn addTarget:self action:@selector(nextViewController:) forControlEvents:UIControlEventTouchUpInside];
     nextStepBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [bottomview addSubview:nextStepBtn];
+    
 //    bottomview.sd_layout
 //    .leftSpaceToView(self.view,0)
 //    .rightSpaceToView(self.view,0)
@@ -297,7 +343,7 @@
 //    .heightIs(45);
     
     shopCarBtn.sd_layout
-    .centerYEqualToView(bottomview)
+    .topSpaceToView(bottomview, 5)
     .leftSpaceToView(bottomview,12)
     .widthIs(40)
     .heightIs(25);
@@ -305,7 +351,7 @@
     nextStepBtn.sd_layout
     .rightSpaceToView(bottomview,0)
     .topSpaceToView(bottomview,0)
-    .bottomSpaceToView(bottomview,0)
+    .heightIs(45)
     .widthRatioToView(bottomview,0.3);
     
     UIView *view = [[UIView alloc]init];

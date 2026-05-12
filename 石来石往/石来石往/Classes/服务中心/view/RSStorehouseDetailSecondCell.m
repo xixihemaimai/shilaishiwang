@@ -22,15 +22,9 @@
         [self.contentView addSubview:outNameLabel];
         _outNameLabel = outNameLabel;
         
-        //颗数
-        UILabel * outNumber = [[UILabel alloc]init];
-       // outNumber.text = @"海西石材交易中心";
-        outNumber.font = [UIFont systemFontOfSize:15];
-        outNumber.textColor = [UIColor colorWithHexColorStr:@"#666666"];
-        outNumber.textAlignment = NSTextAlignmentLeft;
-        [self.contentView addSubview:outNumber];
-        _outNumber = outNumber;
-        //预约时间
+       
+        
+        //下单时间
         UILabel * outTimeLabel = [[UILabel alloc]init];
        // outTimeLabel.text = @"海西石材交易中心";
         outTimeLabel.font = [UIFont systemFontOfSize:15];
@@ -38,6 +32,22 @@
         outTimeLabel.textAlignment = NSTextAlignmentLeft;
         [self.contentView addSubview:outTimeLabel];
         _outTimeLabel = outTimeLabel;
+        
+        
+        //订单状态
+        UILabel * outNumber = [[UILabel alloc]init];
+       // outNumber.text = @"海西石材交易中心";
+        outNumber.font = [UIFont systemFontOfSize:15];
+        outNumber.textColor = [UIColor colorWithHexColorStr:@"#666666"];
+        outNumber.textAlignment = NSTextAlignmentLeft;
+        [self.contentView addSubview:outNumber];
+        _outNumber = outNumber;
+        
+        UILabel * detailStatusLabel = [[UILabel alloc]init];
+        detailStatusLabel.font = [UIFont systemFontOfSize:15];
+        detailStatusLabel.textAlignment = NSTextAlignmentLeft;
+        [self.contentView addSubview:detailStatusLabel];
+        _detailStatusLabel = detailStatusLabel;
         
         /**汽车类型*/
         UILabel * carTypeLabel = [[UILabel alloc]init];
@@ -53,24 +63,31 @@
         .topSpaceToView(self.contentView, 5)
         .heightIs(15);
         
-        outNumber.sd_layout
+        
+        outTimeLabel.sd_layout
         .leftEqualToView(outNameLabel)
         .rightEqualToView(outNameLabel)
         .topSpaceToView(outNameLabel, 10)
         .heightIs(15);
         
+        outNumber.sd_layout
+        .leftEqualToView(outTimeLabel)
+        .widthIs(80)
+        .topSpaceToView(outTimeLabel, 10)
+        .heightIs(15);
         
-        outTimeLabel.sd_layout
-        .leftEqualToView(outNumber)
-        .rightEqualToView(outNumber)
-        .topSpaceToView(outNumber, 10)
+        
+        detailStatusLabel.sd_layout
+        .leftSpaceToView(outNumber, 0)
+        .rightSpaceToView(self.contentView, 12)
+        .topEqualToView(outNumber)
         .heightIs(15);
         
         
         carTypeLabel.sd_layout
-        .leftEqualToView(outTimeLabel)
-        .rightEqualToView(outTimeLabel)
-        .topSpaceToView(outTimeLabel, 13)
+        .leftEqualToView(outNumber)
+        .rightEqualToView(detailStatusLabel)
+        .topSpaceToView(outNumber, 10)
         .bottomSpaceToView(self.contentView, 10);
         
     }

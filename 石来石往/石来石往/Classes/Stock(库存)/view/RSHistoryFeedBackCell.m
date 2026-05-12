@@ -85,11 +85,12 @@
     _showLabel.text = _historyFeedBackListModel.content;
     
     if (_historyFeedBackListModel.status == 0){
-        
+        _statusImage.image = [UIImage imageNamed:@"待处理"];
+        _statusImage.sd_layout.leftSpaceToView(_timeLabel, 6).centerYEqualToView(_timeLabel).widthIs(45).heightIs(22);
+    }else if (_historyFeedBackListModel.status == 1){
         _statusImage.image = [UIImage imageNamed:@"处理中"];
         _statusImage.sd_layout.leftSpaceToView(_timeLabel, 6).centerYEqualToView(_timeLabel).widthIs(45).heightIs(22);
     }else{
-        
         _statusImage.image = [UIImage imageNamed:@"完成"];
         _statusImage.sd_layout.leftSpaceToView(_timeLabel, 6).centerYEqualToView(_timeLabel).widthIs(30).heightIs(22);
     }

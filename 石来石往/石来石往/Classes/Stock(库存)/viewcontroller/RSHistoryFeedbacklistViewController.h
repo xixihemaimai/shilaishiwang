@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RSHistoryFeedbacklistViewController : RSAllViewController
 
+//这边是业务那边的接口---》用block回调
+@property (nonatomic,assign)BOOL isShowAllowView;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

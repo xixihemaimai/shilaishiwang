@@ -38,8 +38,10 @@
 /**汽车类型*/
 @property (nonatomic,strong)NSString * carType;
 
-
-
+/**公司名称*/
+@property (nonatomic,copy)NSString * userName;
+/**公司电话号码*/
+@property (nonatomic,copy)NSString * userPhone;
 
 
 @end

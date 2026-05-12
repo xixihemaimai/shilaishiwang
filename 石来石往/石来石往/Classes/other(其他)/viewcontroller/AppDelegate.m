@@ -806,7 +806,7 @@ static BOOL isProduction = true;
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window{
     if (_allowRotation == true) {   // 如果属性值为YES,仅允许屏幕向左旋转,否则仅允许竖屏
-        return UIInterfaceOrientationMaskAll;  // 这里是屏幕要旋转的方向
+        return UIInterfaceOrientationMaskLandscapeRight;  // 这里是屏幕要旋转的方向
     }else{
         return (UIInterfaceOrientationMaskPortrait);
     }

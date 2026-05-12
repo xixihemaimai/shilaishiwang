@@ -7649,21 +7649,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5CAE5C8C8069DEE669BAFA64 /* Pods-石来石往.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = "石来石往/石来石往.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.5.7;
+				CURRENT_PROJECT_VERSION = 1.6.5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = 5CVKEU8NXR;
 				ENABLE_TESTABILITY = YES;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				"EXCLUDED_ARCHS[sdk=iphone*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
@@ -7696,7 +7697,8 @@
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib/ailpay",
 				);
-				MARKETING_VERSION = 3.6.6;
+				MARKETING_VERSION = 3.7.1;
+				ONLY_FOR_SIMULATOR = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -7708,11 +7710,9 @@
 					"-l\"MJRefresh\"",
 					"-l\"MLLabel\"",
 					"-l\"Masonry\"",
-					"-l\"SDAutoLayout\"",
 					"-l\"SDWebImage\"",
 					"-l\"SVProgressHUD\"",
 					"-l\"TTTAttributedLabel\"",
-					"-l\"TZImagePickerController\"",
 					"-l\"UUButton\"",
 					"-l\"XLPhotoBrowser+CoderXL\"",
 					"-l\"YNPageViewController\"",
@@ -7773,18 +7773,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = "石来石往/石来石往Release.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.5.7;
+				CURRENT_PROJECT_VERSION = 1.6.5;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5CVKEU8NXR;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
@@ -7817,7 +7817,8 @@
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib/ailpay",
 				);
-				MARKETING_VERSION = 3.6.6;
+				MARKETING_VERSION = 3.7.1;
+				ONLY_FOR_SIMULATOR = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -7829,11 +7830,9 @@
 					"-l\"MJRefresh\"",
 					"-l\"MLLabel\"",
 					"-l\"Masonry\"",
-					"-l\"SDAutoLayout\"",
 					"-l\"SDWebImage\"",
 					"-l\"SVProgressHUD\"",
 					"-l\"TTTAttributedLabel\"",
-					"-l\"TZImagePickerController\"",
 					"-l\"UUButton\"",
 					"-l\"XLPhotoBrowser+CoderXL\"",
 					"-l\"YNPageViewController\"",
@@ -7881,7 +7880,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = 2023ShiLaiShiWang;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ShiLaiShiWangAD;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

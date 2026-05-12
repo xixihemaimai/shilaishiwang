@@ -25,4 +25,8 @@
 @property (nonatomic,strong)NSString * status;
 
 
+/**订单信息*/
+@property (nonatomic,strong)NSString * outBoundNo;
+
+
 @end

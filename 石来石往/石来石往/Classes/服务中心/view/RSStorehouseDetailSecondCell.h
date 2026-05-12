@@ -16,6 +16,9 @@
 //颗数
 @property (nonatomic,strong)UILabel * outNumber;
 
+//订单状态
+@property (nonatomic,copy)UILabel * detailStatusLabel;
+
 
 //预约时间
 @property (nonatomic,strong)UILabel * outTimeLabel;

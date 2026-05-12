@@ -22,6 +22,11 @@
 #import "RSPersonalServiceViewController.h"
 
 
+
+#import "RSOutRecordModel.h"
+#import "RSOutRecordDetailModel.h"
+
+
 @interface RSStorehouseDetailsViewController ()
 
 //@property (nonatomic,strong)UITableView * tableview;
@@ -61,7 +66,7 @@
     self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#f9f9f9"];
     [self isAddjust];
 ///    if ([[self.navigationController.viewControllers objectAtIndex:1]class] == [RSPersonalServiceViewController class]) {
-    [self loadPersonlServiceOutData];
+    [self loadRecordDetailData];
 //    }else{
 //        [self loadStoreHouseDetailsData];
 //    }
@@ -97,7 +102,7 @@
     RSWeakself
     [self.tableview setupEmptyDataText:@"重新加载数据" tapBlock:^{
 //        if ([[weakSelf.navigationController.viewControllers objectAtIndex:1]class] == [RSPersonalServiceViewController class]) {
-            [weakSelf loadPersonlServiceOutData];
+            [weakSelf loadRecordDetailData];
 //        }else{
 //            [weakSelf loadStoreHouseDetailsData];
 //        }
@@ -108,151 +113,216 @@
 
 
 
-- (void)loadStoreHouseDetailsData{
+- (void)loadRecordDetailData{
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString * verifyKey = [user objectForKey:@"VERIFYKEY"];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setObject:self.usermodel.userID forKey:@"userId"];
-    [dict setObject:self.serviceId forKey:@"serviceId"];
-    [dict setObject:self.type forKey:@"type"];
-    [dict setObject:self.search forKey:@"search"];
+    [dict setObject:self.outBoundNo forKey:@"outBoundNo"];
     NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     AppDelegate * applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifyKey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
-    RSWeakself
+    //URL_OUTSTORE_HISTORY_IOS URL_OUTSTORE_HISTORY
+    __weak typeof(self) weakSelf = self;
     XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
-    [network getDataWithUrlString:URL_SERVICESEARCH_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
+    [network getDataWithUrlString:URL_OUTSTORE_HISTORY_DETAIL_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
         if (success) {
-            
             BOOL Result = [json[@"Result"] boolValue];
             if (Result) {
-                NSMutableArray * array = [NSMutableArray array];
+                CLog(@"=================================%@",json);
+                NSMutableArray  * array = nil;
                 [weakSelf.allArray removeAllObjects];
                 array = json[@"Data"];
-                for (int i = 0; i < array.count; i++) {
-                    RSStoreHouseDetailModel * storeHouseDetailmodel = [[RSStoreHouseDetailModel alloc]init];
-                    storeHouseDetailmodel.appointTime = [[array objectAtIndex:i]objectForKey:@"appointTime"];
-                    storeHouseDetailmodel.commentTime = [[array objectAtIndex:i]objectForKey:@"commentTime"];
-                    storeHouseDetailmodel.csnIden = [[array objectAtIndex:i]objectForKey:@"csnIden"];
-                    storeHouseDetailmodel.outType = [[array objectAtIndex:i]objectForKey:@"outType"];
-                    storeHouseDetailmodel.csnName = [[array objectAtIndex:i]objectForKey:@"csnName"];
-                    storeHouseDetailmodel.csnPhone = [[array objectAtIndex:i]objectForKey:@"csnPhone"];
-                    storeHouseDetailmodel.dispatchTime = [[array objectAtIndex:i]objectForKey:@"dispatchTime"];
-                    storeHouseDetailmodel.endTime = [[array objectAtIndex:i]objectForKey:@"endTime"];
-                    storeHouseDetailmodel.orgName = [[array objectAtIndex:i]objectForKey:@"orgName"];
-                    storeHouseDetailmodel.outBoundNo = [[array objectAtIndex:i]objectForKey:@"outBoundNo"];
-                    storeHouseDetailmodel.carType = [[array objectAtIndex:i]objectForKey:@"carType"];
-                    storeHouseDetailmodel.phone = [[array objectAtIndex:i]objectForKey:@"phone"];
-                    storeHouseDetailmodel.sendTime = [[array objectAtIndex:i]objectForKey:@"sendTime"];
-                    storeHouseDetailmodel.serviceComment = [[array objectAtIndex:i]objectForKey:@"serviceComment"];
-                    storeHouseDetailmodel.serviceId = [[array objectAtIndex:i]objectForKey:@"serviceId"];
-                    storeHouseDetailmodel.serviceKind = [[array objectAtIndex:i]objectForKey:@"serviceKind"];
-                    storeHouseDetailmodel.serviceThing = [[array objectAtIndex:i]objectForKey:@"serviceThing"];
-                    storeHouseDetailmodel.serviceTime = [[array objectAtIndex:i]objectForKey:@"serviceTime"];
-                    storeHouseDetailmodel.starLevel = [[array objectAtIndex:i]objectForKey:@"starLevel"];
-                    NSMutableArray * bolocksTempArray = [NSMutableArray array];
-                    bolocksTempArray = [[array objectAtIndex:i]objectForKey:@"bolcks"];
-                    NSMutableArray * bolocksArray = [NSMutableArray array];
-                    storeHouseDetailmodel.img = [[array objectAtIndex:i]objectForKey:@"img"];
-                    for ( int j = 0; j < bolocksTempArray.count; j++) {
-                        RSStorehouseDetailBolocksModel * storehouseDetailBolocksmodel = [[RSStorehouseDetailBolocksModel alloc]init];
-                        storehouseDetailBolocksmodel.blockNo = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockNo"];
-                        storehouseDetailBolocksmodel.blockName = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockName"];
-                        storehouseDetailBolocksmodel.blockNum = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockNum"];
-                        storehouseDetailBolocksmodel.blockTurns = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockTurns"];
-                        [bolocksArray addObject:storehouseDetailBolocksmodel];
+                    for (int n = 0; n < array.count; n++) {
+                        RSOutRecordModel * outRecordmodel = [[RSOutRecordModel alloc]init];
+                        outRecordmodel.outstoreDate = [[array objectAtIndex:n]objectForKey:@"outstoreDate"];
+                        outRecordmodel.OUT_TYPE = [[array objectAtIndex:n]objectForKey:@"OUT_TYPE"];
+                        outRecordmodel.outstoreId = [[array objectAtIndex:n]objectForKey:@"outstoreId"];
+                        outRecordmodel.outstoreStatus = [[array objectAtIndex:n]objectForKey:@"outstoreStatus"];
+                        outRecordmodel.csnName = [[array objectAtIndex:n]objectForKey:@"csnName"];
+                        outRecordmodel.csnPhone = [[array objectAtIndex:n]objectForKey:@"csnPhone"];
+                        outRecordmodel.servicestatus = [[array objectAtIndex:n]objectForKey:@"servicestatus"];
+                        outRecordmodel.qrCode = [[array objectAtIndex:n]objectForKey:@"qrCode"];
+                        outRecordmodel.scnStatus = [[array objectAtIndex:n]objectForKey:@"scnStatus"];
+                        outRecordmodel.carType = [[array objectAtIndex:n]objectForKey:@"carType"];
+                        outRecordmodel.userName = [[array objectAtIndex:n]objectForKey:@"userName"];
+                        outRecordmodel.userPhone = [[array objectAtIndex:n]objectForKey:@"userPhone"];
+                        NSMutableArray * tempArray = nil;
+                        tempArray = [[array objectAtIndex:n]objectForKey:@"bolcks"];
+                        NSMutableArray * blockArray = [NSMutableArray array];
+                        for (int j = 0; j < tempArray.count; j++) {
+                            RSOutRecordDetailModel * outRecordDetailmodel = [[RSOutRecordDetailModel alloc]init];
+                            outRecordDetailmodel.blockName = [[tempArray objectAtIndex:j]objectForKey:@"blockName"];
+                            outRecordDetailmodel.blockNo = [[tempArray objectAtIndex:j]objectForKey:@"blockNo"];
+                            outRecordDetailmodel.blockNum = [[tempArray objectAtIndex:j]objectForKey:@"blockNum"];
+                            outRecordDetailmodel.blockTurns = [[tempArray objectAtIndex:j]objectForKey:@"blockTurns"];
+                            [blockArray addObject:outRecordDetailmodel];
+                            outRecordDetailmodel.turnsNo = [[tempArray objectAtIndex:j]objectForKey:@"turnsNo"];
+                            outRecordDetailmodel.locationName = [[tempArray objectAtIndex:j]objectForKey:@"locationName"];
+                        }
+                        outRecordmodel.bolcks = blockArray;
+                        [weakSelf.allArray addObject:outRecordmodel];
                     }
-                    storeHouseDetailmodel.bolcks = bolocksArray;
-                    [weakSelf.allArray addObject:storeHouseDetailmodel];
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self addStorehouseDetailCustomTableview];
-                    [weakSelf.tableview reloadData];
-                });
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self addStorehouseDetailCustomTableview];
+                        [weakSelf.tableview reloadData];
+                    });
             }else{
-                [SVProgressHUD showErrorWithStatus:@"加载失败"];
+                [SVProgressHUD showErrorWithStatus:@"获取失败"];
             }
         }else{
-            [SVProgressHUD showErrorWithStatus:@"加载失败"];
+            [SVProgressHUD showErrorWithStatus:@"获取失败"];
         }
     }];
 }
 
-- (void)loadPersonlServiceOutData{
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString * verifyKey = [user objectForKey:@"VERIFYKEY"];
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setObject:self.status forKey:@"status"];
-    [dict setObject:self.serviceId forKey:@"serviceId"];
-    [dict setObject:self.type forKey:@"type"];
-    [dict setObject:self.search forKey:@"search"];
-    NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
-    NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    AppDelegate * applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifyKey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
-    RSWeakself
-    XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
-    [network getDataWithUrlString:URL_PERSONLSEARCHSERVICEFORWAITER_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
-        if (success) {
-             
-            BOOL Result = [json[@"Result"] boolValue];
-            if (Result) {
-                NSMutableArray * array = [NSMutableArray array];
-                [weakSelf.allArray removeAllObjects];
-                array = json[@"Data"];
-                
-               
-                for (int i = 0; i < array.count; i++) {
-                    RSStoreHouseDetailModel * storeHouseDetailmodel = [[RSStoreHouseDetailModel alloc]init];
-                    storeHouseDetailmodel.appointTime = [[array objectAtIndex:i]objectForKey:@"appointTime"];
-                    storeHouseDetailmodel.commentTime = [[array objectAtIndex:i]objectForKey:@"commentTime"];
-                    storeHouseDetailmodel.csnIden = [[array objectAtIndex:i]objectForKey:@"csnIden"];
-                    storeHouseDetailmodel.csnName = [[array objectAtIndex:i]objectForKey:@"csnName"];
-                    storeHouseDetailmodel.csnPhone = [[array objectAtIndex:i]objectForKey:@"csnPhone"];
-                    storeHouseDetailmodel.carType = [[array objectAtIndex:i]objectForKey:@"carType"];
-                    storeHouseDetailmodel.dispatchTime = [[array objectAtIndex:i]objectForKey:@"dispatchTime"];
-                    storeHouseDetailmodel.endTime = [[array objectAtIndex:i]objectForKey:@"endTime"];
-                    storeHouseDetailmodel.orgName = [[array objectAtIndex:i]objectForKey:@"orgName"];
-                    storeHouseDetailmodel.outBoundNo = [[array objectAtIndex:i]objectForKey:@"outBoundNo"];
-                    storeHouseDetailmodel.phone = [[array objectAtIndex:i]objectForKey:@"phone"];
-                    storeHouseDetailmodel.sendTime = [[array objectAtIndex:i]objectForKey:@"sendTime"];
-                    storeHouseDetailmodel.serviceComment = [[array objectAtIndex:i]objectForKey:@"serviceComment"];
-                    storeHouseDetailmodel.serviceId = [[array objectAtIndex:i]objectForKey:@"serviceId"];
-                    storeHouseDetailmodel.serviceKind = [[array objectAtIndex:i]objectForKey:@"serviceKind"];
-                    storeHouseDetailmodel.serviceThing = [[array objectAtIndex:i]objectForKey:@"serviceThing"];
-                    storeHouseDetailmodel.serviceTime = [[array objectAtIndex:i]objectForKey:@"serviceTime"];
-                    storeHouseDetailmodel.starLevel = [[array objectAtIndex:i]objectForKey:@"starLevel"];
-                    storeHouseDetailmodel.outType = [[array objectAtIndex:i]objectForKey:@"outType"];
-                    NSMutableArray * bolocksTempArray = [NSMutableArray array];
-                    bolocksTempArray = [[array objectAtIndex:i]objectForKey:@"bolcks"];
-                    NSMutableArray * bolocksArray = [NSMutableArray array];
-                    storeHouseDetailmodel.img = [[array objectAtIndex:i]objectForKey:@"img"];
-                    for ( int j = 0; j < bolocksTempArray.count; j++) {
-                        RSStorehouseDetailBolocksModel * storehouseDetailBolocksmodel = [[RSStorehouseDetailBolocksModel alloc]init];
-                        storehouseDetailBolocksmodel.blockNo = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockNo"];
-                        storehouseDetailBolocksmodel.blockName = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockName"];
-                        storehouseDetailBolocksmodel.blockNum = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockNum"];
-                        storehouseDetailBolocksmodel.blockTurns = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockTurns"];
-                        storehouseDetailBolocksmodel.locationName = [[bolocksTempArray objectAtIndex:j]objectForKey:@"locationName"];
-                        storehouseDetailBolocksmodel.turnsNo = [[bolocksTempArray objectAtIndex:j]objectForKey:@"turnsNo"];
-                        [bolocksArray addObject:storehouseDetailBolocksmodel];
-                    }
-                    storeHouseDetailmodel.bolcks = bolocksArray;
-                    [weakSelf.allArray addObject:storeHouseDetailmodel];
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self addStorehouseDetailCustomTableview];
-                    [weakSelf.tableview reloadData];
-                });
-            }else{
-                 [SVProgressHUD showErrorWithStatus:@"加载失败"];
-            }
-        }else{
-             [SVProgressHUD showErrorWithStatus:@"加载失败"];
-        }
-    }];
-}
+
+//- (void)loadStoreHouseDetailsData{
+//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//    NSString * verifyKey = [user objectForKey:@"VERIFYKEY"];
+//    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+//    [dict setObject:self.usermodel.userID forKey:@"userId"];
+//    [dict setObject:self.serviceId forKey:@"serviceId"];
+//    [dict setObject:self.type forKey:@"type"];
+//    [dict setObject:self.search forKey:@"search"];
+//    NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+//    NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//    AppDelegate * applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifyKey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
+//    RSWeakself
+//    XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
+//    [network getDataWithUrlString:URL_SERVICESEARCH_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
+//        if (success) {
+//            
+//            BOOL Result = [json[@"Result"] boolValue];
+//            if (Result) {
+//                NSMutableArray * array = [NSMutableArray array];
+//                [weakSelf.allArray removeAllObjects];
+//                array = json[@"Data"];
+//                for (int i = 0; i < array.count; i++) {
+//                    RSStoreHouseDetailModel * storeHouseDetailmodel = [[RSStoreHouseDetailModel alloc]init];
+//                    storeHouseDetailmodel.appointTime = [[array objectAtIndex:i]objectForKey:@"appointTime"];
+//                    storeHouseDetailmodel.commentTime = [[array objectAtIndex:i]objectForKey:@"commentTime"];
+//                    storeHouseDetailmodel.csnIden = [[array objectAtIndex:i]objectForKey:@"csnIden"];
+//                    storeHouseDetailmodel.outType = [[array objectAtIndex:i]objectForKey:@"outType"];
+//                    storeHouseDetailmodel.csnName = [[array objectAtIndex:i]objectForKey:@"csnName"];
+//                    storeHouseDetailmodel.csnPhone = [[array objectAtIndex:i]objectForKey:@"csnPhone"];
+//                    storeHouseDetailmodel.dispatchTime = [[array objectAtIndex:i]objectForKey:@"dispatchTime"];
+//                    storeHouseDetailmodel.endTime = [[array objectAtIndex:i]objectForKey:@"endTime"];
+//                    storeHouseDetailmodel.orgName = [[array objectAtIndex:i]objectForKey:@"orgName"];
+//                    storeHouseDetailmodel.outBoundNo = [[array objectAtIndex:i]objectForKey:@"outBoundNo"];
+//                    storeHouseDetailmodel.carType = [[array objectAtIndex:i]objectForKey:@"carType"];
+//                    storeHouseDetailmodel.phone = [[array objectAtIndex:i]objectForKey:@"phone"];
+//                    storeHouseDetailmodel.sendTime = [[array objectAtIndex:i]objectForKey:@"sendTime"];
+//                    storeHouseDetailmodel.serviceComment = [[array objectAtIndex:i]objectForKey:@"serviceComment"];
+//                    storeHouseDetailmodel.serviceId = [[array objectAtIndex:i]objectForKey:@"serviceId"];
+//                    storeHouseDetailmodel.serviceKind = [[array objectAtIndex:i]objectForKey:@"serviceKind"];
+//                    storeHouseDetailmodel.serviceThing = [[array objectAtIndex:i]objectForKey:@"serviceThing"];
+//                    storeHouseDetailmodel.serviceTime = [[array objectAtIndex:i]objectForKey:@"serviceTime"];
+//                    storeHouseDetailmodel.starLevel = [[array objectAtIndex:i]objectForKey:@"starLevel"];
+//                    NSMutableArray * bolocksTempArray = [NSMutableArray array];
+//                    bolocksTempArray = [[array objectAtIndex:i]objectForKey:@"bolcks"];
+//                    NSMutableArray * bolocksArray = [NSMutableArray array];
+//                    storeHouseDetailmodel.img = [[array objectAtIndex:i]objectForKey:@"img"];
+//                    for ( int j = 0; j < bolocksTempArray.count; j++) {
+//                        RSStorehouseDetailBolocksModel * storehouseDetailBolocksmodel = [[RSStorehouseDetailBolocksModel alloc]init];
+//                        storehouseDetailBolocksmodel.blockNo = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockNo"];
+//                        storehouseDetailBolocksmodel.blockName = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockName"];
+//                        storehouseDetailBolocksmodel.blockNum = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockNum"];
+//                        storehouseDetailBolocksmodel.blockTurns = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockTurns"];
+//                        [bolocksArray addObject:storehouseDetailBolocksmodel];
+//                    }
+//                    storeHouseDetailmodel.bolcks = bolocksArray;
+//                    [weakSelf.allArray addObject:storeHouseDetailmodel];
+//                }
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self addStorehouseDetailCustomTableview];
+//                    [weakSelf.tableview reloadData];
+//                });
+//            }else{
+//                [SVProgressHUD showErrorWithStatus:@"加载失败"];
+//            }
+//        }else{
+//            [SVProgressHUD showErrorWithStatus:@"加载失败"];
+//        }
+//    }];
+//}
+
+//- (void)loadPersonlServiceOutData{
+//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//    NSString * verifyKey = [user objectForKey:@"VERIFYKEY"];
+//    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+//    [dict setObject:self.status forKey:@"status"];
+//    [dict setObject:self.serviceId forKey:@"serviceId"];
+//    [dict setObject:self.type forKey:@"type"];
+//    [dict setObject:self.search forKey:@"search"];
+//    NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+//    NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//    AppDelegate * applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifyKey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
+//    RSWeakself
+//    XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
+//    [network getDataWithUrlString:URL_PERSONLSEARCHSERVICEFORWAITER_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
+//        if (success) {
+//             
+//            BOOL Result = [json[@"Result"] boolValue];
+//            if (Result) {
+//
+//                NSMutableArray * array = [NSMutableArray array];
+//                [weakSelf.allArray removeAllObjects];
+//                array = json[@"Data"];
+//                NSLog(@"===============%@",array);
+//               
+//                for (int i = 0; i < array.count; i++) {
+//                    RSStoreHouseDetailModel * storeHouseDetailmodel = [[RSStoreHouseDetailModel alloc]init];
+//                    storeHouseDetailmodel.appointTime = [[array objectAtIndex:i]objectForKey:@"appointTime"];
+//                    storeHouseDetailmodel.commentTime = [[array objectAtIndex:i]objectForKey:@"commentTime"];
+//                    storeHouseDetailmodel.csnIden = [[array objectAtIndex:i]objectForKey:@"csnIden"];
+//                    storeHouseDetailmodel.csnName = [[array objectAtIndex:i]objectForKey:@"csnName"];
+//                    storeHouseDetailmodel.csnPhone = [[array objectAtIndex:i]objectForKey:@"csnPhone"];
+//                    storeHouseDetailmodel.carType = [[array objectAtIndex:i]objectForKey:@"carType"];
+//                    storeHouseDetailmodel.dispatchTime = [[array objectAtIndex:i]objectForKey:@"dispatchTime"];
+//                    storeHouseDetailmodel.endTime = [[array objectAtIndex:i]objectForKey:@"endTime"];
+//                    storeHouseDetailmodel.orgName = [[array objectAtIndex:i]objectForKey:@"orgName"];
+//                    storeHouseDetailmodel.outBoundNo = [[array objectAtIndex:i]objectForKey:@"outBoundNo"];
+//                    storeHouseDetailmodel.phone = [[array objectAtIndex:i]objectForKey:@"phone"];
+//                    storeHouseDetailmodel.sendTime = [[array objectAtIndex:i]objectForKey:@"sendTime"];
+//                    storeHouseDetailmodel.serviceComment = [[array objectAtIndex:i]objectForKey:@"serviceComment"];
+//                    storeHouseDetailmodel.serviceId = [[array objectAtIndex:i]objectForKey:@"serviceId"];
+//                    storeHouseDetailmodel.serviceKind = [[array objectAtIndex:i]objectForKey:@"serviceKind"];
+//                    storeHouseDetailmodel.serviceThing = [[array objectAtIndex:i]objectForKey:@"serviceThing"];
+//                    storeHouseDetailmodel.serviceTime = [[array objectAtIndex:i]objectForKey:@"serviceTime"];
+//                    storeHouseDetailmodel.starLevel = [[array objectAtIndex:i]objectForKey:@"starLevel"];
+//                    storeHouseDetailmodel.outType = [[array objectAtIndex:i]objectForKey:@"outType"];
+//                    NSMutableArray * bolocksTempArray = [NSMutableArray array];
+//                    bolocksTempArray = [[array objectAtIndex:i]objectForKey:@"bolcks"];
+//                    NSMutableArray * bolocksArray = [NSMutableArray array];
+//                    storeHouseDetailmodel.img = [[array objectAtIndex:i]objectForKey:@"img"];
+//                    for ( int j = 0; j < bolocksTempArray.count; j++) {
+//                        RSStorehouseDetailBolocksModel * storehouseDetailBolocksmodel = [[RSStorehouseDetailBolocksModel alloc]init];
+//                        storehouseDetailBolocksmodel.blockNo = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockNo"];
+//                        storehouseDetailBolocksmodel.blockName = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockName"];
+//                        storehouseDetailBolocksmodel.blockNum = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockNum"];
+//                        storehouseDetailBolocksmodel.blockTurns = [[bolocksTempArray objectAtIndex:j]objectForKey:@"blockTurns"];
+//                        storehouseDetailBolocksmodel.locationName = [[bolocksTempArray objectAtIndex:j]objectForKey:@"locationName"];
+//                        storehouseDetailBolocksmodel.turnsNo = [[bolocksTempArray objectAtIndex:j]objectForKey:@"turnsNo"];
+//                        [bolocksArray addObject:storehouseDetailBolocksmodel];
+//                    }
+//                    storeHouseDetailmodel.bolcks = bolocksArray;
+//                    [weakSelf.allArray addObject:storeHouseDetailmodel];
+//                }
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self addStorehouseDetailCustomTableview];
+//                    [weakSelf.tableview reloadData];
+//                });
+//            }else{
+//                 [SVProgressHUD showErrorWithStatus:@"加载失败"];
+//            }
+//        }else{
+//             [SVProgressHUD showErrorWithStatus:@"加载失败"];
+//        }
+//    }];
+//}
 
 
 
@@ -270,7 +340,7 @@
     }else if (section == 2){
         return 1;
     }else{
-        RSStoreHouseDetailModel * storeHouseDetailmodel = self.allArray[0];
+        RSOutRecordModel * storeHouseDetailmodel = self.allArray[0];
         return storeHouseDetailmodel.bolcks.count;
     }
 }
@@ -279,19 +349,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    RSStoreHouseDetailModel * storeHouseDetailmodel = self.allArray[0];
-    RSStorehouseDetailBolocksModel *  storehouseDetailBolocksmodel = storeHouseDetailmodel.bolcks[indexPath.row];
+    RSOutRecordModel * storeHouseDetailmodel = self.allArray[0];
+    RSOutRecordDetailModel *  storehouseDetailBolocksmodel = storeHouseDetailmodel.bolcks[indexPath.row];
     if (indexPath.section == 0) {
         static NSString * STOREHOUSEDETAILFIRSTID = @"STOREHOUSEDETAILFIRSTID";
         RSStorehouseDetailFirstCell * cell = [tableView dequeueReusableCellWithIdentifier:STOREHOUSEDETAILFIRSTID];
         if (!cell) {
             cell = [[RSStorehouseDetailFirstCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:STOREHOUSEDETAILFIRSTID];
         }
-        cell.companyName.text = [NSString stringWithFormat:@"名称:%@",storeHouseDetailmodel.orgName];
+        cell.companyName.text = [NSString stringWithFormat:@"名称:%@",storeHouseDetailmodel.userName];
       //  cell.companyPhoneNam.text = [NSString stringWithFormat:@"电话号码:%@",storeHouseDetailmodel.phone];
         
        // cell.companyPhoneBtn.tag = indexPath.row + 10000000;
-        [cell.companyPhoneBtn setTitle:[NSString stringWithFormat:@"电话号码:%@",storeHouseDetailmodel.phone] forState:UIControlStateNormal];
+        [cell.companyPhoneBtn setTitle:[NSString stringWithFormat:@"%@",storeHouseDetailmodel.userPhone] forState:UIControlStateNormal];
         [cell.companyPhoneBtn setTitleColor:[UIColor colorWithHexColorStr:@"#3385ff"] forState:UIControlStateNormal];
         [cell.companyPhoneBtn addTarget:self action:@selector(choicePlayPhoneAction:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -305,10 +375,10 @@
             cell = [[RSStorehouseDetailSecondCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:STOREHOUSEDETAILSECONDID];
         }
         
-        cell.outNameLabel.text = [NSString stringWithFormat:@"出单号:%@",storeHouseDetailmodel.outBoundNo];
-         cell.outNumber.text = [NSString stringWithFormat:@"颗数:%ld颗",(long)storeHouseDetailmodel.bolcks.count];
-        cell.outTimeLabel.text = [NSString stringWithFormat:@"预约时间:%@",storeHouseDetailmodel.appointTime];
+        cell.outNameLabel.text = [NSString stringWithFormat:@"出单号:%@",storeHouseDetailmodel.outstoreId];
+        cell.outTimeLabel.text = [NSString stringWithFormat:@"下单时间:%@",storeHouseDetailmodel.outstoreDate];
         
+        cell.outNumber.text = [NSString stringWithFormat:@"订单状态:"];
         
         
         if ([storeHouseDetailmodel.carType  isEqualToString:@"dt"]) {
@@ -321,6 +391,27 @@
              cell.carTypeLabel.text = [NSString stringWithFormat:@"汽车类型:其他"];
         }
         
+        if ([storeHouseDetailmodel.outstoreStatus isEqualToString:@"0"]) {
+            cell.detailStatusLabel.text = @"已完成";
+            cell.detailStatusLabel.textColor = [UIColor colorWithHexColorStr:@"#e52c32"];
+        }
+        if ([storeHouseDetailmodel.outstoreStatus isEqualToString:@"2"]) {
+            cell.detailStatusLabel.text = @"审核中";
+            cell.detailStatusLabel.textColor = [UIColor colorWithHexColorStr:@"#fbc376"];
+        }
+        if ([storeHouseDetailmodel.outstoreStatus isEqualToString:@"3"]) {
+            cell.detailStatusLabel.text = @"待发货";
+            cell.detailStatusLabel.textColor = [UIColor colorWithHexColorStr:@"#afd9ff"];
+        }
+        if ([storeHouseDetailmodel.outstoreStatus isEqualToString:@"4"]) {
+            cell.detailStatusLabel.text = @"部分发货";
+            cell.detailStatusLabel.textColor = [UIColor colorWithHexColorStr:@"#a4d4c8"];
+        }
+        
+        if ([storeHouseDetailmodel.outstoreStatus isEqualToString:@"-1"]) {
+            cell.detailStatusLabel.text = @"已失效";
+            cell.detailStatusLabel.textColor = [UIColor colorWithHexColorStr:@"#afd450"];
+        }
         
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -335,7 +426,7 @@
         }
         cell.personLabel.text = [NSString stringWithFormat:@"名字:%@",storeHouseDetailmodel.csnName];
         
-        [cell.personPhoneBtn setTitle:[NSString stringWithFormat:@"电话号码:%@",storeHouseDetailmodel.csnPhone] forState:UIControlStateNormal];
+        [cell.personPhoneBtn setTitle:[NSString stringWithFormat:@"%@",storeHouseDetailmodel.csnPhone] forState:UIControlStateNormal];
         
         cell.personPhoneBtn.tag = 10000+ indexPath.row;
         [cell.personPhoneBtn addTarget:self action:@selector(servicePlayPhoneAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -354,7 +445,7 @@
         return cell;
     }else{
         //荒料
-        if ([storeHouseDetailmodel.outType isEqualToString:@"BL"]) {
+        if ([storeHouseDetailmodel.OUT_TYPE isEqualToString:@"BL"]) {
             static NSString * BLSTOREHOUSEDETAILRECORDID = @"BLSTOREHOUSEDETAILRECORDID";
             RSRecordCell * cell = [tableView dequeueReusableCellWithIdentifier:BLSTOREHOUSEDETAILRECORDID];
             if (!cell) {
@@ -436,8 +527,8 @@
 //            return 80;
 //        }
     }else{
-        RSStoreHouseDetailModel * storeHouseDetailmodel = self.allArray[0];
-        if ([storeHouseDetailmodel.outType isEqualToString:@"BL"]) {
+        RSOutRecordModel * storeHouseDetailmodel = self.allArray[0];
+        if ([storeHouseDetailmodel.OUT_TYPE isEqualToString:@"BL"]) {
             return 96;
         }else{
             return 131;
@@ -467,7 +558,11 @@ static NSString * STOREHOUSEDETAILID = @"STOREHOUSEDETAILID";
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 10;
+    if (section == 3){
+        return 10;
+    }else{
+        return 0;
+    }
 }
 - (void)servicePlayPhoneAction:(UIButton *)btn{
     RSStoreHouseDetailModel * storeHouseDetailmodel = self.allArray[btn.tag - 10000];
@@ -481,9 +576,9 @@ static NSString * STOREHOUSEDETAILID = @"STOREHOUSEDETAILID";
 #pragma mark --- 组一要打电话
 - (void)choicePlayPhoneAction:(UIButton *)playBtn{
     
-    RSStoreHouseDetailModel * storeHouseDetailmodel = self.allArray[0];
-//    RSStorehouseDetailBolocksModel *  storehouseDetailBolocksmodel = storeHouseDetailmodel.bolcks[playBtn.tag - 10000000];
-    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",storeHouseDetailmodel.phone];
+    RSOutRecordModel * storeHouseDetailmodel = self.allArray[0];
+//  RSStorehouseDetailBolocksModel *  storehouseDetailBolocksmodel = storeHouseDetailmodel.bolcks[playBtn.tag - 10000000];
+    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",storeHouseDetailmodel.userPhone];
     UIWebView *callWebview = [[UIWebView alloc] init];
     [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
     [self.view addSubview:callWebview];

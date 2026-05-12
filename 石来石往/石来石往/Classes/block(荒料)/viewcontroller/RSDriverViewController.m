@@ -32,6 +32,7 @@
 
 
 @property (nonatomic,strong) UISearchBar * search;
+@property (nonatomic,strong)UIView * bottomview;
 
 @end
 
@@ -87,6 +88,44 @@ static NSString *driverInformationID = @"driverinformation";
     [self getServerDriverInformation];
     
 }
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
+    CGFloat topSafe = self.view.safeAreaInsets.top;
+    
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 45;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    // ========== 修正 tableview 布局 ==========
+
+    
+    self.tableview.frame = CGRectMake(0,
+                                      0,
+                                      SCW,
+                                      self.view.frame.size.height - totalBottom);
+    
+    
+    
+    
+    
+    // ========== 修正底部栏布局 ==========
+    self.bottomview.frame = CGRectMake(0,
+                                       self.view.frame.size.height - totalBottom,
+                                       SCW,
+                                       totalBottom);
+
+}
+
 
 - (void)refresh{
     //重新获取数据
@@ -155,7 +194,7 @@ static NSString *driverInformationID = @"driverinformation";
     [self.view addSubview:search];
     
    [self.view addSubview:self.tableview];
-    self.tableview.frame = CGRectMake(0, CGRectGetMaxY(_search.frame), SCW, SCH - Height_NavBar - Height_bottomSafeArea - 45 - search.yj_height);
+    self.tableview.frame = CGRectZero;
 
    [self.tableview registerClass:[RSDriverInformationCell class] forCellReuseIdentifier:driverInformationID];
 }
@@ -357,13 +396,21 @@ static NSString *driverInformationID = @"driverinformation";
 //    }else{
 //        Y = 0;
 //    }
-    UIButton * bottomBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, SCH - Height_NavBar - Height_bottomSafeArea - 45, SCW, 45)];
+    
+    UIView *bottomview = [[UIView alloc] init];
+    bottomview.frame = CGRectZero;
+    bottomview.backgroundColor = [UIColor colorWithHexColorStr:@"#f7f7f7"];
+    [self.view addSubview:bottomview];
+    self.bottomview = bottomview;
+    
+    UIButton * bottomBtn = [[UIButton alloc]init];
     [bottomBtn setBackgroundColor:[UIColor colorWithHexColorStr:@"#ff5f04"]];
-    [self.view addSubview:bottomBtn];
+    [bottomview addSubview:bottomBtn];
     [bottomBtn addTarget:self action:@selector(jumpAddDriverViewController) forControlEvents:UIControlEventTouchUpInside];
     UIImageView *addimageivew = [[UIImageView alloc]init];
     addimageivew.image = [UIImage imageNamed:@"multiwindow_bottombar_add_disable"];
     [bottomBtn addSubview:addimageivew];
+    
     
     UILabel *label = [[UILabel alloc]init];
     label.text = @"添加新司机";
@@ -377,6 +424,17 @@ static NSString *driverInformationID = @"driverinformation";
 //    .rightSpaceToView(self.view,0)
 //    .leftSpaceToView(self.view,0)
 //    .heightIs(45);
+    
+    
+   
+
+    
+    
+    bottomBtn.sd_layout
+    .leftSpaceToView(bottomview, 0)
+    .rightSpaceToView(bottomview, 0)
+    .heightIs(45)
+    .topSpaceToView(bottomview, 0);
     
     label.sd_layout
     .centerXEqualToView(bottomBtn)

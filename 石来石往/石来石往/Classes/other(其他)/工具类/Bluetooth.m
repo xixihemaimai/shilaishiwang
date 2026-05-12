@@ -9,7 +9,7 @@
 @property (strong, nonatomic) BLOCK_CALLBACK_SCAN_FIND scanFindCallback;
 @property (strong, nonatomic) CBCentralManager *centralManager;
 @property (strong, nonatomic) CBPeripheral* peripheral;
-@property int connectState;
+@property int connectState;// -1=断开，0=连接中，1=已连接
 @property (strong, nonatomic) CBCharacteristic* writeCharacteristic;
 @property (strong, nonatomic) CBCharacteristic* readCharacteristic;
 @property (strong, nonatomic) NSMutableArray* nServices;
@@ -35,7 +35,6 @@ static int receiveLength=0;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
         [SVProgressHUD showInfoWithStatus:@"请自己去设置界面开启蓝牙"];
-
     }
 }
 
@@ -43,13 +42,15 @@ static int receiveLength=0;
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
     //NSLog(@"已发现 peripheral: %@ rssi: %@, advertisementData: %@", peripheral, RSSI, advertisementData);
-    self.scanFindCallback(peripheral);
+    if (self.scanFindCallback){
+        self.scanFindCallback(peripheral);
+    }
 }
 
 //连接外设成功
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
    // NSLog(@"成功连接 peripheral: %@",peripheral);
-    [self.peripheral setDelegate:self];
+//    [self.peripheral setDelegate:self];  //这边不知道到底要不要
     [self.peripheral discoverServices:nil];
    // NSLog(@"扫描服务...");
 }
@@ -59,6 +60,9 @@ static int receiveLength=0;
 {
     //NSLog(@"periheral has disconnect %@",error);
     self.connectState=-1;
+    self.peripheral = nil;
+    self.writeCharacteristic = nil;
+    self.readCharacteristic = nil;
 }
 
 //连接外设失败
@@ -72,13 +76,19 @@ static int receiveLength=0;
 //已发现服务
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
    // NSLog(@"发现服务!");
-    int i = 0;
-    for(CBService* s in peripheral.services){
-        [self.nServices addObject:s];
+    if(error){
+        self.connectState = -1;
+        return;
     }
+//    int i = 0;
+//    for(CBService* s in peripheral.services){
+//        [self.nServices addObject:s];
+//    }
+    [self.nServices removeAllObjects];
+    [self.nServices addObjectsFromArray:peripheral.services];
     for(CBService* s in peripheral.services){
        // NSLog(@"%d :服务 UUID: %@(%@)", i, s.UUID.data, s.UUID);
-        i++;
+//        i++;
         [peripheral discoverCharacteristics:nil forService:s];
        // NSLog(@"扫描Characteristics...");
     }
@@ -86,6 +96,10 @@ static int receiveLength=0;
 
 //已发现characteristcs49535343-8841-43f4-a8d4-ecbe34729bb3
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
+    if (error) {
+        self.connectState = -1;
+        return;
+    }
     for(CBCharacteristic* c in service.characteristics){
       //  NSLog(@"特征 UUID: %@ (%@)", c.UUID.data, c.UUID);
         if([c.UUID isEqual:[CBUUID UUIDWithString:@"FFF2"]]){
@@ -93,7 +107,7 @@ static int receiveLength=0;
             //            [self.myPeripheral setNotifyValue:YES forCharacteristic:c];
             //            [self.myPeripheral readValueForCharacteristic:c];
           //  NSLog(@"找到WRITE : %@", c);
-            self.connectState=1;
+//            self.connectState=1;
         }else if([c.UUID isEqual:[CBUUID UUIDWithString:@"FFF1"]]){
             self.readCharacteristic = c;
             //            CBDescriptor* description = [self.myPeripheral description];
@@ -103,42 +117,61 @@ static int receiveLength=0;
          //   NSLog(@"找到READ : %@", c);
         }
     }
+    // 必须同时找到读写特征才标记连接成功
+    self.connectState = (self.writeCharacteristic && self.readCharacteristic) ? 1 : -1;
 }
 
 //获取外设发来的数据,不论是read和notify,获取数据都从这个方法中读取
-- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
-{[peripheral readRSSI];
+- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
+    [peripheral readRSSI];
+    if (error || !characteristic.value) return;
     if([characteristic.UUID isEqual:[CBUUID UUIDWithString:@"FFF1"]]){
-        NSData* data = characteristic.value;
-        if(data!=nil)
-        {
-            //NSLog(@"didUpdateValueForCharacteristic :%@",data);
-            Byte *pData=[data bytes];
-            for(int i=0;i<[data length];i++)
-            {
-                receiveBuffer[receiveLength++]=pData[i];
-            }
+        Byte *pData = (Byte*)[characteristic.value bytes];
+        int dataLen = (int)[characteristic.value length];
+        // 防止接收缓存溢出
+        if (receiveLength + dataLen < 1024) {
+            memcpy(receiveBuffer + receiveLength, pData, dataLen);
+            receiveLength += dataLen;
         }
+//        NSData* data = characteristic.value;
+//        if(data!=nil)
+//        {
+//            //NSLog(@"didUpdateValueForCharacteristic :%@",data);
+//            Byte *pData=[data bytes];
+//            for(int i=0;i<[data length];i++)
+//            {
+//                receiveBuffer[receiveLength++]=pData[i];
+//            }
+//        }
     }
 }
 
 - (void)scanStart:(BLOCK_CALLBACK_SCAN_FIND)callback
 {
     self.scanFindCallback=callback;
-    if(self.centralManager==nil)
-    {
+    
+    //扫码前断开旧连接，重置状态
+    [self close];
+    
+    if (!self.centralManager) {
         self.centralManager = [[CBCentralManager alloc]initWithDelegate:self queue:nil options:nil];
     }
     [self.centralManager stopScan];
     double delayInSeconds = 0.1;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds* NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        //NSLog(@"扫描外设...");
-        [self.centralManager scanForPeripheralsWithServices:nil options:nil];
-        if(self.peripheral != nil){
-            [self.centralManager cancelPeripheralConnection:self.peripheral];
-        }
-    });
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds* NSEC_PER_SEC));
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        //NSLog(@"扫描外设...");
+//        [self.centralManager scanForPeripheralsWithServices:nil options:nil];
+//        if(self.peripheral != nil){
+//            [self.centralManager cancelPeripheralConnection:self.peripheral];
+//        }
+//    });
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+       dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+           // 允许重复发现同一外设，解决二次扫描无法识别问题
+           NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES};
+           [self.centralManager scanForPeripheralsWithServices:nil options:options];
+       });
 }
 
 - (void)scanStop
@@ -159,73 +192,145 @@ static int receiveLength=0;
 }
 
 - (bool)open:(CBPeripheral *)peripheral {
-    [self.centralManager stopScan];
-    self.peripheral=peripheral;
-    self.connectState=0;
-    [self.centralManager connectPeripheral: self.peripheral  options:nil];
-    while(self.connectState==0)
-    {
-        [self waitUI:50];
+    if (!peripheral || self.centralManager.state != CBCentralManagerStatePoweredOn) {
+        return false;
     }
-    if(self.connectState!=1)return false;
-    receiveLength=0;
-    return true;
+    // 停止扫描，断开旧外设连接
+    [self.centralManager stopScan];
+    if (self.peripheral && self.peripheral != peripheral) {
+        [self.centralManager cancelPeripheralConnection:self.peripheral];
+    } //这边要看下要不要
+    // 重置状态和缓存
+    [self reset];
+    self.peripheral=peripheral;
+    self.peripheral.delegate = self;
+    self.connectState=0;// 标记为连接中
+    [self.centralManager connectPeripheral: self.peripheral  options:nil];
+    // 连接超时控制（10秒）
+    int timeoutCount = 0;
+    while (self.connectState == 0 && timeoutCount < 200) { // 200*50ms=10秒
+        [self waitUI:50];
+        timeoutCount++;
+    }
+    return self.connectState == 1;
+//    while(self.connectState==0)
+//    {
+//        [self waitUI:50];
+//    }
+//    if(self.connectState!=1)return false;
+//    receiveLength=0;
+//    return true;
 }
 
 - (void)close
 {
-    [self waitUI:10000];
-    [self.centralManager cancelPeripheralConnection:self.peripheral];
+//    [self waitUI:10000];
+//    [self.centralManager cancelPeripheralConnection:self.peripheral];
+    // 停止扫描，断开连接
+       [self.centralManager stopScan];
+       if (self.peripheral) {
+           [self.centralManager cancelPeripheralConnection:self.peripheral];
+           self.peripheral.delegate = nil;
+       }
+       
+       // 重置所有核心属性
+       self.connectState = -1;
+       self.peripheral = nil;
+       self.writeCharacteristic = nil;
+       self.readCharacteristic = nil;
+       [self.nServices removeAllObjects];//注意这边看下需不需要，
+       [self reset];
 }
 
 
 
 - (bool)writeData:(NSData*)data
 {
-       int sended=0;
-       while(sended<data.length)
+    if (!self.writeCharacteristic || self.connectState != 1 || !data) {
+        return false;
+    }
+    int sended=0;
+    while(sended < data.length)
     {
-        int len=data.length-sended;
-        if(len>120)len=120;
+//        int len=data.length-sended;
+//        if(len>120)len=120;
+//        NSData *d = [data subdataWithRange:NSMakeRange(sended, len)];
+//        [self.peripheral writeValue:d forCharacteristic:_writeCharacteristic type:CBCharacteristicWriteWithResponse];
+//        sended+=len;
+        int len = MIN(data.length - sended, 120); // 分包最大120字节
         NSData *d = [data subdataWithRange:NSMakeRange(sended, len)];
-        [self.peripheral writeValue:d forCharacteristic:_writeCharacteristic type:CBCharacteristicWriteWithResponse];
-        sended+=len;
+        [self.peripheral writeValue:d forCharacteristic:self.writeCharacteristic type:CBCharacteristicWriteWithResponse];
+        [self waitUI:20]; // 短暂延迟，避免发送过快
+        sended += len;
     }
     return true;
+}
+
+- (bool)write:(NSString*)strData{
+    if (!strData) return false;
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    NSData *data = [strData dataUsingEncoding:enc];
+    return [self writeData:data];
 }
 
 - (void)flushRead
 {
     receiveLength=0;
+    memset(receiveBuffer, 0, 1024);
 }
 
 - (bool)readBytes:(BytePtr)data len:(int)len timeout:(int)timeout
 {
-    for(int i=0;i<timeout/10;i++)
-    {
-        if(receiveLength>=len)break;
-        [self waitUI:10];
-    }
-    if(receiveLength<len)return false;
-    for(int i=0;i<len;i++)
-    {
-        data[i]=receiveBuffer[i];
-    }
-    for(int i=len;i<receiveLength;i++)
-    {
-        receiveBuffer[i-len]=receiveBuffer[i];
-    }
-    receiveLength-=len;
-    return true;
+//    for(int i=0;i<timeout/10;i++)
+//    {
+//        if(receiveLength>=len)break;
+//        [self waitUI:10];
+//    }
+//    if(receiveLength<len)return false;
+//    for(int i=0;i<len;i++)
+//    {
+//        data[i]=receiveBuffer[i];
+//    }
+//    for(int i=len;i<receiveLength;i++)
+//    {
+//        receiveBuffer[i-len]=receiveBuffer[i];
+//    }
+//    receiveLength-=len;
+//    return true;
     
-   
+    if (!data || len <= 0 || timeout <= 0) {
+            return false;
+        }
+        
+        // 等待接收指定长度数据（每10ms检查一次）
+        int waitCount = timeout / 10;
+        for (int i = 0; i < waitCount; i++) {
+            if (receiveLength >= len) {
+                break;
+            }
+            [self waitUI:10];
+        }
+        
+        // 数据不足，返回失败
+        if (receiveLength < len) {
+            return false;
+        }
+        
+        // 复制数据并清理缓存
+        memcpy(data, receiveBuffer, len);
+        if (receiveLength > len) {
+            memmove(receiveBuffer, receiveBuffer + len, receiveLength - len);
+        }
+        receiveLength -= len;
+        
+        return true;
 }
 /*
  * 绘制打印页面
  */
 -(void)StartPage:(int) pageWidth  pageHeight:(int)pageHeight
 {
-
+    [self reset]; //开始新页面时清空缓存
     
     NSString *stringInt = [NSString stringWithFormat:@"%d",pageHeight];
     NSString *pageWidths = [NSString stringWithFormat:@"%d",pageWidth];
@@ -251,7 +356,8 @@ static int receiveLength=0;
  */
 -(void)end{
     //FORM\r\n
-    [  self addC:@"PRINT\r\n"];
+    [self addC:@"PRINT\r\n"];
+    [self reset]; // 打印完成后清空缓存
 }
 
 /*
@@ -419,14 +525,23 @@ static int receiveLength=0;
 @synthesize dataLength;
 -(id)init{
     self = [super init];
-    _offset = 0;
-    _sendedDataLength = 0;
+    if(self)
+    {
+//        _offset = 0;
+//       _sendedDataLength = 0;
+        
+        _nServices = [NSMutableArray array];
+        _connectState = -1; //初始状态设为断开
+        [self reset]; //初始化缓存
+    }
     return self;
 }
 
 -(void)reset{
     _offset = 0;
     _sendedDataLength = 0;
+    memset(_buffer, 0, MAX_DATA_SIZE); //清空打印指令缓存
+    receiveLength = 0; //清空接收缓存
 }
 
 -(int) getDataLength{
@@ -459,6 +574,9 @@ static int receiveLength=0;
 -(BOOL) add:(NSString *)text{
     NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     NSData* gbk = [text dataUsingEncoding:enc];
+    if (!gbk) {
+           return FALSE;
+       }
     Byte* gbkBytes = (Byte*)[gbk bytes]  ;
     if(![self addData:gbkBytes length:gbk.length])
         return FALSE;
@@ -468,6 +586,9 @@ static int receiveLength=0;
 -(BOOL) addC:(NSString *)text{
     NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     NSData* gbk = [text dataUsingEncoding:enc];
+    if (!gbk) {
+            return FALSE;
+        }
     Byte* gbkBytes = (Byte*)[gbk bytes]  ;
     if(![self addData:gbkBytes length:gbk.length])
         return FALSE;
@@ -475,6 +596,9 @@ static int receiveLength=0;
 }
 
 -(NSData*) getData:(int)sendLength{
+    if (sendLength <= 0 || _sendedDataLength + sendLength > _offset) {
+            return nil;
+        }
     NSData *data;
     data = [[NSData alloc]initWithBytes:_buffer+_sendedDataLength length:sendLength];
     //_offset -= sendLength;

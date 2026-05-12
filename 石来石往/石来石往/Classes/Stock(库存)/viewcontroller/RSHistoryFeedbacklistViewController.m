@@ -89,7 +89,7 @@
     XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
     [network getDataWithUrlString:URL_MARKET_FEEDBACK_QUERY_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
         if (success){
-            NSLog(@"====================%@",json);
+//            NSLog(@"====================%@",json);
             BOOL isresult = [json[@"success"]boolValue];
             if (isresult) {
                 [weakSelf.historyList removeAllObjects];
@@ -175,6 +175,7 @@
     
     RSMarketComplaintViewController * marketComplaintVc = [[RSMarketComplaintViewController alloc]init];
     marketComplaintVc.isShow = true;
+//    marketComplaintVc.isShowAllowView = self.isShowAllowView;
     for (int i = 0; i < historyFeedBackListModel.imageList.count; i++) {
         RSImageListModel * imageListModel = historyFeedBackListModel.imageList[i];
         RSMarketUploadImageModel * marketUploadImageModel = [[RSMarketUploadImageModel alloc]init];
@@ -182,7 +183,7 @@
         marketUploadImageModel.urlOrigin = imageListModel.urlOrigin;
         [marketComplaintVc.imageArray addObject:marketUploadImageModel];
     }
-    
+    marketComplaintVc.complaintStyleArray = [historyFeedBackListModel.type componentsSeparatedByString:@","];
     marketComplaintVc.content = historyFeedBackListModel.content;
     marketComplaintVc.contactNumber = historyFeedBackListModel.contactNumber;
     [self.navigationController pushViewController:marketComplaintVc animated:true];

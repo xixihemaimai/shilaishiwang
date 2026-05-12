@@ -376,7 +376,7 @@
         if (success) {
             BOOL Result = [json[@"Result"] boolValue];
             if (Result) {
-                
+                [SVProgressHUD dismiss];
                 [weakSelf.personlArray removeAllObjects];
                 NSMutableArray * array = [NSMutableArray array];
                 array = json[@"Data"];
@@ -396,7 +396,6 @@
                         [weakSelf.personlArray addObject:personlmodel];
                     }
                 }
-                [SVProgressHUD dismiss];
                 [weakSelf.tableview reloadData];
                 [weakSelf.tableview.mj_header endRefreshing];
             }else{
@@ -1297,7 +1296,6 @@
     NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifyKey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
     RSWeakself
     XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
-    
     [network getDataWithUrlString:URL_PERSONLSEARCHSERVICEFORWAITER_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
         if (success) {
             BOOL Result = [json[@"Result"]boolValue];
@@ -1386,6 +1384,7 @@
         storeHouseDetailVc.type = @"ckfw";
         storeHouseDetailVc.search = @"0";
         storeHouseDetailVc.status = temp;
+        storeHouseDetailVc.outBoundNo = personlmodel.outBoundNo;
         [self.navigationController pushViewController:storeHouseDetailVc animated:YES];
     }else{
         //市场服务
@@ -1413,6 +1412,7 @@
         storeHouseDetailVc.type = @"ckfw";
         storeHouseDetailVc.search = @"0";
         storeHouseDetailVc.status = temp;
+        storeHouseDetailVc.outBoundNo = personlmodel.outBoundNo;
         [self.navigationController pushViewController:storeHouseDetailVc animated:YES];
         
     }else{
@@ -1463,6 +1463,7 @@
 
 //服务完成的网络请求
 - (void)completeServiceLoadData:(NSIndexPath *)indexpath{
+    [SVProgressHUD showWithStatus:@"确定服务完成中......"];
     RSPersonlModel * personlmodel = self.personlArray[indexpath.row];
     NSString * serviceStyle = [NSString string];
     if ([personlmodel.serviceType isEqualToString:@"出库服务"]) {
@@ -1486,6 +1487,7 @@
     [network getDataWithUrlString:URL_PERSONLSEARCHSERVICEFORWAITER_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
         if (success) {
             BOOL Result = [json[@"Result"]boolValue];
+            [SVProgressHUD dismiss];
             if (Result) {
                 [weakSelf addPersonlServiceData];
             }else{

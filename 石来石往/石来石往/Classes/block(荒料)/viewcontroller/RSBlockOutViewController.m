@@ -50,6 +50,8 @@ static NSString *blockoutID = @"blockoutcell";
 
 @property (nonatomic,strong)RSBlockOutCell *cell;
 
+@property (nonatomic,strong)UIView * bottomview;
+
 @end
 
 @implementation RSBlockOutViewController
@@ -100,7 +102,7 @@ static NSString * BLOCKHEADERVIEWID = @"BLOCKHEADERVIEWID";
 //    [self addCustomTableview];
     [self isAddjust];
     [self.view addSubview:self.tableview];
-    self.tableview.frame = CGRectMake(0, 0, SCW, SCH - Height_NavBar - Height_bottomSafeArea - 45);
+    self.tableview.frame = CGRectZero;
     
 //    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCW, SCH - Height_NavBar - bottomH) style:UITableViewStylePlain];
 //    tableview.delegate = self;
@@ -130,6 +132,48 @@ static NSString * BLOCKHEADERVIEWID = @"BLOCKHEADERVIEWID";
     .heightRatioToView(self.view,0.45)
     .widthRatioToView(self.view,0.7);
 }
+
+
+
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
+    CGFloat topSafe = self.view.safeAreaInsets.top;
+    
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 45;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    // ========== 修正 tableview 布局 ==========
+
+    
+    self.tableview.frame = CGRectMake(0,
+                                      0,
+                                      SCW,
+                                      self.view.frame.size.height - totalBottom);
+    
+    
+    
+    
+    
+    // ========== 修正底部栏布局 ==========
+    self.bottomview.frame = CGRectMake(0,
+                                       self.view.frame.size.height - totalBottom,
+                                       SCW,
+                                       totalBottom);
+
+}
+
+
 
 - (void)getData{
     //URL_BLOCK_SEARCH_RESULT
@@ -353,9 +397,11 @@ static NSString * BLOCKHEADERVIEWID = @"BLOCKHEADERVIEWID";
 
 #pragma mark -- 添加底部视图
 - (void)addBottomContentview{
-    UIView * bottomview = [[UIView alloc]initWithFrame:CGRectMake(0, SCH - Height_NavBar - Height_bottomSafeArea - 45 , SCW, 45)];
+    UIView * bottomview = [[UIView alloc]init];
+    bottomview.frame = CGRectZero;
     bottomview.backgroundColor = [UIColor colorWithHexColorStr:@"#f7f7f7"];
     [self.view addSubview:bottomview];
+    self.bottomview = bottomview;
     
     UIButton * shopCarBtn = [[UIButton alloc]init];
     [shopCarBtn setImage:[UIImage imageNamed:@"货车"] forState:UIControlStateNormal];
@@ -389,7 +435,7 @@ static NSString * BLOCKHEADERVIEWID = @"BLOCKHEADERVIEWID";
     
     
     shopCarBtn.sd_layout
-    .centerYEqualToView(bottomview)
+    .topSpaceToView(bottomview, 5)
     .leftSpaceToView(bottomview,12)
     .widthIs(40)
     .heightIs(25);
@@ -397,7 +443,7 @@ static NSString * BLOCKHEADERVIEWID = @"BLOCKHEADERVIEWID";
     nextStepBtn.sd_layout
     .rightSpaceToView(bottomview,0)
     .topSpaceToView(bottomview,0)
-    .bottomSpaceToView(bottomview,0)
+    .heightIs(45)
     .widthRatioToView(bottomview,0.3);
     
     UIView *view = [[UIView alloc]init];

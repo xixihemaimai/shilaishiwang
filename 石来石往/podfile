@@ -1,4 +1,4 @@
-target’石来石往’do
+target '石来石往' do
 
 pod 'AFNetworking'
 
@@ -24,14 +24,21 @@ pod 'YYText'
 pod 'pop'
 pod 'MLLabel'
 pod 'UUButton'
+
 pod 'WechatOpenSDK'
+
+
 pod 'MMScan'
 
 pod 'JCore'
 pod 'JPush'
 
+
+
 end
+
 
 post_install do |installer| installer.pods_project.build_configurations.each do |config|    config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
   end
 end
+

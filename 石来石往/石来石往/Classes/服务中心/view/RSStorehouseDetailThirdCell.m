@@ -23,6 +23,14 @@
         [self.contentView addSubview:personLabel];
         _personLabel = personLabel;
         
+        
+        UILabel * phoneLabel = [[UILabel alloc]init];
+        phoneLabel.text = @"电话号码:";
+        phoneLabel.font = [UIFont systemFontOfSize:15];
+        phoneLabel.textColor = [UIColor colorWithHexColorStr:@"#666666"];
+        phoneLabel.textAlignment = NSTextAlignmentLeft;
+        [self.contentView addSubview:phoneLabel];
+        
         //电话号码
         UIButton * personPhoneBtn = [[UIButton alloc]init];
         personPhoneBtn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -56,13 +64,17 @@
 //        .topSpaceToView(personLabel, 10)
 //        .heightIs(15);
         
-        
+        phoneLabel.sd_layout
+        .leftEqualToView(personLabel)
+        .topSpaceToView(personLabel, 10)
+        .bottomSpaceToView(self.contentView, 0)
+        .widthIs(70);
         
         personPhoneBtn.sd_layout
-        .leftEqualToView(personLabel)
+        .leftSpaceToView(phoneLabel, 0)
         .rightEqualToView(personLabel)
         .topSpaceToView(personLabel, 10)
-        .bottomSpaceToView(self.contentView, 10);
+        .bottomSpaceToView(self.contentView, 0);
         
         
 //        personCardLabel.sd_layout

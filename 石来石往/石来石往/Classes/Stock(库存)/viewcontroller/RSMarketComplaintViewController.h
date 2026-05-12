@@ -26,6 +26,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
+
+//这边是业务那边的接口---》用block回调
+@property (nonatomic,assign)BOOL isShowAllowView;
+
+
+//@property (nonatomic,copy)void(^questionSumbit)(BOOL isSubmit);
+
+
+
+//业务市场服务反馈数组
+@property (nonatomic,strong)NSMutableArray * complaintStyleArray;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

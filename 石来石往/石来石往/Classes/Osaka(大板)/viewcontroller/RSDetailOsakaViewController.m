@@ -24,7 +24,7 @@
     
 }
 
-
+@property (nonatomic, strong) UIView *bottomview;
 @property (nonatomic,strong)UITableView *tableview;
 
 
@@ -119,9 +119,16 @@ static NSString * detailHeaderID = @"detailHeaderID";
 }
 
 - (void)addCustomBottomview{
-    UIView * bottomview = [[UIView alloc]initWithFrame:CGRectMake(0, SCH - Height_NavBar - Height_bottomSafeArea - 45, SCW, 45)];
+    
+    
+    
+    
+    UIView *bottomview = [[UIView alloc] init];
+    bottomview.frame = CGRectZero;
+    
     bottomview.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bottomview];
+    self.bottomview = bottomview;
     bottomview.hidden = NO;
     [bottomview bringSubviewToFront:self.view];
     
@@ -151,14 +158,58 @@ static NSString * detailHeaderID = @"detailHeaderID";
 ////    .bottomSpaceToView(bottomview,10);
 }
 
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
+    CGFloat topSafe = self.view.safeAreaInsets.top;
+    
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 45;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    // ========== 修正 tableview 布局 ==========
+
+    
+    self.tableview.frame = CGRectMake(0,
+                                      0,
+                                      SCW,
+                                      self.view.frame.size.height - totalBottom);
+    
+    
+    
+    
+    
+    // ========== 修正底部栏布局 ==========
+    self.bottomview.frame = CGRectMake(0,
+                                       self.view.frame.size.height - totalBottom,
+                                       SCW,
+                                       totalBottom);
+
+}
+
+
 - (void)addContentview{
-    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCW, SCH - Height_NavBar - Height_bottomSafeArea - 45) style:UITableViewStyleGrouped];
+    
+
+    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     tableview.dataSource = self;
     tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableview.delegate = self;
     self.tableview = tableview;
     [self.view addSubview:tableview];
 }
+
+
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;

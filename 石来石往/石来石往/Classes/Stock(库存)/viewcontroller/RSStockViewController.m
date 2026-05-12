@@ -163,7 +163,7 @@ static NSString * secondCellID = @"secondCellID";
     
 //    self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#f9f9f9"];
-    
+    self.tableview.backgroundColor = [UIColor colorWithHexColorStr:@"#f9f9f9"];
     
     for (int i = 0; i < [UserManger getUserObject].erpUserList.count; i++) {
     RSErpUserListModel * erpUserlistmodel = [UserManger getUserObject].erpUserList[i];
@@ -198,37 +198,29 @@ static NSString * secondCellID = @"secondCellID";
     _rightBtn = rightBtn;
     
     //这里要判断是否要显示授权的界面
-    NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
-    NSDate * oneWeekdate = [user objectForKey:@"showAuthorization"];
-    NSDate * currentDate = [NSDate date];
-    if ([self oneWeekCompareCurrentTimeDate:currentDate andOneweekData:oneWeekdate] == -1) {
-        self.allowview.hidden = YES;
-        self.tableview.hidden = NO;
-//        if (self.userModel.appManage_qxgl == 1 ) {
-//            _rightBtn.hidden = NO;
-//        }else{
-//            _rightBtn.hidden = YES;
-//        }
-    }else{
-        self.allowview.hidden = NO;
-        self.tableview.hidden = YES;
-//        _rightBtn.hidden = YES;
-    }
-    _rightBtn.hidden = NO;
+//    NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
+//    NSDate * oneWeekdate = [user objectForKey:@"showAuthorization"];
+//    NSDate * currentDate = [NSDate date];
+//    if ([self oneWeekCompareCurrentTimeDate:currentDate andOneweekData:oneWeekdate] == -1) {
+//        self.allowview.hidden = YES;
+//        self.tableview.hidden = NO;
+//
+//    }else{
+//        self.allowview.hidden = NO;
+//        self.tableview.hidden = YES;
+//    }
     
-    //    if (![[user objectForKey:@"showAuthorization"] isEqual:@"1"]) {
-    //        self.allowview.hidden = NO;
-    //        self.tableview.hidden = YES;
-    //        _rightBtn.hidden = YES;
-    //    }else{
-    //        self.allowview.hidden = YES;
-    //        self.tableview.hidden = NO;
-    //        if (self.userModel.appManage_qxgl == 1 ) {
-    //            _rightBtn.hidden = NO;
-    //        }else{
-    //            _rightBtn.hidden = YES;
-    //        }
-    //    }
+    
+    
+    if ([self canRunToday]) {
+        NSLog(@"执行任务成功！");
+        self.allowview.hidden = NO;
+        // 3. 标记今天已经执行
+//        [self markTodayHasRun];
+    }else{
+        NSLog(@"今天已经执行过了，明天 0 点后再来！");
+        self.allowview.hidden = YES;
+    }
 }
 
 //权限管理
@@ -321,25 +313,34 @@ static NSString * secondCellID = @"secondCellID";
 }
 #pragma mark -- 不同意
 - (void)noagreeAction:(UIButton *)noagreeBtn{
-    self.allowview.hidden = YES;
-    _rightBtn.hidden = YES;
-    //NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
-    [self getCurrentTime];
-    // [user setObject:@"0" forKey:@"showAuthorization"];
-    [self.navigationController popViewControllerAnimated:YES];
+//    self.allowview.hidden = YES;
+//    [self getCurrentTime];
+//    [self.navigationController popViewControllerAnimated:YES];
+    
+    //不同意跳转到意见反馈界面  ===》
+    
+    //1.提交了的话就返回到该界面并且该界面隐藏掉
+    //2.直接从意见反馈的界面返回的话，该界面还在
+    
+    _allowview.hidden = true;
+    RSMarketComplaintViewController * marketBack = [[RSMarketComplaintViewController alloc]init];
+    marketBack.isShow = false;
+    marketBack.isShowAllowView = true;
+    [self.navigationController pushViewController:marketBack animated:true];
+    RSWeakself;
+    
+    //标记今天已经执行
+    [self markTodayHasRun];
+    
 }
 #pragma mark -- 同意
 - (void)agreeAction:(UIButton *)agreeBtn{
-    self.allowview.hidden = YES;
-    self.tableview.hidden = NO;
-//    if (self.userModel.appManage_qxgl == 1 ) {
-        _rightBtn.hidden = NO;
-    //}else{
-//        _rightBtn.hidden = YES;
-//    }
-    //NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
-    //[user setObject:@"1" forKey:@"showAuthorization"];
-    [self currentOneWeekTime];
+    self.allowview.hidden = true;
+//    [self currentOneWeekTime];
+    //直接记录时间
+    // 3. 标记今天已经执行
+    [self markTodayHasRun];
+    
 }
 
 #pragma mark -- 获取海西资讯信息接口
@@ -835,7 +836,8 @@ static NSString * secondCellID = @"secondCellID";
             
         RSMarketComplaintViewController * marketComplaintVc = [[RSMarketComplaintViewController alloc]init];
         marketComplaintVc.isShow = false;
-            [self.navigationController pushViewController:marketComplaintVc animated:YES];
+//        marketBack.isShowAllowView = true;
+        [self.navigationController pushViewController:marketComplaintVc animated:YES];
             
             
             
@@ -919,54 +921,82 @@ static NSString * secondCellID = @"secondCellID";
     [_grademenuview removeFromSuperview];
 }
 //获取7天之后的时间
-- (void)currentOneWeekTime{
-    NSDate * currentDate = [NSDate date];
-    int days = 15;    // n天后的天数
-    NSDate *appointDate;    // 指定日期声明
-    NSTimeInterval oneDay = 24 * 60 * 60;  // 一天一共有多少秒
-    appointDate = [currentDate initWithTimeIntervalSinceNow: oneDay * days];
-    NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
-    //if (![[user objectForKey:@"showAuthorization"] isEqual:@"1"]
-    [user setObject:appointDate forKey:@"showAuthorization"];
-    [user synchronize];
+//- (void)currentOneWeekTime{
+//    NSDate * currentDate = [NSDate date];
+//    int days = 15;    // n天后的天数
+//    NSDate *appointDate;    // 指定日期声明
+//    NSTimeInterval oneDay = 24 * 60 * 60;  // 一天一共有多少秒
+//    appointDate = [currentDate initWithTimeIntervalSinceNow: oneDay * days];
+//    NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
+//    //if (![[user objectForKey:@"showAuthorization"] isEqual:@"1"]
+//    [user setObject:appointDate forKey:@"showAuthorization"];
+//    [user synchronize];
+//}
+////得到当前的时间
+//- (void)getCurrentTime{
+//    NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
+//    [formatter setDateFormat:@"yyyy-MM-dd"];
+//    NSString *dateTime=[formatter stringFromDate:[NSDate date]];
+//    NSDate *date = [formatter dateFromString:dateTime];
+//    //    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+//    //    NSString *dateString = [formatter stringFromDate:date];
+//    //    NSLog(@"datastring  = %@",dateString);
+//    NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
+//    [user setObject:date forKey:@"showAuthorization"];
+//    [user synchronize];
+//}
+////判断7天之后是不是这个时间
+//- (int)oneWeekCompareCurrentTimeDate:(NSDate * )currentDate andOneweekData:(NSDate *)oneWeekDate{
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+//    NSString *oneDayStr = [dateFormatter stringFromDate:currentDate];
+//    NSString *anotherDayStr = [dateFormatter stringFromDate:oneWeekDate];
+//    NSDate *dateA = [dateFormatter dateFromString:oneDayStr];
+//    NSDate *dateB = [dateFormatter dateFromString:anotherDayStr];
+//    NSComparisonResult result = [dateA compare:dateB];
+//    NSLog(@"oneDay : %@, anotherDay : %@", currentDate, oneWeekDate);
+//    if (result == NSOrderedDescending) {
+//        //在指定时间前面 过了指定时间 过期
+//        NSLog(@"oneDay  is in the future");
+//        return 1;
+//    }
+//    else if (result == NSOrderedAscending){
+//        //没过指定时间 没过期
+//        //NSLog(@"Date1 is in the past");
+//        return -1;
+//    }
+//    //刚好时间一样.
+//    //NSLog(@"Both dates are the same");
+//    return 0;
+//}
+
+
+//获取当前的时间
+- (NSString *)getCurrentDateString {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"yyyy-MM-dd";
+    formatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    return [formatter stringFromDate:[NSDate date]];
 }
-//得到当前的时间
-- (void)getCurrentTime{
-    NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSString *dateTime=[formatter stringFromDate:[NSDate date]];
-    NSDate *date = [formatter dateFromString:dateTime];
-    //    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    //    NSString *dateString = [formatter stringFromDate:date];
-    //    NSLog(@"datastring  = %@",dateString);
-    NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
-    [user setObject:date forKey:@"showAuthorization"];
-    [user synchronize];
+
+//判断今天是否可以执行
+- (BOOL)canRunToday {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *lastDate = [defaults objectForKey:@"last_task_date"];
+    NSString *today = [self getCurrentDateString];
+    
+    // 日期不一样 = 新的一天 = 可以执行
+    return lastDate == nil || ![lastDate isEqualToString:today];
 }
-//判断7天之后是不是这个时间
-- (int)oneWeekCompareCurrentTimeDate:(NSDate * )currentDate andOneweekData:(NSDate *)oneWeekDate{
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    NSString *oneDayStr = [dateFormatter stringFromDate:currentDate];
-    NSString *anotherDayStr = [dateFormatter stringFromDate:oneWeekDate];
-    NSDate *dateA = [dateFormatter dateFromString:oneDayStr];
-    NSDate *dateB = [dateFormatter dateFromString:anotherDayStr];
-    NSComparisonResult result = [dateA compare:dateB];
-    NSLog(@"oneDay : %@, anotherDay : %@", currentDate, oneWeekDate);
-    if (result == NSOrderedDescending) {
-        //在指定时间前面 过了指定时间 过期
-        NSLog(@"oneDay  is in the future");
-        return 1;
-    }
-    else if (result == NSOrderedAscending){
-        //没过指定时间 没过期
-        //NSLog(@"Date1 is in the past");
-        return -1;
-    }
-    //刚好时间一样.
-    //NSLog(@"Both dates are the same");
-    return 0;
+
+//标记今天已经执行过
+- (void)markTodayHasRun {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[self getCurrentDateString] forKey:@"last_task_date"];
+    [defaults synchronize];
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

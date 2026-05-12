@@ -1005,6 +1005,8 @@
 //        [user setObject:date forKey:@"showAuthorization"];
         [UserManger logoOut];
         [user removeObjectForKey:@"VERIFYKEY"];
+        //这边是要处理退出登录之后，重置业务办理市场服务客服评价的问题
+        [user removeObjectForKey:@"last_task_date"];
 //        [[NSNotificationCenter defaultCenter]postNotificationName:@"SignOutLogin" object:nil];
 //        [weakSelf.nameBtn setTitle:@"点击登录" forState:UIControlStateNormal];
 //        _nameBtn.enabled = YES;

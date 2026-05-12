@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong)NSMutableArray<RSImageListModel *> * imageList;
 
+//投诉类型
+@property (nonatomic,copy)NSString * type;
+
 
 @end
 
