@@ -346,12 +346,19 @@
     [headerview layoutSubviews];
     self.tableview.tableHeaderView = headerview;
     //删除
-    CGFloat bottomH = 0.0;
-    if (iphonex || iPhoneXR || iPhoneXSMax || iPhoneXS) {
-        bottomH = 34;
-    }else{
-        bottomH = 0;
-    }
+   
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 45;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    
+    
     UIButton * deleteBtn = [[UIButton alloc]init];
     [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
     [deleteBtn setTitleColor:[UIColor colorWithHexColorStr:@"#ffffff"] forState:UIControlStateNormal];
@@ -363,7 +370,7 @@
     deleteBtn.sd_layout
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
-    .bottomSpaceToView(self.view, bottomH)
+    .bottomSpaceToView(self.view, totalBottom)
     .heightIs(45);
     if (![self.goodCreat isEqualToString:@"0"]) {
         //已经存在

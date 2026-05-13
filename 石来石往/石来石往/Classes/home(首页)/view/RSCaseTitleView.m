@@ -57,11 +57,24 @@
         [titleView addSubview:textfield];
         _textfield = textfield;
         
+        
+        
+        // 自动获取底部安全区
+        CGFloat bottomSafe = self.safeAreaInsets.bottom;
+        
+        // 底部栏固定高度 45
+        CGFloat bottomBarHeight = 40;
+        
+        // 总底部高度
+        CGFloat totalBottom = bottomBarHeight + bottomSafe;
+        
+        
+        
         menuview.sd_layout
         .leftSpaceToView(self, 0)
         .rightSpaceToView(self, 0)
         .topSpaceToView(self, 0)
-        .bottomSpaceToView(self, 0);
+        .bottomSpaceToView(self, totalBottom);
         
         
         

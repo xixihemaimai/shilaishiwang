@@ -364,7 +364,17 @@ static NSString * RECORDDETAILHEADERID = @"RecordDetailHeaderid";
 //    self.tableview = tableview;
     [self.view addSubview:self.tableview];
     
-    self.tableview.frame = CGRectMake(0, 0, SCW, SCH - Height_NavBar - 40);
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 40;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    self.tableview.frame = CGRectMake(0, 0, SCW, self.view.frame.size.height - totalBottom);
     UIButton * sendServiceBtn = [[UIButton alloc]init];
     [sendServiceBtn setTitle:@"发起服务" forState:UIControlStateNormal];
     sendServiceBtn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -387,7 +397,7 @@ static NSString * RECORDDETAILHEADERID = @"RecordDetailHeaderid";
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
     .topSpaceToView(self.tableview, 0)
-    .bottomSpaceToView(self.view, 0);
+    .bottomSpaceToView(self.view, bottomSafe);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

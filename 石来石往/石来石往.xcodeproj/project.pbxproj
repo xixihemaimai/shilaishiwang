@@ -7658,13 +7658,12 @@
 				CODE_SIGN_ENTITLEMENTS = "石来石往/石来石往.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.6.5;
+				CURRENT_PROJECT_VERSION = 1.6.6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = 5CVKEU8NXR;
 				ENABLE_TESTABILITY = YES;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=iphone*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
@@ -7697,7 +7696,7 @@
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib/ailpay",
 				);
-				MARKETING_VERSION = 3.7.1;
+				MARKETING_VERSION = 3.7.2;
 				ONLY_FOR_SIMULATOR = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -7780,7 +7779,7 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.6.5;
+				CURRENT_PROJECT_VERSION = 1.6.6;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5CVKEU8NXR;
@@ -7817,7 +7816,7 @@
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib",
 					"$(PROJECT_DIR)/石来石往/Classes/other(其他)/Lib/ailpay",
 				);
-				MARKETING_VERSION = 3.7.1;
+				MARKETING_VERSION = 3.7.2;
 				ONLY_FOR_SIMULATOR = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

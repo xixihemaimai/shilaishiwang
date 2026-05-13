@@ -112,7 +112,7 @@ static NSString * FOOTID = @"FOOTID";
         
     [self addReportCustomNavigation];
     
-    self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#F9F9F9"];
+    self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#ffffff"];
     //self.title = @"荒料库存";
     self.pageNum = 2;
     //获取系统当前时间
@@ -170,6 +170,37 @@ static NSString * FOOTID = @"FOOTID";
     [self DetailOfChargesData];
 }
 
+
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
+    CGFloat topSafe = self.view.safeAreaInsets.top;
+    
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 50;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    // ========== 修正 tableview 布局 ==========
+
+    
+    self.tableview.frame = CGRectMake(0,
+                                      0,
+                                      SCW,
+                                      self.view.frame.size.height - totalBottom);
+
+}
+
+
+
 - (void)addReportCustomTableview{
 //    CGFloat Y = 0.0;
 //    CGFloat bottomH = 0.0;
@@ -187,8 +218,10 @@ static NSString * FOOTID = @"FOOTID";
 //    self.tableview.estimatedRowHeight = 0;
 //    self.tableview.estimatedSectionFooterHeight = 0;
 //    self.tableview.estimatedSectionHeaderHeight = 0;
+    
+
     [self.view addSubview:self.tableview];
-    self.tableview.frame = CGRectMake(0, 0, SCW, SCH - Height_NavBar - 50);
+    self.tableview.frame = CGRectZero;
     RSWeakself
     //向下刷新
     self.tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -515,9 +548,19 @@ static NSString * FOOTID = @"FOOTID";
 
 - (void)setBottomViewContent{
     
+    
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 50;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
     UIView * bottomView = [[UIView alloc]init];
     bottomView.backgroundColor = [UIColor colorWithHexColorStr:@"#ffffff"];
-    bottomView.frame = CGRectMake(0, SCH - Height_NavBar - 50, SCW, 50);
+    bottomView.frame = CGRectMake(0, self.view.frame.size.height - totalBottom, SCW, 50);
     [self.view addSubview:bottomView];
     [bottomView bringSubviewToFront:self.view];
     
