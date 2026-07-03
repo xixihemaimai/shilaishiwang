@@ -12,7 +12,9 @@
 #import "RSCodeSheetModel.h"
 #import "Moment.h"
 //#import <WXApi.h>
-#import "WXApi.h"
+//#import "WXApi.h"
+#import <WechatOpenSDK/WXApi.h>
+
 #import "RSTaoBaoUserLikeModel.h"
 @interface RSWeChatShareTool : NSObject
 

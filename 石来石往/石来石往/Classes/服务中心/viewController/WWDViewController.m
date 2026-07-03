@@ -84,6 +84,7 @@
     XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
     [network getDataWithUrlString:URL_GETPRINTOUTBOUND_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
         if (success) {
+            NSLog(@"=====================3=3========%@",json);
             BOOL Result = [json[@"Result"]boolValue];
             if (Result) {
                 NSMutableArray * array = [NSMutableArray array];

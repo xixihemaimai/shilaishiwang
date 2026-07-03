@@ -101,7 +101,7 @@
     if (!_tableview) {
 //        CGFloat navHeight = self.navigationController.navigationBar.frame.size.height;
 //        CGFloat navY = self.navigationController.navigationBar.frame.origin.y;
-        _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCW, SCH - Height_NavBar) style:UITableViewStylePlain];
+        _tableview = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableview.delegate = self;
         _tableview.dataSource = self;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -118,6 +118,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    
     //这边是把正文和标题和ID都存到本地文件去
     // 数据库文件保存在沙盒缓存的路径
     NSString *path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).lastObject;
@@ -383,6 +388,36 @@
     _changeEngineerIndex = 0;
     _changMaterialIndex = 0;
 }
+
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
+    CGFloat topSafe = self.view.safeAreaInsets.top;
+    
+    // 自动获取底部安全区
+    CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
+    
+    // 底部栏固定高度 45
+    CGFloat bottomBarHeight = 0;
+    
+    // 总底部高度
+    CGFloat totalBottom = bottomBarHeight + bottomSafe;
+    
+    
+    // ========== 修正 tableview 布局 ==========
+
+    
+    self.tableview.frame = CGRectMake(0,
+                                      topSafe,
+                                      SCW,
+                                      self.view.bounds.size.height - topSafe - totalBottom);
+    
+
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;

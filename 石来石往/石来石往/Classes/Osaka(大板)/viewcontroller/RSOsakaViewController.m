@@ -99,6 +99,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     self.view.backgroundColor = [UIColor whiteColor];
     //对购物车里面装有多少模型的进行初始化
     self.count = 0;
@@ -159,9 +162,9 @@
 
     
     self.tableview.frame = CGRectMake(0,
-                                      0,
+                                      topSafe,
                                       SCW,
-                                      self.view.frame.size.height - totalBottom);
+                                      self.view.bounds.size.height - topSafe - totalBottom);
     
     
     
@@ -169,7 +172,7 @@
     
     // ========== 修正底部栏布局 ==========
     self.bottomview.frame = CGRectMake(0,
-                                       self.view.frame.size.height - totalBottom,
+                                       self.view.bounds.size.height - totalBottom,
                                        SCW,
                                        totalBottom);
 

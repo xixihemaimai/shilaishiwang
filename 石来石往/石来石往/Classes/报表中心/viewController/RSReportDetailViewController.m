@@ -110,6 +110,9 @@ static NSString * FOOTID = @"FOOTID";
 - (void)viewDidLoad {
     [super viewDidLoad];
         
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     [self addReportCustomNavigation];
     
     self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#ffffff"];
@@ -195,7 +198,7 @@ static NSString * FOOTID = @"FOOTID";
     self.tableview.frame = CGRectMake(0,
                                       0,
                                       SCW,
-                                      self.view.frame.size.height - totalBottom);
+                                      self.view.bounds.size.height - topSafe - totalBottom);
 
 }
 
@@ -219,7 +222,8 @@ static NSString * FOOTID = @"FOOTID";
 //    self.tableview.estimatedSectionFooterHeight = 0;
 //    self.tableview.estimatedSectionHeaderHeight = 0;
     
-
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
     [self.view addSubview:self.tableview];
     self.tableview.frame = CGRectZero;
     RSWeakself

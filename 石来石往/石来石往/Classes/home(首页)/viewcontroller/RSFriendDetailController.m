@@ -10,7 +10,8 @@
 #import "UIImageView+WebCache.h"
 
 //#import <WXApi.h>
-#import "WXApi.h"
+//#import "WXApi.h"
+#import <WechatOpenSDK/WXApi.h>
 #import "RSGetPhoneNumberTool.h"
 #import "RSMyRingViewController.h"
 #import "RSWeChatShareTool.h"

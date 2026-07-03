@@ -22,7 +22,8 @@
 
 //微信登录
 //#import <WXApi.h>
-#import "WXApi.h"
+//#import "WXApi.h"
+#import <WechatOpenSDK/WXApi.h>
 
 
 //微信登录之后返回的数据
@@ -115,7 +116,10 @@ static BOOL isProduction = true;
     //微信登录ID
 //    [WXApi registerApp:WXAPPID];
     
-    [WXApi registerApp:WXAPPID universalLink:@"https://www.baidu.com/"];
+//    [WXApi registerApp:WXAPPID universalLink:@"https://www.baidu.com/"];
+    
+    [WXApi registerApp:WXAPPID universalLink:@"https://www.slsw.link/wx/"];
+    
     [SVProgressHUD setMinimumDismissTimeInterval:1.0];
     //设置键盘
     [self settIQKeyMananger];

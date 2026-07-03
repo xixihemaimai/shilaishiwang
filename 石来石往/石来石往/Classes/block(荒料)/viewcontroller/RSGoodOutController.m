@@ -80,6 +80,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     self.uuid = [NSString get_uuid];
     self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#f9f9f9"];
     [self isAddjust];
@@ -182,9 +185,9 @@ static NSString *goodCellID = @"goodcell";
 
     
     self.tableview.frame = CGRectMake(0,
-                                      0,
+                                      topSafe,
                                       SCW,
-                                      self.view.frame.size.height - totalBottom);
+                                      self.view.bounds.size.height - topSafe - totalBottom);
     
     
     
@@ -192,7 +195,7 @@ static NSString *goodCellID = @"goodcell";
     
     // ========== 修正底部栏布局 ==========
     self.bottomview.frame = CGRectMake(0,
-                                       self.view.frame.size.height - totalBottom,
+                                       self.view.bounds.size.height - totalBottom,
                                        SCW,
                                        totalBottom);
 

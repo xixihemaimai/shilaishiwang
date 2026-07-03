@@ -47,6 +47,7 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>weixinURLParamsAPI</string>
 		<string>wechat</string>
 		<string>weixin</string>
 		<string>alipay</string>

@@ -25,7 +25,7 @@ pod 'pop'
 pod 'MLLabel'
 pod 'UUButton'
 
-pod 'WechatOpenSDK'
+pod 'WechatOpenSDK-XCFramework'
 
 
 pod 'MMScan'

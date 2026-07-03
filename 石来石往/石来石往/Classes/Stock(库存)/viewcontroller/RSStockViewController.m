@@ -335,12 +335,36 @@ static NSString * secondCellID = @"secondCellID";
 }
 #pragma mark -- 同意
 - (void)agreeAction:(UIButton *)agreeBtn{
-    self.allowview.hidden = true;
-//    [self currentOneWeekTime];
-    //直接记录时间
-    // 3. 标记今天已经执行
-    [self markTodayHasRun];
-    
+    RSWeakself;
+    NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
+    NSString * verifykey = [user objectForKey:@"VERIFYKEY"];
+    NSMutableDictionary *phoneDict = [NSMutableDictionary dictionary];
+    //满意传的值
+    [phoneDict setValue:@"100" forKey:@"type"];
+    NSData *data = [NSJSONSerialization dataWithJSONObject:phoneDict options:0 error:nil];
+    NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    AppDelegate * applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifykey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
+    NSLog(@"=============23=======%@",phoneDict);
+    XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
+//    [network getDataWithUrlString:URL_MARKET_FEEDBACK_SAVE_IOS withParameters:parameters withBlock:^(id json, BOOL success)
+    [network getDataWithUrlString:URL_MARKET_FEEDBACK_SAVE_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
+        NSLog(@"===============%@",json);
+        if (success){
+            BOOL isresult = [json[@"success"]boolValue];
+            if (isresult){
+                weakSelf.allowview.hidden = true;
+                //[self currentOneWeekTime];
+                //直接记录时间
+                // 3. 标记今天已经执行
+                [weakSelf markTodayHasRun];
+            }else{
+               [SVProgressHUD showErrorWithStatus:@"提交失败"];
+            }
+        }else{
+            [SVProgressHUD showErrorWithStatus:@"提交失败"];
+        }
+    }];
 }
 
 #pragma mark -- 获取海西资讯信息接口

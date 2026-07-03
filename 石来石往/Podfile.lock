@@ -97,7 +97,7 @@ PODS:
   - TTTAttributedLabel (2.0.0)
   - TZImagePickerController (3.5.8)
   - UUButton (1.1)
-  - WechatOpenSDK (1.8.7.1)
+  - WechatOpenSDK-XCFramework (2.0.5)
   - "XLPhotoBrowser+CoderXL (1.2.0)":
     - SDWebImage (~> 4.0.0)
   - YNPageViewController (0.2.6)
@@ -125,7 +125,7 @@ DEPENDENCIES:
   - TTTAttributedLabel
   - TZImagePickerController
   - UUButton
-  - WechatOpenSDK
+  - WechatOpenSDK-XCFramework
   - "XLPhotoBrowser+CoderXL"
   - YNPageViewController
   - YYModel
@@ -155,7 +155,7 @@ SPEC REPOS:
     - TTTAttributedLabel
     - TZImagePickerController
     - UUButton
-    - WechatOpenSDK
+    - WechatOpenSDK-XCFramework
     - "XLPhotoBrowser+CoderXL"
     - YNPageViewController
     - YYModel
@@ -184,12 +184,12 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   TZImagePickerController: 7fd9702897ef8c0b7c951e5463f4bcf398296f9e
   UUButton: 9a19bbe0c812a6920de21da8acca7a2d0bad52da
-  WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
+  WechatOpenSDK-XCFramework: ff342ae616bb86df3d236aca38059dfd4bc4a949
   "XLPhotoBrowser+CoderXL": 2bf4036e2af4611b24bde1681e24c64ed01fbe98
   YNPageViewController: 33040d429adf0b415d4449ffeec848d8339934ea
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: add8ff58948ab34444dd3b6eddea2d7be02fa8bf
+PODFILE CHECKSUM: 60903775fda69013e6f9a652c7715c68710e38f2
 
 COCOAPODS: 1.15.2

@@ -37,6 +37,9 @@
 static NSString * detailHeaderID = @"detailHeaderID";
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
     UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
     
@@ -180,9 +183,9 @@ static NSString * detailHeaderID = @"detailHeaderID";
 
     
     self.tableview.frame = CGRectMake(0,
-                                      0,
+                                      topSafe,
                                       SCW,
-                                      self.view.frame.size.height - totalBottom);
+                                      self.view.bounds.size.height - topSafe - totalBottom);
     
     
     
@@ -190,7 +193,7 @@ static NSString * detailHeaderID = @"detailHeaderID";
     
     // ========== 修正底部栏布局 ==========
     self.bottomview.frame = CGRectMake(0,
-                                       self.view.frame.size.height - totalBottom,
+                                       self.view.bounds.size.height - totalBottom,
                                        SCW,
                                        totalBottom);
 

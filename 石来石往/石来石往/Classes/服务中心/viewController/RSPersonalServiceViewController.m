@@ -1555,6 +1555,7 @@
 
 #pragma mark - Error handle
 - (void)showInfo:(NSString*)str {
+    NSLog(@"===========2323============%@",str);
     //URL_ISQRCODEEXISTS_IOS
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString * verifyKey = [user objectForKey:@"VERIFYKEY"];
@@ -1568,6 +1569,7 @@
     XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
     [network getDataWithUrlString:URL_ISQRCODEEXISTS_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
         if (success) {
+            NSLog(@"=======================%@",json);
             BOOL Result = [json[@"Result"]boolValue];
             if (Result) {
                 //在进行中的方式

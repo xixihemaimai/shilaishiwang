@@ -346,6 +346,8 @@
     NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     AppDelegate * applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifyKey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
+    NSLog(@"====================%@",dict);
+    NSLog(@"====================%@",parameters);
     RSWeakself
     XLAFNetworkingBlock * network = [[XLAFNetworkingBlock alloc]init];
     [network getDataWithUrlString:URL_STARTADDSERVICE_IOS withParameters:parameters withBlock:^(id json, BOOL success) {

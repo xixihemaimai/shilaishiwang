@@ -10,7 +10,8 @@
 #import "RSRegisterModel.h"
 #import "singerTon.h"
 //#import <WXApi.h>
-#import "WXApi.h"
+//#import "WXApi.h"
+#import <WechatOpenSDK/WXApi.h>
 
 @interface RSLoginViewController : RSAllViewController<WXApiDelegate>
 

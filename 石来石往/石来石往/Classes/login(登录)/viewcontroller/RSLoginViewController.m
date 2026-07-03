@@ -14,7 +14,8 @@
 #import "RSHomeViewController.h"
 #import "RSWeiXiViewController.h"
 //微信
-#import "WXApi.h"
+//#import "WXApi.h"
+#import <WechatOpenSDK/WXApi.h>
 //友盟统计
 //#import <UMCommon/MobClick.h>
 #import "AppDelegate.h"
@@ -694,7 +695,6 @@
     [network getDataWithUrlString:URL_LOGIN_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
         if (success) {
             BOOL Result = [json[@"Result"] boolValue];
-            CLog(@"==================================%@",json);
             if (Result) {
 //                registerModel = [RSRegisterModel yy_modelWithJSON:json[@"Data"]];
 //                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:registerModel];

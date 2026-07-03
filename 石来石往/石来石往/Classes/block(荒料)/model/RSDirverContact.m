@@ -20,12 +20,12 @@
 //    return contact;
 //}
 
-+ (NSDictionary *)replacedKeyFromPropertyName
-{
-    return @{
-             @"driverID" : @"id"
-             };
-}
+//+ (NSDictionary *)replacedKeyFromPropertyName
+//{
+//    return @{
+//             @"driverID" : @"id"
+//             };
+//}
 
 
 @end

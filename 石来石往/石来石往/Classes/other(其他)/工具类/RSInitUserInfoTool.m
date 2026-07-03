@@ -21,7 +21,7 @@
    NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":VERIFYKEY,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
         XLAFNetworkingBlock *network = [[XLAFNetworkingBlock alloc]init];
     [network getDataWithUrlString:URL_GET_SINGLE_USER_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
-//        CLog(@"============111111111================%@",json);
+        CLog(@"============111111111================%@",json);
         if (success) {
             BOOL Result = [json[@"Result"] boolValue];
             if (Result) {

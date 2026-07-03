@@ -79,6 +79,9 @@ static NSString * RECORDDETAILHEADERID = @"RecordDetailHeaderid";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#f9f9f9"];
     self.title = @"订单详情";
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     [self isAddjust];
 //    if (@available(iOS 11.0, *)) {
 //        [[UIScrollView appearance] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentAutomatic];
@@ -300,7 +303,7 @@ static NSString * RECORDDETAILHEADERID = @"RecordDetailHeaderid";
         if (success) {
             BOOL Result = [json[@"Result"] boolValue];
             if (Result) {
-//                CLog(@"=================================%@",json);
+                CLog(@"=================================%@",json);
                 NSMutableArray  * array = nil;
                 [weakSelf.detailArray removeAllObjects];
                 array = json[@"Data"];
@@ -364,6 +367,11 @@ static NSString * RECORDDETAILHEADERID = @"RecordDetailHeaderid";
 //    self.tableview = tableview;
     [self.view addSubview:self.tableview];
     
+    
+    // ========== 在这里才能拿到正确的安全区和导航栏高度 ==========
+    // 自动获取顶部安全区（自动包含导航栏 + 状态栏）
+    CGFloat topSafe = self.view.safeAreaInsets.top;
+    
     // 自动获取底部安全区
     CGFloat bottomSafe = self.view.safeAreaInsets.bottom;
     
@@ -374,7 +382,7 @@ static NSString * RECORDDETAILHEADERID = @"RecordDetailHeaderid";
     CGFloat totalBottom = bottomBarHeight + bottomSafe;
     
     
-    self.tableview.frame = CGRectMake(0, 0, SCW, self.view.frame.size.height - totalBottom);
+    self.tableview.frame = CGRectMake(0, topSafe, SCW, self.view.bounds.size.height - topSafe - totalBottom);
     UIButton * sendServiceBtn = [[UIButton alloc]init];
     [sendServiceBtn setTitle:@"发起服务" forState:UIControlStateNormal];
     sendServiceBtn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -653,7 +661,7 @@ static NSString * RECORDDETAILHEADERID = @"RecordDetailHeaderid";
          RSOutRecordModel * outrecordmodel = self.detailArray[0];
         if ([outrecordmodel.qrCode isEqualToString:@""]) {
             [SVProgressHUD showInfoWithStatus:@"还没有获取数据"];
-//             self.navigationController.navigationBar.hidden = NO;
+             self.navigationController.navigationBar.hidden = NO;
         }else{
             UIView * menview = [[UIView alloc]init];
             //    menview.backgroundColor = [UIColor colorWithHexColorStr:@"#000000"];
@@ -747,7 +755,7 @@ static NSString * RECORDDETAILHEADERID = @"RecordDetailHeaderid";
             //    .bottomSpaceToView(qrView, 15);
         }
     }else{
-//         self.navigationController.navigationBar.hidden = NO;
+         self.navigationController.navigationBar.hidden = NO;
         [SVProgressHUD showInfoWithStatus:@"获取失败"];
     }
 }

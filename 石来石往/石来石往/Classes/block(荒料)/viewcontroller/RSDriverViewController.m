@@ -60,6 +60,8 @@ static NSString *driverInformationID = @"driverinformation";
     [super viewDidLoad];
 //    self.view.backgroundColor = [UIColor co];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     [self isAddjust];
     self.title = @"选择提货人";
     self.view.backgroundColor = [UIColor colorWithHexColorStr:@"#f9f9f9"];
@@ -110,9 +112,9 @@ static NSString *driverInformationID = @"driverinformation";
 
     
     self.tableview.frame = CGRectMake(0,
-                                      0,
+                                      topSafe,
                                       SCW,
-                                      self.view.frame.size.height - totalBottom);
+                                      self.view.bounds.size.height - topSafe - totalBottom);
     
     
     
@@ -120,7 +122,7 @@ static NSString *driverInformationID = @"driverinformation";
     
     // ========== 修正底部栏布局 ==========
     self.bottomview.frame = CGRectMake(0,
-                                       self.view.frame.size.height - totalBottom,
+                                       self.view.bounds.size.height - totalBottom,
                                        SCW,
                                        totalBottom);
 
@@ -135,6 +137,7 @@ static NSString *driverInformationID = @"driverinformation";
 
 - (void)getServerDriverInformation{
     //URL_GET_HAIXI_USER_DRIVER_MESSAGE
+    RSWeakself
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *verifykey = [user objectForKey:@"VERIFYKEY"];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -148,7 +151,6 @@ static NSString *driverInformationID = @"driverinformation";
     NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     AppDelegate * applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     NSDictionary *parameters = @{@"key":[NSString get_uuid] ,@"Data":dataStr,@"VerifyKey":verifykey,@"VerifyCode":[NSString get_verifyCode],@"erpId":applegate.ERPID};
-    __weak typeof(self) weakSelf = self;
     XLAFNetworkingBlock *network =[[XLAFNetworkingBlock alloc]init];
     //URL_DELIVERPERSON_LIST_IOS URL_GET_HAIXI_USER_DRIVER_MESSAGE
     [network getDataWithUrlString:URL_DELIVERPERSON_LIST_IOS withParameters:parameters withBlock:^(id json, BOOL success) {
@@ -156,9 +158,23 @@ static NSString *driverInformationID = @"driverinformation";
             BOOL Result = [json[@"Result"] boolValue];
             [weakSelf.driverArray removeAllObjects];
             if (Result) {
-                //mj_objectArrayWithKeyValuesArray:dictArray
-                weakSelf.driverArray = [RSDirverContact mj_objectArrayWithKeyValuesArray:json[@"Data"]];
-                if (self.driverArray.count == 0) {
+                // 1. 预处理：将 id 键重命名为 driverID
+                NSArray *originalData = json[@"Data"];
+                NSMutableArray *processedData = [NSMutableArray arrayWithCapacity:originalData.count];
+                for (NSDictionary *dict in originalData) {
+                    NSMutableDictionary *mutableDict = [dict mutableCopy];
+                    id value = mutableDict[@"id"];
+                    if (value) {
+                        mutableDict[@"driverID"] = value;
+                        [mutableDict removeObjectForKey:@"id"];
+                    }
+                    [processedData addObject:mutableDict];
+                }
+//              weakSelf.driverArray = [RSDirverContact mj_objectArrayWithKeyValuesArray:json[@"Data"]];
+                // 2. 反序列化（JSON key 已改为 driverID，自动匹配）
+                weakSelf.driverArray = [RSDirverContact mj_objectArrayWithKeyValuesArray:processedData];
+                
+                if (weakSelf.driverArray.count == 0) {
 //                    _contentImageview.hidden = NO;
                 }else{
 //                    _contentImageview.hidden = YES;
@@ -286,6 +302,7 @@ static NSString *driverInformationID = @"driverinformation";
 #pragma mark -- 删除司机信息
 - (void)removeDriverInformation:(RSCustomButton *)btn{
     //URL_DELETE_DRIVER_MESSAGE
+    RSWeakself;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"你确定需要删除该行的数据吗" message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         RSDirverContact *contact = self.driverArray[btn.tag];
@@ -304,8 +321,8 @@ static NSString *driverInformationID = @"driverinformation";
                 BOOL  Result = [json[@"Result"] boolValue];
                 if (Result) {
                     //移除数组的那个位置
-                    [self.driverArray removeObjectAtIndex:btn.tag];
-                    [self.tableview reloadData];
+                    [weakSelf.driverArray removeObjectAtIndex:btn.tag];
+                    [weakSelf.tableview reloadData];
                     [SVProgressHUD showSuccessWithStatus:@"成功删除"];
                 }
             }
